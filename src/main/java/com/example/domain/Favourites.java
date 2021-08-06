@@ -5,7 +5,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-//eafeaf
 
 @Entity
 @Table(name = "fravourites")
@@ -48,7 +47,7 @@ public class Favourites {
         return this.post;
     }
 
-    public void setPost(CarPosting post) {
+    public void setPost(CarPosting post) {  
         this.post = post;
     }
 
