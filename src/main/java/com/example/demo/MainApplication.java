@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
+//testing
+//testing
 @SpringBootApplication(exclude= {SecurityAutoConfiguration.class })
 public class MainApplication {
 
