@@ -5,6 +5,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+//eafeaf
+
 @Entity
 @Table(name = "fravourites")
 public class Favourites {
