@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headerfiles">
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/caps.css}"/>
+</head>
+<body>
+	<header th:fragment="header">
+        <div id="header"><span id="system_name">CAPS</span></div>
+    </header>
+    <div th:fragment="menubar">
+        <table class="table">
+            <tr>
+               <th class="tablebtn">
+<!-- 					<span th:if = "${session.role == ADMIN">
+						<a th:href="@{AdminMainPage.html}">HOME</a>
+					</span>
+					<span th:if = "${session.role == LECTURER">
+						<a th:href="@{LecturerMainPage.html}">HOME</a>
+					</span>
+					<span th:if = "${session.role == STUDENT">
+						<a th:href="@{LecturerMainPage.html}">HOME</a>
+					</span>
+					<span th:if = "${session.role == null">
+						<a th:href="@{index}">HOME</a>
+					</span> -->
+					<span>Home</span>
+				</th>
+                <th class="tablebtn">
+					<span th:if="${session.admin == null and session.lect == null and session.stu == null}">
+						<a th:href="@{/login}">LOG IN</a>
+					</span>
+					<span th:unless="${session.admin == null and session.lect == null and session.stu == null}">
+						<a th:href="@{/logout}">LOG OUT</a>
+					</span>
+				</th>
+                <th class="tablebtn"><a >ANNOUNCEMENT</a></th>
+                <th class="tablebtn"><a >CONTACT US</a></th>
+            </tr>
+    </table>
+    </div>
+    
+	<footer th:fragment="footer">
+		 <small>Now is: <b
+			th:text="${execInfo.now.time}"></b></small> <br /> 
+			<small>Copy Right &copy; CAPS system 2021. All rights reserved.</small>
+	</footer>
+</body>
+</html>
