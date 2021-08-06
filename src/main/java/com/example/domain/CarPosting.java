@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "carposting")
 public class CarPosting {
-
-    @Id
+    
+    @Id 
     private Integer postId;
     private Integer price;
     private String brand;
