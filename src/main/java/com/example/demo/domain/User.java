@@ -15,8 +15,8 @@ import javax.persistence.OneToOne;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int userId;
     private String username;
     private String password;
     
@@ -36,8 +36,7 @@ public class User {
     private List<Notifications> notification;
 
 
-    public User(int userId, String username, String password, List<CarPosting> postings) {
-        this.userId = userId;
+    public User(String username, String password, List<CarPosting> postings) {
         this.username = username;
         this.password = password;
         this.postings = postings;
@@ -47,21 +46,16 @@ public class User {
     public User() {
     }
 
-    public int getUserId() {
-        return this.userId;
-    }
+    public int getId() {
+		return userId;
+	}
+	public void setId(int id) {
+		this.userId = id;
+	}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public User userId(int userId) {
-        setUserId(userId);
-        return this;
-    }
 
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
     public void setUsername(String username) {
@@ -74,7 +68,7 @@ public class User {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
@@ -87,7 +81,7 @@ public class User {
     }
 
     public List<CarPosting> getPostings() {
-        return this.postings;
+        return postings;
     }
 
     public void setPostings(List<CarPosting> postings) {

@@ -12,7 +12,7 @@ public class History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer historyId;
+    private int historyId;
 
     @OneToOne
     private CarPosting post;
@@ -25,7 +25,7 @@ public class History {
     }
 
 
-    public History(Integer historyId, CarPosting post, User user) {
+    public History(int historyId, CarPosting post, User user) {
         this.historyId = historyId;
         this.post = post;
         this.user = user;

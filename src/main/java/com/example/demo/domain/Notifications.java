@@ -22,22 +22,22 @@ public class Notifications {
     }
 
 
-    public Notifications(Integer notificationId, String type, User user) {
+    public Notifications(int notificationId, String type, User user) {
         this.notificationId = notificationId;
         this.type = type;
         this.user = user;
     }
 
 
-    public Integer getnotificationId() {
+    public int getnotificationId() {
         return this.notificationId;
     }
 
-    public void setnotificationId(Integer notificationId) {
+    public void setnotificationId(int notificationId) {
         this.notificationId = notificationId;
     }
 
-    public Notifications Id(Integer Id) {
+    public Notifications Id(int Id) {
         setnotificationId(Id);
         return this;
     }

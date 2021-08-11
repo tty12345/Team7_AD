@@ -12,7 +12,7 @@ public class Favourites {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer favouriteId;
+    private int favouriteId;
 
     @OneToOne
     private CarPosting post;
@@ -25,7 +25,7 @@ public class Favourites {
     }
 
 
-    public Favourites(Integer favouriteId, CarPosting post, User user) {
+    public Favourites(int favouriteId, CarPosting post, User user) {
         this.favouriteId = favouriteId;
         this.post = post;
         this.user = user;

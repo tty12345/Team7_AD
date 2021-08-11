@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Car Posts</title>
+</head>
+<body>
+<header>Edit Car Post </header>
+
+
+
+<form action="" th:object="${carpost}" th:action="@{/post/savePost}" method="get">
+    <fieldset>
+         <input type="hidden" th:field="*{postId}"> 
+    </fieldset>
+    <fieldset>
+        Price: <input type="text" th:field="*{price}">
+        <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
+    </fieldset>
+    <fieldset>
+        Description: <input type="text" th:field="*{description}">
+        <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+    </fieldset>
+    <fieldset>
+        Brand: <input type="text" th:field="*{brand}">
+        <p th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></p>
+    </fieldset>
+    <fieldset>
+        Engine Capacity:<input type="text" th:field="*{engineCapacity}">
+        <p th:if="${#fields.hasErrors('engineCapacity')}" th:errors="*{engineCapacity}"></p>	
+    </fieldset>
+    <fieldset>
+        Reisgtered Date (dd/MM/yyyy): <input type="text" th:field="*{reisgteredDate}">
+        <p th:if="${#fields.hasErrors('reisgteredDate')}" th:errors="*{reisgteredDate}"></p>
+    </fieldset>
+    <fieldset>
+        Mileage: <input type="text" th:field="*{mileage}">
+        <p th:if="${#fields.hasErrors('mileage')}" th:errors="*{mileage}"></p>	
+    </fieldset>
+    <fieldset>
+        Category: <input type="text" th:field="*{category}">
+        <p th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></p>	
+    </fieldset>
+    <fieldset>
+        PhotoUrl: <input type="text" th:field="*{photoUrl}">
+        <p th:if="${#fields.hasErrors('photoUrl')}" th:errors="*{photoUrl}"></p>	
+    </fieldset>
+    <fieldset>
+        <input type="submit" value="Save"/>
+        &nbsp; &nbsp; 	
+        <input type="reset" value="Reset"/>
+    </fieldset>
+</form>
+	
+</body>
+</html>

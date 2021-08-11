@@ -12,11 +12,11 @@ public class Preferences {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String preferenceId;
+    private int preferenceId;
     private String Model;
     private String Brand;
-    private Integer lowPrice;
-    private Integer hightPrice;
+    private int lowPrice;
+    private int hightPrice;
     private String Category;
 
     @OneToOne
@@ -26,7 +26,7 @@ public class Preferences {
     public Preferences() {
     }
 
-    public Preferences(String preferenceId, String Model, String Brand, Integer lowPrice, Integer hightPrice, String Category, User user) {
+    public Preferences(int preferenceId, String Model, String Brand, int lowPrice, int hightPrice, String Category, User user) {
         this.preferenceId = preferenceId;
         this.Model = Model;
         this.Brand = Brand;
@@ -63,28 +63,28 @@ public class Preferences {
         return this;
     }
 
-    public Integer getLowPrice() {
+    public int getLowPrice() {
         return this.lowPrice;
     }
 
-    public void setLowPrice(Integer lowPrice) {
+    public void setLowPrice(int lowPrice) {
         this.lowPrice = lowPrice;
     }
 
-    public Preferences lowPrice(Integer lowPrice) {
+    public Preferences lowPrice(int lowPrice) {
         setLowPrice(lowPrice);
         return this;
     }
 
-    public Integer getHightPrice() {
+    public int getHightPrice() {
         return this.hightPrice;
     }
 
-    public void setHightPrice(Integer hightPrice) {
+    public void setHightPrice(int hightPrice) {
         this.hightPrice = hightPrice;
     }
 
-    public Preferences hightPrice(Integer hightPrice) {
+    public Preferences hightPrice(int hightPrice) {
         setHightPrice(hightPrice);
         return this;
     }

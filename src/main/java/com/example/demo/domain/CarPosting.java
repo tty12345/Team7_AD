@@ -8,6 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class CarPosting {
@@ -15,15 +19,18 @@ public class CarPosting {
     @Id 
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int postId;
-    private Integer price;
+    private int price;
     private String description;
     private String brand;
-    private Integer engineCapacity;
+    private int engineCapacity;
+    
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @Temporal(TemporalType.DATE)
     private Date reisgteredDate;
-    private Integer mileage;
+    private int mileage;
     private String category;
     private String photoUrl;
-    private Integer views; 
+    private int views; 
 
     @ManyToOne
     private User user;
@@ -36,9 +43,10 @@ public class CarPosting {
 
 
     public CarPosting() {
+        super();
     }
 
-    public CarPosting(Integer price,String description, String brand, Integer engineCapacity, Date reisgteredDate, Integer mileage, String category, String photoUrl) {
+    public CarPosting(int price,String description, String brand, int engineCapacity, Date reisgteredDate, int mileage, String category, String photoUrl) {
         this.price = price;
         this.description = description;
         this.brand = brand;
@@ -49,8 +57,20 @@ public class CarPosting {
         this.photoUrl = photoUrl;
     }
 
+    public CarPosting(int price,String description, String brand, int engineCapacity, Date reisgteredDate, int mileage, String category, String photoUrl, User user) {
+        this.price = price;
+        this.description = description;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.reisgteredDate = reisgteredDate;
+        this.mileage = mileage;
+        this.category = category;
+        this.photoUrl = photoUrl;
+        this.user = user;
+    }
+
     public User getUser() {
-        return this.user;
+        return user;
     }
 
     public void setUser(User user) {
@@ -65,7 +85,7 @@ public class CarPosting {
 
 
     public int getPostId() {
-        return this.postId;
+        return postId;
     }
 
     public void setPostId(int postId) {
@@ -78,7 +98,7 @@ public class CarPosting {
     }
 
     public int getPrice() {
-        return this.price;
+        return price;
     }
 
     public void setPrice(int price) {
@@ -91,7 +111,7 @@ public class CarPosting {
     }
 
     public String getBrand() {
-        return this.brand;
+        return brand;
     }
 
     public void setBrand(String brand) {
@@ -104,7 +124,7 @@ public class CarPosting {
     }
 
     public int getEngineCapacity() {
-        return this.engineCapacity;
+        return engineCapacity;
     }
 
     public void setEngineCapacity(int engineCapacity) {
@@ -117,7 +137,7 @@ public class CarPosting {
     }
 
     public Date getReisgteredDate() {
-        return this.reisgteredDate;
+        return reisgteredDate;
     }
 
     public void setReisgteredDate(Date reisgteredDate) {
@@ -130,7 +150,7 @@ public class CarPosting {
     }
 
     public int getMileage() {
-        return this.mileage;
+        return mileage;
     }
 
     public void setMileage(int mileage) {
@@ -143,7 +163,7 @@ public class CarPosting {
     }
 
     public String getCategory() {
-        return this.category;
+        return category;
     }
 
     public void setCategory(String category) {
@@ -156,7 +176,7 @@ public class CarPosting {
     }
 
     public String getPhotoUrl() {
-        return this.photoUrl;
+        return photoUrl;
     }
 
     public void setPhotoUrl(String photoUrl) {
@@ -169,7 +189,7 @@ public class CarPosting {
     }
 
     public int getViews() {
-        return this.views;
+        return views;
     }
 
     public void setViews(int views) {
@@ -183,7 +203,7 @@ public class CarPosting {
     
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public void setDescription(String description) {
@@ -196,7 +216,7 @@ public class CarPosting {
     }
 
     public History getHistory() {
-        return this.history;
+        return history;
     }
 
     public void setHistory(History history) {
@@ -209,7 +229,7 @@ public class CarPosting {
     }
 
     public Favourites getFavourite() {
-        return this.favourite;
+        return favourite;
     }
 
     public void setFavourite(Favourites favourite) {
@@ -221,5 +241,25 @@ public class CarPosting {
         return this;
     }
     
+    
+
+    @Override
+    public String toString() {
+        return "{" +
+            " postId='" + getPostId() + "'" +
+            ", price='" + getPrice() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", brand='" + getBrand() + "'" +
+            ", engineCapacity='" + getEngineCapacity() + "'" +
+            ", reisgteredDate='" + getReisgteredDate() + "'" +
+            ", mileage='" + getMileage() + "'" +
+            ", category='" + getCategory() + "'" +
+            ", photoUrl='" + getPhotoUrl() + "'" +
+            ", views='" + getViews() + "'" +
+            ", user='" + getUser() + "'" +
+            ", history='" + getHistory() + "'" +
+            ", favourite='" + getFavourite() + "'" +
+            "}";
+    }
 
 }
