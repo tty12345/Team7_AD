@@ -1,22 +1,23 @@
-package com.example.domain;
+package com.example.demo.domain;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "carposting")
 public class CarPosting {
 
-    @Id
-    private Integer postId;
+    @Id 
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private int postId;
     private Integer price;
+    private String description;
     private String brand;
-    private String mode;
     private Integer engineCapacity;
     private Date reisgteredDate;
     private Integer mileage;
@@ -34,6 +35,20 @@ public class CarPosting {
     private Favourites favourite;
 
 
+    public CarPosting() {
+    }
+
+    public CarPosting(Integer price,String description, String brand, Integer engineCapacity, Date reisgteredDate, Integer mileage, String category, String photoUrl) {
+        this.price = price;
+        this.description = description;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.reisgteredDate = reisgteredDate;
+        this.mileage = mileage;
+        this.category = category;
+        this.photoUrl = photoUrl;
+    }
+
     public User getUser() {
         return this.user;
     }
@@ -47,9 +62,6 @@ public class CarPosting {
         return this;
     }
 
-
-    public CarPosting() {
-    }
 
 
     public int getPostId() {
@@ -88,19 +100,6 @@ public class CarPosting {
 
     public CarPosting brand(String brand) {
         setBrand(brand);
-        return this;
-    }
-
-    public String getMode() {
-        return this.mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
-    public CarPosting mode(String mode) {
-        setMode(mode);
         return this;
     }
 
@@ -182,6 +181,45 @@ public class CarPosting {
         return this;
     }
     
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public CarPosting description(String description) {
+        setDescription(description);
+        return this;
+    }
+
+    public History getHistory() {
+        return this.history;
+    }
+
+    public void setHistory(History history) {
+        this.history = history;
+    }
+
+    public CarPosting history(History history) {
+        setHistory(history);
+        return this;
+    }
+
+    public Favourites getFavourite() {
+        return this.favourite;
+    }
+
+    public void setFavourite(Favourites favourite) {
+        this.favourite = favourite;
+    }
+
+    public CarPosting favourite(Favourites favourite) {
+        setFavourite(favourite);
+        return this;
+    }
     
 
 }

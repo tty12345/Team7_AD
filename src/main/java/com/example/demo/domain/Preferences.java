@@ -1,31 +1,33 @@
-package com.example.domain;
+package com.example.demo.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
+
 
 @Entity
-@Table(name = "carposting")
 public class Preferences {
 
     @Id
-    private String Id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String preferenceId;
     private String Model;
     private String Brand;
     private Integer lowPrice;
     private Integer hightPrice;
     private String Category;
 
-    @OneToOne(mappedBy = "preference")
+    @OneToOne
     private User user;
 
 
     public Preferences() {
     }
 
-    public Preferences(String Id, String Model, String Brand, Integer lowPrice, Integer hightPrice, String Category, User user) {
-        this.Id = Id;
+    public Preferences(String preferenceId, String Model, String Brand, Integer lowPrice, Integer hightPrice, String Category, User user) {
+        this.preferenceId = preferenceId;
         this.Model = Model;
         this.Brand = Brand;
         this.lowPrice = lowPrice;
@@ -34,19 +36,6 @@ public class Preferences {
         this.user = user;
     }
 
-
-    public String getId() {
-        return this.Id;
-    }
-
-    public void setId(String Id) {
-        this.Id = Id;
-    }
-
-    public Preferences Id(String Id) {
-        setId(Id);
-        return this;
-    }
 
     public String getModel() {
         return this.Model;

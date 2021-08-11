@@ -1,23 +1,27 @@
-package com.example.domain;
+package com.example.demo.domain;
 
+
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
+
 
 @Entity
-@Table(name = "user")
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
     private String username;
     private String password;
     
     @OneToMany(mappedBy = "user")
-    private CarPosting postings;
+    private List<CarPosting> postings;
 
     @OneToOne(mappedBy = "user")
     private History history;
@@ -29,10 +33,10 @@ public class User {
     private Preferences preference;
 
     @OneToMany(mappedBy = "user")
-    private Notifications notification;
+    private List<Notifications> notification;
 
 
-    public User(int userId, String username, String password, CarPosting postings) {
+    public User(int userId, String username, String password, List<CarPosting> postings) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -82,15 +86,15 @@ public class User {
         return this;
     }
 
-    public CarPosting getPostings() {
+    public List<CarPosting> getPostings() {
         return this.postings;
     }
 
-    public void setPostings(CarPosting postings) {
+    public void setPostings(List<CarPosting> postings) {
         this.postings = postings;
     }
 
-    public User postings(CarPosting postings) {
+    public User postings(List<CarPosting> postings) {
         setPostings(postings);
         return this;
     }

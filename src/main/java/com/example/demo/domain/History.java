@@ -1,16 +1,18 @@
-package com.example.domain;
+package com.example.demo.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
+
 
 @Entity
-@Table(name = "history")
 public class History {
 
     @Id
-    private Integer Id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer historyId;
 
     @OneToOne
     private CarPosting post;
@@ -23,24 +25,10 @@ public class History {
     }
 
 
-    public History(Integer Id, CarPosting post, User user) {
-        this.Id = Id;
+    public History(Integer historyId, CarPosting post, User user) {
+        this.historyId = historyId;
         this.post = post;
         this.user = user;
-    }
-
-
-    public Integer getId() {
-        return this.Id;
-    }
-
-    public void setId(Integer Id) {
-        this.Id = Id;
-    }
-
-    public History Id(Integer Id) {
-        setId(Id);
-        return this;
     }
 
     public CarPosting getPost() {
