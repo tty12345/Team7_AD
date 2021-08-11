@@ -7,9 +7,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class TestController {
 
-	@RequestMapping("/AdminMainPage")
+	@RequestMapping("/BasicLayout")
 	public ModelAndView firstPage() {
-		return new ModelAndView("AdminMainPage");
+		return new ModelAndView("BasicLayout");
 	}
 
 }
