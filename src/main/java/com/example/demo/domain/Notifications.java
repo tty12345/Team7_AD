@@ -13,6 +13,18 @@ public class Notifications {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int notificationId;
     private String type;
+    private String Msg;
+   
+
+
+    public String getMsg() {
+        return Msg;
+    }
+
+
+    public void setMsg(String msg) {
+        Msg = msg;
+    }
 
     @ManyToOne
     private User user;
@@ -22,10 +34,11 @@ public class Notifications {
     }
 
 
-    public Notifications(int notificationId, String type, User user) {
+    public Notifications(int notificationId, String type, User user, String msg) {
         this.notificationId = notificationId;
         this.type = type;
         this.user = user;
+        this.Msg=msg;
     }
 
 

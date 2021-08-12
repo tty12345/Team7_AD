@@ -16,6 +16,10 @@ import com.example.demo.domain.Offer;
 import com.example.demo.domain.User;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.OfferRepository;
+import com.example.demo.domain.Notifications;
+import com.example.demo.domain.User;
+import com.example.demo.repo.CarPostRepository;
+import com.example.demo.repo.NotificationRepository;
 import com.example.demo.repo.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,9 @@ public class postController {
 	UserRepository urepo;
 	@Autowired
 	OfferRepository orepo;
+	@Autowired
+	NotificationRepository nrepo;
+	
     
 	@GetMapping("/addPost")
 	public String showForm(Model model) {
@@ -58,7 +65,16 @@ public class postController {
     @GetMapping("/deletePost/{id}")
     public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
       CarPosting carpost = cprepo.findCarPostById(id);
-      cprepo.delete(carpost);
+	  List<User> users =carpost.getUsers();
+		
+	  for (User user : users) {
+		Notifications notification =new Notifications();
+		notification.setType("delete");
+		notification.setUser(user);
+		user.notifications.add(notification);
+	  }
+	 
+	  cprepo.delete(carpost);
       return "forward:/post/listPost";
     }
     
@@ -71,16 +87,17 @@ public class postController {
 			return "car_post_form";
 		}
 
-		if(carpost.getUser() == null)
-		{
-			//add code to set user as whoever is logged in 
-			User user = urepo.finduserById(1);
-			List<CarPosting> newpost = new ArrayList<CarPosting>();
-			newpost.add(carpost);
-			user.setPostings(newpost);
-			urepo.save(user);
-			carpost.setUser(user);
-		}
+		// if(carpost.getUsers() == null)
+		// {
+		// 	//add code to set user as whoever is logged in 
+		// 	User user = urepo.finduserById(1);
+		// 	List<CarPosting> newpost = new ArrayList<CarPosting>();
+		// 	newpost.add(carpost);
+		// 	user.setPostings(newpost);
+		// 	urepo.save(user);
+		// 	carpost.getUsers().add(user);
+		// }
+
 		cprepo.save(carpost);
 		return "forward:/post/listPost";
 	}
@@ -122,7 +139,7 @@ public class postController {
 			}
 		}
 
-		// depending on which field is enter, do the corresponding query
+		// depending on which field is entered, do the corresponding query
 		// if all null, display all
 		if(brand == null && maxPrice == 0 && description == null)
 			model.addAttribute("carpost", cprepo.findAll());

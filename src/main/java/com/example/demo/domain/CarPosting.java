@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -28,80 +29,58 @@ public class CarPosting {
     
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
-    private Date reisgteredDate;
+    private Date registeredDate;
     private int mileage;
     private String category;
     private String photoUrl;
     private int views; 
 
+    //likers
+    @ManyToMany
+    private List<User> users;
+
     @ManyToOne
-    private User user;
-
-    @OneToOne(mappedBy = "post")
-    private History history;
-
-    @OneToOne(mappedBy = "post")
-    private Favourites favourite;
+    private User owner;
 
     @OneToMany(mappedBy = "post")
     private List<Offer> offers;
 
+    @ManyToMany
+    private List<User> history;
 
     public CarPosting() {
         super();
     }
 
-
-
-    public CarPosting(int postId, int price, String description, String brand, int engineCapacity, Date reisgteredDate, int mileage, String category, String photoUrl, int views, User user, History history, Favourites favourite, List<Offer> offers) {
+    public CarPosting(int postId, int price, String description, String brand, int engineCapacity, Date registeredDate,
+            int mileage, String category, String photoUrl, int views, List<User> users, User owner, List<User> history) {
         this.postId = postId;
         this.price = price;
         this.description = description;
         this.brand = brand;
         this.engineCapacity = engineCapacity;
-        this.reisgteredDate = reisgteredDate;
+        this.registeredDate = registeredDate;
         this.mileage = mileage;
         this.category = category;
         this.photoUrl = photoUrl;
         this.views = views;
-        this.user = user;
+        this.users = users;
+        this.owner = owner;
         this.history = history;
-        this.favourite = favourite;
-        this.offers = offers;
     }
 
-
-    public CarPosting(int price,String description, String brand, int engineCapacity, Date reisgteredDate, int mileage, String category, String photoUrl) {
+    public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage, String category, String photoUrl,
+            User owner) {
         this.price = price;
         this.description = description;
         this.brand = brand;
         this.engineCapacity = engineCapacity;
-        this.reisgteredDate = reisgteredDate;
+        this.registeredDate = registeredDate;
         this.mileage = mileage;
         this.category = category;
         this.photoUrl = photoUrl;
+        this.owner = owner;
     }
-
-    public CarPosting(int price,String description, String brand, int engineCapacity, Date reisgteredDate, int mileage, String category, String photoUrl, User user) {
-        this.price = price;
-        this.description = description;
-        this.brand = brand;
-        this.engineCapacity = engineCapacity;
-        this.reisgteredDate = reisgteredDate;
-        this.mileage = mileage;
-        this.category = category;
-        this.photoUrl = photoUrl;
-        this.user = user;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
 
     public int getPostId() {
         return postId;
@@ -111,7 +90,6 @@ public class CarPosting {
         this.postId = postId;
     }
 
-
     public int getPrice() {
         return price;
     }
@@ -119,70 +97,6 @@ public class CarPosting {
     public void setPrice(int price) {
         this.price = price;
     }
-
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-
-    public int getEngineCapacity() {
-        return engineCapacity;
-    }
-
-    public void setEngineCapacity(int engineCapacity) {
-        this.engineCapacity = engineCapacity;
-    }
-
-    public Date getReisgteredDate() {
-        return reisgteredDate;
-    }
-
-    public void setReisgteredDate(Date reisgteredDate) {
-        this.reisgteredDate = reisgteredDate;
-    }
-
-
-    public int getMileage() {
-        return mileage;
-    }
-
-    public void setMileage(int mileage) {
-        this.mileage = mileage;
-    }
-
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
-
-    public int getViews() {
-        return views;
-    }
-
-    public void setViews(int views) {
-        this.views = views;
-    }
-
-    
 
     public String getDescription() {
         return description;
@@ -192,24 +106,85 @@ public class CarPosting {
         this.description = description;
     }
 
-    public History getHistory() {
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public int getEngineCapacity() {
+        return engineCapacity;
+    }
+
+    public void setEngineCapacity(int engineCapacity) {
+        this.engineCapacity = engineCapacity;
+    }
+
+    public Date getRegisteredDate() {
+        return registeredDate;
+    }
+
+    public void setRegisteredDate(Date registeredDate) {
+        this.registeredDate = registeredDate;
+    }
+
+    public int getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public List<User> getHistory() {
         return history;
     }
 
-    public void setHistory(History history) {
+    public void setHistory(List<User> history) {
         this.history = history;
     }
-
-
-    public Favourites getFavourite() {
-        return favourite;
-    }
-
-    public void setFavourite(Favourites favourite) {
-        this.favourite = favourite;
-    }
-
-    
 
     public List<Offer> getOffers() {
         return offers;
@@ -229,14 +204,13 @@ public class CarPosting {
             ", description='" + getDescription() + "'" +
             ", brand='" + getBrand() + "'" +
             ", engineCapacity='" + getEngineCapacity() + "'" +
-            ", reisgteredDate='" + getReisgteredDate() + "'" +
+            ", reisgteredDate='" + getRegisteredDate() + "'" +
             ", mileage='" + getMileage() + "'" +
             ", category='" + getCategory() + "'" +
             ", photoUrl='" + getPhotoUrl() + "'" +
             ", views='" + getViews() + "'" +
-            ", user='" + getUser() + "'" +
+            ", user='" + getUsers() + "'" +
             ", history='" + getHistory() + "'" +
-            ", favourite='" + getFavourite() + "'" +
             "}";
     }
 
