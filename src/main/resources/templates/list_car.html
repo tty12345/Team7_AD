@@ -43,34 +43,34 @@
 	</div>
 
 
-<form action="" th:action="@{/post/listPost}" method="GET">
-	<table>
-		<tr>
-			<th>Brand<select name = "brand">
-				<option></option>
-				<option value = "toyota">Toyota</option>
-				<option value = "honda">Honda</option>
-				<option value = "Mercedes-Benz">Mercedes</option>
-				<option value = "porsche">Porsche</option>
-				<option value = "mazda">Mazda</option>
-				<option value = "suzuki">Suzuki</option>
-				<option value = "others">Others</option>
-			</select></th>
-			<th>Price<select name = "price">
-				<option></option>
-				<option value = "0">$0 to $50,000</option>
-				<option value = "1">$50,001 to $100,000</option>
-				<option value = "2">$100,001 to $150,000</option>
-				<option value = "3">$150,000 and above</option>
-			</select></th>
-			<th>Model<input type="text", name = "description"/></th>
-			<th><input type="submit" value = "Submit" /></th>
-		</tr>
-	</table>
-</form>
+	<form action="" th:action="@{/post/listPost}" method="GET">
+		<table>
+			<tr>
+				<th>Brand<select name = "brand">
+					<option></option>
+					<option value = "toyota">Toyota</option>
+					<option value = "honda">Honda</option>
+					<option value = "Mercedes-Benz">Mercedes</option>
+					<option value = "porsche">Porsche</option>
+					<option value = "mazda">Mazda</option>
+					<option value = "suzuki">Suzuki</option>
+					<option value = "others">Others</option>
+				</select></th>
+				<th>Price<select name = "price">
+					<option></option>
+					<option value = "0">$0 to $50,000</option>
+					<option value = "1">$50,001 to $100,000</option>
+					<option value = "2">$100,001 to $150,000</option>
+					<option value = "3">$150,000 and above</option>
+				</select></th>
+				<th>Model<input type="text", name = "description"/></th>
+				<th><input type="submit" value = "Submit" /></th>
+			</tr>
+		</table>
+	</form>
 
-<a th:href="@{/post/addPost/}"> New Post</a></td>
-<a th:href="@{/post/viewOwnPost/}"> View Your Post</a></td>
+	<a th:href="@{/post/addPost/}"> New Post</a></td>
+	<a th:href="@{/post/viewOwnPost/}"> View Your Post</a></td>
 
 	<table>
         <tr>
