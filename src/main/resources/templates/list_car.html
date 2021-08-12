@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Car Posts</title>
+</head>
+<body>
+<header>Car Posts </header>
+<a href="addPost.html" th:href="@{/post/addPost/}"> New Post</a></td>
+	<table>
+        <tr>
+			<th>Id</th>
+			<th >Price</th>
+			<th >Description</th>
+			<th >Brand</th>
+			<th >Engine Capacity</th>
+			<th >Registration Date</th>
+			<th >Mileage</th>
+			<th >Category</th>
+			<th >Image</th>
+			<th></th>
+			<th></th>
+		</tr>
+        <tr th:each="carpost:${carpost}">
+			<td th:text=${carpost.postId}>postId</td>
+			<td th:text=${carpost.price}>price</td>
+			<td th:text=${carpost.description}>description</td>
+			<td th:text=${carpost.brand}>brand</td>
+			<td th:text=${carpost.engineCapacity}>engineCapacity</td>
+			<td th:text=${carpost.reisgteredDate}>reisgteredDate</td>
+			<td th:text=${carpost.mileage}>mileage</td>
+			<td th:text=${carpost.category}>category</td>
+			<td ><img th:src="${carpost.photoUrl}"/></td>
+			<td><a href="EditPost.html" th:href="@{/post/editPost/}+${carpost.postId}" th:text="Edit"> Edit </a></td>
+			<td><a href="DeletePost.html" th:href="@{/post/deletePost/}+${carpost.postId}" th:text="Delete"> Delete</a></td>
+		</tr>
+	</table>
+	
+</body>
+</html>

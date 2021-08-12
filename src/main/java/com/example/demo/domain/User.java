@@ -1,23 +1,27 @@
-package com.example.domain;
+package com.example.demo.domain;
 
+
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
+
 
 @Entity
-@Table(name = "user")
 public class User {
 
     @Id
-    private Integer userId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int userId;
     private String username;
     private String password;
     
     @OneToMany(mappedBy = "user")
-    private CarPosting postings;
+    private List<CarPosting> postings;
 
     @OneToOne(mappedBy = "user")
     private History history;
@@ -29,11 +33,10 @@ public class User {
     private Preferences preference;
 
     @OneToMany(mappedBy = "user")
-    private Notifications notification;
+    private List<Notifications> notification;
 
 
-    public User(int userId, String username, String password, CarPosting postings) {
-        this.userId = userId;
+    public User(String username, String password, List<CarPosting> postings) {
         this.username = username;
         this.password = password;
         this.postings = postings;
@@ -43,21 +46,16 @@ public class User {
     public User() {
     }
 
-    public int getUserId() {
-        return this.userId;
-    }
+    public int getId() {
+		return userId;
+	}
+	public void setId(int id) {
+		this.userId = id;
+	}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public User userId(int userId) {
-        setUserId(userId);
-        return this;
-    }
 
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
     public void setUsername(String username) {
@@ -70,7 +68,7 @@ public class User {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
@@ -82,15 +80,15 @@ public class User {
         return this;
     }
 
-    public CarPosting getPostings() {
-        return this.postings;
+    public List<CarPosting> getPostings() {
+        return postings;
     }
 
-    public void setPostings(CarPosting postings) {
+    public void setPostings(List<CarPosting> postings) {
         this.postings = postings;
     }
 
-    public User postings(CarPosting postings) {
+    public User postings(List<CarPosting> postings) {
         setPostings(postings);
         return this;
     }

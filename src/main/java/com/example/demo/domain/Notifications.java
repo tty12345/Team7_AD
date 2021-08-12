@@ -1,16 +1,17 @@
-package com.example.domain;
+package com.example.demo.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "carposting")
 public class Notifications {
 
     @Id
-    private Integer Id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int notificationId;
     private String type;
 
     @ManyToOne
@@ -21,23 +22,23 @@ public class Notifications {
     }
 
 
-    public Notifications(Integer Id, String type, User user) {
-        this.Id = Id;
+    public Notifications(int notificationId, String type, User user) {
+        this.notificationId = notificationId;
         this.type = type;
         this.user = user;
     }
 
 
-    public Integer getId() {
-        return this.Id;
+    public int getnotificationId() {
+        return this.notificationId;
     }
 
-    public void setId(Integer Id) {
-        this.Id = Id;
+    public void setnotificationId(int notificationId) {
+        this.notificationId = notificationId;
     }
 
-    public Notifications Id(Integer Id) {
-        setId(Id);
+    public Notifications Id(int Id) {
+        setnotificationId(Id);
         return this;
     }
 
