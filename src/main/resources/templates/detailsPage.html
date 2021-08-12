@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<header>test </header>
+	<h1>Details</h1>
+	<table>
+        <tr>
+            <td><img th:src="${carpost.photoUrl}"/></td>
+        </tr>
+        <tr>
+            <td>
+                <p>Price</p>
+                <p th:text=${carpost.price} ></p>
+            </td>
+            <td>
+                <p>Description</p>
+                <p th:text=${carpost.description} ></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Brand</p>
+                <p th:text=${carpost.brand}></p>
+            </td>
+            <td>
+                <p>Engine Capacity</p>
+                <p th:text=${carpost.engineCapacity} ></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Registration Date</p>
+                <p th:text=${carpost.reisgteredDate}></p>
+            </td>
+            <td>
+                <p>Mileage</p>
+                <p th:text=${carpost.mileage} ></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Category</p>
+                <p th:text=${carpost.category}></p>
+            </td>
+            <td>
+                <form th:object= "${offer}" th:action="@{/post/saveOffer/}+${carpost.postId}" method="post" >
+                    <input type="text" name = "offer"/>
+                    <input type="submit" value = "Leave Offer"/>
+                </form>
+            </td>
+        </tr>
+	</table>
+	
+</body>
+</html>

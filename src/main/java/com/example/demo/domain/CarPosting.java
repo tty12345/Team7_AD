@@ -1,12 +1,14 @@
 package com.example.demo.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,10 +43,33 @@ public class CarPosting {
     @OneToOne(mappedBy = "post")
     private Favourites favourite;
 
+    @OneToMany(mappedBy = "post")
+    private List<Offer> offers;
+
 
     public CarPosting() {
         super();
     }
+
+
+
+    public CarPosting(int postId, int price, String description, String brand, int engineCapacity, Date reisgteredDate, int mileage, String category, String photoUrl, int views, User user, History history, Favourites favourite, List<Offer> offers) {
+        this.postId = postId;
+        this.price = price;
+        this.description = description;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.reisgteredDate = reisgteredDate;
+        this.mileage = mileage;
+        this.category = category;
+        this.photoUrl = photoUrl;
+        this.views = views;
+        this.user = user;
+        this.history = history;
+        this.favourite = favourite;
+        this.offers = offers;
+    }
+
 
     public CarPosting(int price,String description, String brand, int engineCapacity, Date reisgteredDate, int mileage, String category, String photoUrl) {
         this.price = price;
@@ -77,12 +102,6 @@ public class CarPosting {
         this.user = user;
     }
 
-    public CarPosting user(User user) {
-        setUser(user);
-        return this;
-    }
-
-
 
     public int getPostId() {
         return postId;
@@ -92,10 +111,6 @@ public class CarPosting {
         this.postId = postId;
     }
 
-    public CarPosting postId(int postId) {
-        setPostId(postId);
-        return this;
-    }
 
     public int getPrice() {
         return price;
@@ -105,10 +120,6 @@ public class CarPosting {
         this.price = price;
     }
 
-    public CarPosting price(int price) {
-        setPrice(price);
-        return this;
-    }
 
     public String getBrand() {
         return brand;
@@ -118,10 +129,6 @@ public class CarPosting {
         this.brand = brand;
     }
 
-    public CarPosting brand(String brand) {
-        setBrand(brand);
-        return this;
-    }
 
     public int getEngineCapacity() {
         return engineCapacity;
@@ -129,11 +136,6 @@ public class CarPosting {
 
     public void setEngineCapacity(int engineCapacity) {
         this.engineCapacity = engineCapacity;
-    }
-
-    public CarPosting engineCapacity(int engineCapacity) {
-        setEngineCapacity(engineCapacity);
-        return this;
     }
 
     public Date getReisgteredDate() {
@@ -144,10 +146,6 @@ public class CarPosting {
         this.reisgteredDate = reisgteredDate;
     }
 
-    public CarPosting reisgteredDate(Date reisgteredDate) {
-        setReisgteredDate(reisgteredDate);
-        return this;
-    }
 
     public int getMileage() {
         return mileage;
@@ -157,10 +155,6 @@ public class CarPosting {
         this.mileage = mileage;
     }
 
-    public CarPosting mileage(int mileage) {
-        setMileage(mileage);
-        return this;
-    }
 
     public String getCategory() {
         return category;
@@ -170,10 +164,6 @@ public class CarPosting {
         this.category = category;
     }
 
-    public CarPosting category(String category) {
-        setCategory(category);
-        return this;
-    }
 
     public String getPhotoUrl() {
         return photoUrl;
@@ -183,10 +173,6 @@ public class CarPosting {
         this.photoUrl = photoUrl;
     }
 
-    public CarPosting photoUrl(String photoUrl) {
-        setPhotoUrl(photoUrl);
-        return this;
-    }
 
     public int getViews() {
         return views;
@@ -196,10 +182,6 @@ public class CarPosting {
         this.views = views;
     }
 
-    public CarPosting views(int views) {
-        setViews(views);
-        return this;
-    }
     
 
     public String getDescription() {
@@ -210,11 +192,6 @@ public class CarPosting {
         this.description = description;
     }
 
-    public CarPosting description(String description) {
-        setDescription(description);
-        return this;
-    }
-
     public History getHistory() {
         return history;
     }
@@ -223,10 +200,6 @@ public class CarPosting {
         this.history = history;
     }
 
-    public CarPosting history(History history) {
-        setHistory(history);
-        return this;
-    }
 
     public Favourites getFavourite() {
         return favourite;
@@ -236,11 +209,16 @@ public class CarPosting {
         this.favourite = favourite;
     }
 
-    public CarPosting favourite(Favourites favourite) {
-        setFavourite(favourite);
-        return this;
-    }
     
+
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
+    }
+
     
 
     @Override

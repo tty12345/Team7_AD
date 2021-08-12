@@ -35,6 +35,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Notifications> notification;
 
+    @OneToMany(mappedBy = "user")
+    private List<Offer> offers;
 
     public User(String username, String password, List<CarPosting> postings) {
         this.username = username;

@@ -9,7 +9,7 @@
 
 
 
-<form action="" th:object="${carpost}" th:action="@{/post/savePost}" method="get">
+<form th:object="${carpost}" th:action="@{/post/savePost}" method="get">
     <fieldset>
          <input type="hidden" th:field="*{postId}"> 
     </fieldset>

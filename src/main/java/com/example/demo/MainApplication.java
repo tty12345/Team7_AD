@@ -58,7 +58,7 @@ public class MainApplication {
 
 		CarPosting post1 = new CarPosting(65000,"Swift 1.0A Turbo GLX", "Suzuki", 998, date1, 25000, "Hatchback","https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg",u1);
 		CarPosting post2 = new CarPosting(14998,"Edix 2.0A", "Honda", 1998, date2, 155387, "Hatchback","https://i.i-sgcm.com/cars_used/202107/1018213_small.jpg",u1);
-		CarPosting post3 = new CarPosting(52515,"3 HB 1.5A Deluxe", "Mazda	", 1496, date3, 93000, "Hatchback", "https://i.i-sgcm.com/cars_used/202106/1001996_small.jpg",u1);
+		CarPosting post3 = new CarPosting(52515,"3 HB 1.5A Deluxe", "Mazda", 1496, date3, 93000, "Hatchback", "https://i.i-sgcm.com/cars_used/202106/1001996_small.jpg",u1);
 		CarPosting post4 = new CarPosting(240800,"911 Carrera Cabriolet 3.6A PDK", "Porsche", 3614, date4, 102000, "Sports","https://i.i-sgcm.com/cars_used/202107/1013874_small.jpg",u1);
 		CarPosting post5 = new CarPosting(258800,"911 Carrera Cabriolet 3.6A PDK", "Porsche", 3614, date5, 81000, "Sports","https://i.i-sgcm.com/cars_used/202106/1009173_small.jpg",u1);
 		CarPosting post6 = new CarPosting(93800, "Civic Type R 2.0M","Honda", 1998, date6, 50000, "Sports","https://i.i-sgcm.com/cars_used/202108/1021450_small.jpg",u1);
