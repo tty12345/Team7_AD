@@ -21,12 +21,14 @@ public class User {
     private String username;
     private String password;
     
-    @OneToMany(mappedBy = "user")
+    //post owned
+    @OneToMany(mappedBy = "owner")
     private List<CarPosting> postings;
 
-    @OneToOne(mappedBy = "user")
-    private History history;
+    @ManyToMany(mappedBy = "history")
+    private List<CarPosting> history;
 
+    //post liked
     @ManyToMany(mappedBy = "users")
     private List<CarPosting> favourites;
     
@@ -63,11 +65,6 @@ public class User {
         this.username = username;
     }
 
-    public User username(String username) {
-        setUsername(username);
-        return this;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -76,10 +73,6 @@ public class User {
         this.password = password;
     }
 
-    public User password(String password) {
-        setPassword(password);
-        return this;
-    }
 
     public List<CarPosting> getPostings() {
         return postings;
@@ -89,9 +82,12 @@ public class User {
         this.postings = postings;
     }
 
-    public User postings(List<CarPosting> postings) {
-        setPostings(postings);
-        return this;
+    public List<CarPosting> getHistory(){
+        return history;
+    }
+
+    public void setHistory(List<CarPosting> history){
+        this.history = history;
     }
 
 }

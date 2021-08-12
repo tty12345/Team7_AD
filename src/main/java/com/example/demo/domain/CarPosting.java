@@ -34,21 +34,22 @@ public class CarPosting {
     private String photoUrl;
     private int views; 
 
+    //likers
     @ManyToMany
     private List<User> users;
 
     @ManyToOne
     private User owner;
 
-    @OneToOne(mappedBy = "post")
-    private History history;
+    @ManyToMany
+    private List<User> history;
 
     public CarPosting() {
         super();
     }
 
     public CarPosting(int postId, int price, String description, String brand, int engineCapacity, Date registeredDate,
-            int mileage, String category, String photoUrl, int views, List<User> users, User owner, History history) {
+            int mileage, String category, String photoUrl, int views, List<User> users, User owner, List<User> history) {
         this.postId = postId;
         this.price = price;
         this.description = description;
@@ -64,8 +65,17 @@ public class CarPosting {
         this.history = history;
     }
 
-    public CarPosting(int i, String string, String string2, int j, Date date1, int k, String string3, String string4,
-            User u1) {
+    public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage, String category, String photoUrl,
+            User owner) {
+        this.price = price;
+        this.description = description;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.registeredDate = registeredDate;
+        this.mileage = mileage;
+        this.category = category;
+        this.photoUrl = photoUrl;
+        this.owner = owner;
     }
 
     public int getPostId() {
@@ -164,11 +174,11 @@ public class CarPosting {
         this.owner = owner;
     }
 
-    public History getHistory() {
+    public List<User> getHistory() {
         return history;
     }
 
-    public void setHistory(History history) {
+    public void setHistory(List<User> history) {
         this.history = history;
     }
 
