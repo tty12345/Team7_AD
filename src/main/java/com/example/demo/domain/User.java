@@ -26,14 +26,14 @@ public class User {
     @OneToOne(mappedBy = "user")
     private History history;
 
-    @OneToOne(mappedBy = "user")
-    private Favourites favourite;
+    @OneToOne(mappedBy = "users")
+    private List<CarPosting> favourites;
     
     @OneToOne(mappedBy = "user")
     private Preferences preference;
 
     @OneToMany(mappedBy = "user")
-    private List<Notifications> notification;
+    public List<Notifications> notifications;
 
 
     public User(String username, String password, List<CarPosting> postings) {

@@ -1,13 +1,14 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import com.example.demo.domain.CarPosting;
+import com.example.demo.domain.Notifications;
 import com.example.demo.domain.User;
 import com.example.demo.repo.CarPostRepository;
+import com.example.demo.repo.NotificationRepository;
 import com.example.demo.repo.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class postController {
     CarPostRepository cprepo;
 	@Autowired
 	UserRepository urepo;
+	@Autowired
+	NotificationRepository nrepo;
+	
     
 	@GetMapping("/addPost")
 	public String showForm(Model model) {
@@ -46,7 +50,16 @@ public class postController {
     @GetMapping("/deletePost/{id}")
     public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
       CarPosting carpost = cprepo.findCarPostById(id);
-      cprepo.delete(carpost);
+	  List<User> users =carpost.getUsers();
+		
+	  for (User user : users) {
+		Notifications notification =new Notifications();
+		notification.setType("delete");
+		notification.setUser(user);
+		user.notifications.add(notification);
+	  }
+	 
+	  cprepo.delete(carpost);
       return "forward:/post/listPost";
     }
     
@@ -59,16 +72,17 @@ public class postController {
 			return "car_post_form";
 		}
 
-		if(carpost.getUser() == null)
-		{
-			//add code to set user as whoever is logged in 
-			User user = urepo.finduserById(1);
-			List<CarPosting> newpost = new ArrayList<CarPosting>();
-			newpost.add(carpost);
-			user.setPostings(newpost);
-			urepo.save(user);
-			carpost.setUser(user);
-		}
+		// if(carpost.getUsers() == null)
+		// {
+		// 	//add code to set user as whoever is logged in 
+		// 	User user = urepo.finduserById(1);
+		// 	List<CarPosting> newpost = new ArrayList<CarPosting>();
+		// 	newpost.add(carpost);
+		// 	user.setPostings(newpost);
+		// 	urepo.save(user);
+		// 	carpost.getUsers().add(user);
+		// }
+
 		cprepo.save(carpost);
 		return "forward:/post/listPost";
 	}
