@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -26,7 +27,7 @@ public class User {
     @OneToOne(mappedBy = "user")
     private History history;
 
-    @OneToOne(mappedBy = "users")
+    @ManyToMany(mappedBy = "users")
     private List<CarPosting> favourites;
     
     @OneToOne(mappedBy = "user")

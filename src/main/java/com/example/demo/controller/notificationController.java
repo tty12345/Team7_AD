@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class notificationController {
     @Autowired
 	NotificationRepository nrepo;
-    @GetMapping("/showNotification")
-	public String showNotification(Model model) {
-		Notifications notification = new Notifications();
-		model.addAttribute("Notification", notification);
-		return "notification_list";
-	}
+   
     @GetMapping("/listNotification/{id}")
 	public String listNotifications(Model model, @PathVariable("id") Integer id) {
 		model.addAttribute("notifications", nrepo.findByUserId(id));
+		return "list_notifications.html";
+	}
+	@GetMapping("/listNotification")
+	public String listNotifications(Model model) {
+		model.addAttribute("notifications", nrepo.findAll());
 		return "list_notifications.html";
 	}
 
