@@ -10,7 +10,9 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import com.example.demo.domain.CarPosting;
+import com.example.demo.domain.Preferences;
 import com.example.demo.domain.Offer;
+
 import com.example.demo.domain.User;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.OfferRepository;
@@ -129,6 +131,19 @@ public class postController {
 			model.addAttribute("carpost", cprepo.filterAllIgnoreCase(brand,minPrice,maxPrice,description));
 		return "list_car.html";
 	}
+    
+    @GetMapping("/recommended")
+    public String recommendedCars(Model model) {
+    	Preferences pref = urepo.findprefByuserId(1);
+    	List<CarPosting> cars = cprepo.findCarPostByPref(pref.getModel(), pref.getBrand());
+    	model.addAttribute("prefcars", cars);
+    	return "recommended_cars";
+    }
+    
+    @GetMapping("/mostViewed")
+    public String mostViewed() {
+    	return "forward:/post/listPost";
+    }
 
 	@GetMapping("/viewOwnPost")
 	public String viewOwnPost(Model model){

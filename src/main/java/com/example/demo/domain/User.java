@@ -95,4 +95,16 @@ public class User {
         return this;
     }
 
+
+	public Preferences getPreference() {
+		return preference;
+	}
+
+
+	public void setPreference(Preferences preference) {
+		this.preference = preference;
+	}
+    
+    
+
 }

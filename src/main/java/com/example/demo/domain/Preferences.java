@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 public class Preferences {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int preferenceId;
     private String Model;
     private String Brand;
@@ -25,8 +25,18 @@ public class Preferences {
 
     public Preferences() {
     }
+    
+    
+    public Preferences(String model, String brand, User user) {
+		super();
+		Model = model;
+		Brand = brand;
+		this.user = user;
+	}
 
-    public Preferences(int preferenceId, String Model, String Brand, int lowPrice, int hightPrice, String Category, User user) {
+
+
+	public Preferences(int preferenceId, String Model, String Brand, int lowPrice, int hightPrice, String Category, User user) {
         this.preferenceId = preferenceId;
         this.Model = Model;
         this.Brand = Brand;

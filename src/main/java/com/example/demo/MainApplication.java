@@ -7,18 +7,21 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.demo.domain.CarPosting;
+import com.example.demo.domain.Preferences;
 import com.example.demo.domain.User;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.UserRepository;
+import com.example.demo.repo.preferenceRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+
 import org.springframework.context.annotation.Bean;
 
-//pushagain
+
 @SpringBootApplication(exclude= {SecurityAutoConfiguration.class })
 public class MainApplication {
 
@@ -27,6 +30,9 @@ public class MainApplication {
 
 	@Autowired
 	UserRepository urepo;
+	
+	@Autowired
+	preferenceRepo prepo;
 
 	public static void main(String[] args) throws ParseException {
 		SpringApplication.run(MainApplication.class, args);
@@ -39,6 +45,11 @@ public class MainApplication {
 		User u1 = new User();
 		urepo.save(u1);
 				
+		Preferences pref1 = new Preferences("911 Carrera Cabriolet 3.6A PDK", "Porsche", u1);
+		prepo.save(pref1);
+		
+	
+		
 		String sDate1 = "22/11/2018";
 		String sDate2 = "01/05/2008";
 		String sDate3 = "29/01/2016";
@@ -90,3 +101,4 @@ public class MainApplication {
 	}
 
 }
+//pushagain
