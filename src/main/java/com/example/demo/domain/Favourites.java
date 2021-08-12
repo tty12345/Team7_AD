@@ -1,18 +1,18 @@
-package com.example.domain;
+package com.example.demo.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
-//eafeaf
 
 @Entity
-@Table(name = "fravourites")
 public class Favourites {
 
     @Id
-    private Integer Id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int favouriteId;
 
     @OneToOne
     private CarPosting post;
@@ -25,30 +25,17 @@ public class Favourites {
     }
 
 
-    public Favourites(Integer Id, CarPosting post, User user) {
-        this.Id = Id;
+    public Favourites(int favouriteId, CarPosting post, User user) {
+        this.favouriteId = favouriteId;
         this.post = post;
         this.user = user;
-    }
-
-    public Integer getId() {
-        return this.Id;
-    }
-
-    public void setId(Integer Id) {
-        this.Id = Id;
-    }
-
-    public Favourites Id(Integer Id) {
-        setId(Id);
-        return this;
     }
 
     public CarPosting getPost() {
         return this.post;
     }
 
-    public void setPost(CarPosting post) {
+    public void setPost(CarPosting post) {  
         this.post = post;
     }
 
