@@ -130,6 +130,23 @@ public class postController {
 		return "list_car.html";
 	}
 
+	@GetMapping("/viewOwnPost")
+	public String viewOwnPost(Model model){
+		User user = urepo.finduserById(1);
+		List<CarPosting> ownPostings = cprepo.findCarPostByUserId(user.getUserId());
+		model.addAttribute("carpost", ownPostings);
+		return "list_seller.html";
+	}
+
+	@GetMapping("/viewOffer/{id}")
+    public String viewOffer(Model model, @PathVariable("id") Integer id) {
+      List<Offer> offers = orepo.findOffersByCarPostId(id);
+	  model.addAttribute("carpost", cprepo.findCarPostById(id));
+      model.addAttribute("offers", offers);
+      return "offerDetails";
+    }
+
+
 	@GetMapping("/offer/{id}")
     public String offer(Model model, @PathVariable("id") Integer id) {
       CarPosting carpost = cprepo.findCarPostById(id);
@@ -145,29 +162,27 @@ public class postController {
 		return "redirect:/post/listPost";
     }
 
+	// @GetMapping("/populate")
+	// public String populateData(){
+
+	// 	try {
+    //         BufferedReader bufferedReader = new BufferedReader(
+    //                 new FileReader("demo/src/main/resources/static/cars.csv"));
+
+	// 				String input;
+	// 				int count = 0;
+	// 				while((input = bufferedReader.readLine()) != null)
+	// 				{
+	// 					count++;
+	// 				}
+	// 		bufferedReader.close();
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
 
 
-	@GetMapping("/populate")
-	public String populateData(){
-
-		try {
-            BufferedReader bufferedReader = new BufferedReader(
-                    new FileReader("demo/src/main/resources/static/cars.csv"));
-
-					String input;
-					int count = 0;
-					while((input = bufferedReader.readLine()) != null)
-					{
-						count++;
-					}
-			bufferedReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-		return "forward:/post/listPost";
-	}
+	// 	return "forward:/post/listPost";
+	// }
 
 	
 }

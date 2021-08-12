@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Car Posts</title>
+<title>Your Car Posts</title>
 </head>
 <body>
 <header>Your Car Posts </header>
@@ -30,7 +30,7 @@
 			<td th:text=${carpost.mileage}>mileage</td>
 			<td th:text=${carpost.category}>category</td>
 			<td ><img th:src="${carpost.photoUrl}"/></td>
-			<td><a th:href="@{/post/editPost/}+${carpost.postId}" th:text="View Offers"> View Offers </a></td>
+			<td><a th:href="@{/post/viewOffer/}+${carpost.postId}"> View Offers </a></td>
 		</tr>
 	</table>
 	
