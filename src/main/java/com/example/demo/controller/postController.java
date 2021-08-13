@@ -154,7 +154,7 @@ public class postController {
     	Preferences pref = urepo.findprefByuserId(1);
     	List<CarPosting> cars = cprepo.findCarPostByPref(pref.getModel(), pref.getBrand());
     	model.addAttribute("prefcars", cars);
-    	return "recommended_cars";
+    	return "forward:/post/listPost";
     }
     
     @GetMapping("/mostViewed")
