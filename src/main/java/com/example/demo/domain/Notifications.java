@@ -28,6 +28,21 @@ public class Notifications {
         this.user = user;
     }
 
+    
+
+
+
+
+    public Notifications(String type) {
+        this.type = type;
+    }
+
+
+    public Notifications(String type, User user) {
+        this.type = type;
+        this.user = user;
+    }
+
 
     public int getnotificationId() {
         return this.notificationId;

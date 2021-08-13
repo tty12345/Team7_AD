@@ -3,12 +3,16 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import javax.validation.Valid;
 
 import com.example.demo.domain.CarPosting;
+import com.example.demo.domain.Notifications;
+import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.UserRepository;
+import com.example.demo.service.PreferenceService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +31,14 @@ public class postController {
     CarPostRepository cprepo;
 	@Autowired
 	UserRepository urepo;
+	@Autowired
+	private PreferenceService prfservice;
+	@Autowired
+	public void setPreference(PreferenceService prfservice) {
+		this.prfservice=prfservice;
+	}
+	
+
     
 	@GetMapping("/addPost")
 	public String showForm(Model model) {
@@ -68,6 +80,18 @@ public class postController {
 			user.setPostings(newpost);
 			urepo.save(user);
 			carpost.setUser(user);
+			List<Preference> preflist=(ArrayList<Preference>) prfservice.listPref();
+			for (Preference preference : preflist) {
+				if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
+				preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
+				&& preference.getHighestPrice()<=carpost.getPrice()){
+					return "forward:/post/notification";
+				}
+
+				
+			}
+			
+			
 		}
 		cprepo.save(carpost);
 		return "forward:/post/listPost";
@@ -79,4 +103,11 @@ public class postController {
 		model.addAttribute("carpost", cprepo.findAll());
 		return "list_car.html";
 	}
+	@RequestMapping("/notification")
+    public String createNotification(Model model) {
+		Notifications ntf=new Notifications("New Arrival that matches your preference");
+    	model.addAttribute("ntf",ntf);
+    	return "notification.html";
+    }
+
 }

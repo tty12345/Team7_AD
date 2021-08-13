@@ -30,7 +30,7 @@ public class User {
     private Favourites favourite;
     
     @OneToOne(mappedBy = "user")
-    private Preferences preference;
+    private Preference preference;
 
     @OneToMany(mappedBy = "user")
     private List<Notifications> notification;
@@ -41,6 +41,33 @@ public class User {
         this.password = password;
         this.postings = postings;
     }
+
+    
+
+
+    public User(int userId, String username, String password, List<CarPosting> postings, History history,
+            Favourites favourite, Preference preference, List<Notifications> notification) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.postings = postings;
+        this.history = history;
+        this.favourite = favourite;
+        this.preference = preference;
+        this.notification = notification;
+    }
+    
+
+
+
+
+
+    public User(String username, Preference preference) {
+        this.username = username;
+        this.preference = preference;
+    }
+
+
 
 
     public User() {
@@ -92,5 +119,19 @@ public class User {
         setPostings(postings);
         return this;
     }
+
+
+    public Preference getPreference() {
+        return preference;
+    }
+
+
+    public void setPreference(Preference preference) {
+        this.preference = preference;
+    }
+
+    
+
+
 
 }
