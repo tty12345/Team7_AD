@@ -1,6 +1,5 @@
 package com.example.demo.domain;
 
-
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,7 +10,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-
 @Entity
 public class User {
 
@@ -20,18 +18,18 @@ public class User {
     private int userId;
     private String username;
     private String password;
-    
-    //post owned
+
+    // post owned
     @OneToMany(mappedBy = "owner")
     private List<CarPosting> postings;
 
     @ManyToMany(mappedBy = "history")
     private List<CarPosting> history;
 
-    //post liked
+    // post liked
     @ManyToMany(mappedBy = "users")
     private List<CarPosting> favourites;
-    
+
     @OneToOne(mappedBy = "user")
     private Preferences preference;
 
@@ -47,17 +45,21 @@ public class User {
         this.postings = postings;
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public User() {
     }
 
     public int getUserId() {
-		return userId;
-	}
-	public void setUserId(int id) {
-		this.userId = id;
-	}
+        return userId;
+    }
 
+    public void setUserId(int id) {
+        this.userId = id;
+    }
 
     public String getUsername() {
         return username;
@@ -75,7 +77,6 @@ public class User {
         this.password = password;
     }
 
-
     public List<CarPosting> getPostings() {
         return postings;
     }
@@ -84,24 +85,44 @@ public class User {
         this.postings = postings;
     }
 
-    public List<CarPosting> getHistory(){
+    public List<CarPosting> getHistory() {
         return history;
     }
 
-    public void setHistory(List<CarPosting> history){
+    public void setHistory(List<CarPosting> history) {
         this.history = history;
     }
 
+    public Preferences getPreference() {
+        return preference;
+    }
 
-	public Preferences getPreference() {
-		return preference;
-	}
+    public void setPreference(Preferences preference) {
+        this.preference = preference;
+    }
 
+    public List<CarPosting> getFavourites() {
+        return favourites;
+    }
 
-	public void setPreference(Preferences preference) {
-		this.preference = preference;
-	}
-    
-    
+    public void setFavourites(List<CarPosting> favourites) {
+        this.favourites = favourites;
+    }
+
+    public List<Notifications> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notifications> notifications) {
+        this.notifications = notifications;
+    }
+
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
+    }
 
 }

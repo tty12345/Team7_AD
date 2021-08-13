@@ -11,16 +11,13 @@ public class Notifications {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int notificationId;
+    public int notificationId;
     private String type;
     private String Msg;
-   
-
 
     public String getMsg() {
         return Msg;
     }
-
 
     public void setMsg(String msg) {
         Msg = msg;
@@ -28,19 +25,22 @@ public class Notifications {
 
     @ManyToOne
     private User user;
-    
 
     public Notifications() {
     }
 
+    public Notifications(String type, User user, String msg) {
+        this.type = type;
+        this.user = user;
+        this.Msg = msg;
+    }
 
     public Notifications(int notificationId, String type, User user, String msg) {
         this.notificationId = notificationId;
         this.type = type;
         this.user = user;
-        this.Msg=msg;
+        this.Msg = msg;
     }
-
 
     public int getnotificationId() {
         return this.notificationId;
@@ -48,11 +48,6 @@ public class Notifications {
 
     public void setnotificationId(int notificationId) {
         this.notificationId = notificationId;
-    }
-
-    public Notifications Id(int Id) {
-        setnotificationId(Id);
-        return this;
     }
 
     public String getType() {
@@ -80,6 +75,5 @@ public class Notifications {
         setUser(user);
         return this;
     }
-
 
 }

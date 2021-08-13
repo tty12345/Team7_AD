@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.Notification;
 import javax.validation.Valid;
 
 import com.example.demo.domain.CarPosting;
@@ -37,78 +38,78 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/post")
 public class postController {
 
-    @Autowired
-    CarPostRepository cprepo;
+	@Autowired
+	CarPostRepository cprepo;
 	@Autowired
 	UserRepository urepo;
 	@Autowired
 	OfferRepository orepo;
 	@Autowired
 	NotificationRepository nrepo;
-	
-    
+
 	@GetMapping("/addPost")
 	public String showForm(Model model) {
 		CarPosting carpost = new CarPosting();
 		model.addAttribute("carpost", carpost);
 		return "car_post_form";
 	}
-	
-	//Edit car post's detail
+
+	// Edit car post's detail
 	@GetMapping("/editPost/{id}")
-	  public String editCarPost(Model model, @PathVariable("id") Integer id) {
+	public String editCarPost(Model model, @PathVariable("id") Integer id) {
 		CarPosting carpost = cprepo.findCarPostById(id);
 		model.addAttribute("carpost", carpost);
 		return "car_post_form";
 	}
-    
-    @GetMapping("/deletePost/{id}")
-    public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
-      CarPosting carpost = cprepo.findCarPostById(id);
-	  List<User> users =carpost.getUsers();
-		
-	  for (User user : users) {
-		Notifications notification =new Notifications();
-		notification.setType("delete");
-		notification.setUser(user);
-		user.notifications.add(notification);
-	  }
-	 
-	  cprepo.delete(carpost);
-      return "forward:/post/listPost";
-    }
-    
-     
-	//Save car's details after editing
+
+	@GetMapping("/deletePost/{id}")
+	public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
+		CarPosting carpost = cprepo.findCarPostById(id);
+		List<User> users = carpost.getUsers();
+
+		for (User user : users) {
+			Notifications notification = new Notifications();
+			notification.setType("delete");
+			notification.setUser(user);
+			user.notifications.add(notification);
+		}
+
+		cprepo.delete(carpost);
+		return "forward:/post/listPost";
+	}
+
+	// Save car's details after editing
 	@GetMapping("/savePost")
-	public String saveCarPost(@ModelAttribute("carpost") @Valid CarPosting carpost, BindingResult bindingResult, Model model) {
-		
+	public String saveCarPost(@ModelAttribute("carpost") @Valid CarPosting carpost, BindingResult bindingResult,
+			Model model) {
+
 		if (bindingResult.hasErrors()) {
 			return "car_post_form";
 		}
 
 		// if(carpost.getUsers() == null)
 		// {
-		// 	//add code to set user as whoever is logged in 
-		// 	User user = urepo.finduserById(1);
-		// 	List<CarPosting> newpost = new ArrayList<CarPosting>();
-		// 	newpost.add(carpost);
-		// 	user.setPostings(newpost);
-		// 	urepo.save(user);
-		// 	carpost.getUsers().add(user);
+		// //add code to set user as whoever is logged in
+		// User user = urepo.finduserById(1);
+		// List<CarPosting> newpost = new ArrayList<CarPosting>();
+		// newpost.add(carpost);
+		// user.setPostings(newpost);
+		// urepo.save(user);
+		// carpost.getUsers().add(user);
 		// }
 
 		cprepo.save(carpost);
 		return "forward:/post/listPost";
 	}
 
-    //show all cars
-    @RequestMapping("/listPost")
-	public String listCarPost(Model model, @RequestParam Map<String,String> allParams) {
-		
+	// show all cars
+	@RequestMapping("/listPost")
+	public String listCarPost(Model model, @RequestParam Map<String, String> allParams) {
+
 		// on first run, value = to null
-		// if serach without any value, the value will be = to "". So during first search, set to ""
-		//set brand
+		// if serach without any value, the value will be = to "". So during first
+		// search, set to ""
+		// set brand
 		String brand = allParams.get("brand");
 		if (brand == "")
 			brand = null;
@@ -116,24 +117,21 @@ public class postController {
 		if (description == "")
 			description = null;
 
-		//set price range
+		// set price range
 		String priceLabel = allParams.get("price");
 		int minPrice = 0;
 		int maxPrice = 99999999;
-		if(priceLabel != null && priceLabel != ""){
-			if(priceLabel.contains("0")){
+		if (priceLabel != null && priceLabel != "") {
+			if (priceLabel.contains("0")) {
 				minPrice = 0;
 				maxPrice = 50000;
-			}
-			else if (priceLabel.contains("1")){
+			} else if (priceLabel.contains("1")) {
 				minPrice = 50001;
 				maxPrice = 100000;
-			}
-			else if (priceLabel.contains("2")){
+			} else if (priceLabel.contains("2")) {
 				minPrice = 100001;
 				maxPrice = 150000;
-			}
-			else if (priceLabel.contains("3")){
+			} else if (priceLabel.contains("3")) {
 				minPrice = 150001;
 				maxPrice = 99999999;
 			}
@@ -141,29 +139,29 @@ public class postController {
 
 		// depending on which field is entered, do the corresponding query
 		// if all null, display all
-		if(brand == null && maxPrice == 0 && description == null)
+		if (brand == null && maxPrice == 0 && description == null)
 			model.addAttribute("carpost", cprepo.findAll());
-		
+
 		else
-			model.addAttribute("carpost", cprepo.filterAllIgnoreCase(brand,minPrice,maxPrice,description));
+			model.addAttribute("carpost", cprepo.filterAllIgnoreCase(brand, minPrice, maxPrice, description));
 		return "list_car.html";
 	}
-    
-    @GetMapping("/recommended")
-    public String recommendedCars(Model model) {
-    	Preferences pref = urepo.findprefByuserId(1);
-    	List<CarPosting> cars = cprepo.findCarPostByPref(pref.getModel(), pref.getBrand());
-    	model.addAttribute("prefcars", cars);
-    	return "recommended_cars";
-    }
-    
-    @GetMapping("/mostViewed")
-    public String mostViewed() {
-    	return "forward:/post/listPost";
-    }
+
+	@GetMapping("/recommended")
+	public String recommendedCars(Model model) {
+		Preferences pref = urepo.findprefByuserId(1);
+		List<CarPosting> cars = cprepo.findCarPostByPref(pref.getModel(), pref.getBrand());
+		model.addAttribute("prefcars", cars);
+		return "recommended_cars";
+	}
+
+	@GetMapping("/mostViewed")
+	public String mostViewed() {
+		return "forward:/post/listPost";
+	}
 
 	@GetMapping("/viewOwnPost")
-	public String viewOwnPost(Model model){
+	public String viewOwnPost(Model model) {
 		User user = urepo.finduserById(1);
 		List<CarPosting> ownPostings = cprepo.findCarPostByUserId(user.getUserId());
 		model.addAttribute("carpost", ownPostings);
@@ -171,50 +169,57 @@ public class postController {
 	}
 
 	@GetMapping("/viewOffer/{id}")
-    public String viewOffer(Model model, @PathVariable("id") Integer id) {
-      List<Offer> offers = orepo.findOffersByCarPostId(id);
-	  model.addAttribute("carpost", cprepo.findCarPostById(id));
-      model.addAttribute("offers", offers);
-      return "offerDetails";
-    }
-
+	public String viewOffer(Model model, @PathVariable("id") Integer id) {
+		List<Offer> offers = orepo.findOffersByCarPostId(id);
+		model.addAttribute("carpost", cprepo.findCarPostById(id));
+		model.addAttribute("offers", offers);
+		return "offerDetails";
+	}
 
 	@GetMapping("/offer/{id}")
-    public String offer(Model model, @PathVariable("id") Integer id) {
-      CarPosting carpost = cprepo.findCarPostById(id);
-      model.addAttribute("carpost", carpost);
-      return "detailsPage";
-    }
+	public String offer(Model model, @PathVariable("id") Integer id) {
+		CarPosting carpost = cprepo.findCarPostById(id);
+		model.addAttribute("carpost", carpost);
+		return "detailsPage";
+	}
 
 	@PostMapping("/saveOffer/{id}")
-    public String leaveOffer(@PathVariable("id") Integer id, @RequestParam("offer") Integer offer) {
-		
-		Offer newOffer = new Offer(offer, urepo.finduserById(1), cprepo.findCarPostById(id));
+	public String leaveOffer(@PathVariable("id") Integer id, @RequestParam("offer") Integer offer) {
+		User user1 = urepo.finduserById(1);
+		CarPosting carposting1 = cprepo.findCarPostById(id);
+
+		Offer newOffer = new Offer(offer, user1, carposting1);
 		orepo.save(newOffer);
+
+		Notifications notification1 = new Notifications("New Offer", user1, "An offer of " + "$" + newOffer.getOffer()
+				+ " has been made for your post " + carposting1.getPostId() + "!");
+		nrepo.save(notification1);
+
+		user1.getNotifications().add(notification1);
+		urepo.save(user1);
+
 		return "redirect:/post/listPost";
-    }
+	}
 
 	// @GetMapping("/populate")
 	// public String populateData(){
 
-	// 	try {
-    //         BufferedReader bufferedReader = new BufferedReader(
-    //                 new FileReader("demo/src/main/resources/static/cars.csv"));
+	// try {
+	// BufferedReader bufferedReader = new BufferedReader(
+	// new FileReader("demo/src/main/resources/static/cars.csv"));
 
-	// 				String input;
-	// 				int count = 0;
-	// 				while((input = bufferedReader.readLine()) != null)
-	// 				{
-	// 					count++;
-	// 				}
-	// 		bufferedReader.close();
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-
-
-	// 	return "forward:/post/listPost";
+	// String input;
+	// int count = 0;
+	// while((input = bufferedReader.readLine()) != null)
+	// {
+	// count++;
+	// }
+	// bufferedReader.close();
+	// } catch (IOException e) {
+	// e.printStackTrace();
 	// }
 
-	
+	// return "forward:/post/listPost";
+	// }
+
 }

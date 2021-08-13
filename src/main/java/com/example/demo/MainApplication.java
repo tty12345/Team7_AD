@@ -7,9 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.demo.domain.CarPosting;
+import com.example.demo.domain.Notifications;
+import com.example.demo.domain.Offer;
 import com.example.demo.domain.Preferences;
 import com.example.demo.domain.User;
 import com.example.demo.repo.CarPostRepository;
+import com.example.demo.repo.NotificationRepository;
+import com.example.demo.repo.OfferRepository;
 import com.example.demo.repo.UserRepository;
 import com.example.demo.repo.preferenceRepo;
 
@@ -21,8 +25,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 
 import org.springframework.context.annotation.Bean;
 
-
-@SpringBootApplication(exclude= {SecurityAutoConfiguration.class })
+@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class MainApplication {
 
 	@Autowired
@@ -30,9 +33,15 @@ public class MainApplication {
 
 	@Autowired
 	UserRepository urepo;
-	
+
 	@Autowired
 	preferenceRepo prepo;
+
+	@Autowired
+	OfferRepository orepo;
+
+	@Autowired
+	NotificationRepository nrepo;
 
 	public static void main(String[] args) throws ParseException {
 		SpringApplication.run(MainApplication.class, args);
@@ -42,8 +51,10 @@ public class MainApplication {
 	CommandLineRunner runner() {
 		return args -> {
 
-			User u1 = new User();
+			User u1 = new User("tin", "tin");
+			User u2 = new User("cherwah", "cherwah");
 			urepo.save(u1);
+			urepo.save(u2);
 
 			Preferences pref1 = new Preferences("911 Carrera Cabriolet 3.6A PDK", "Porsche", u1);
 			prepo.save(pref1);
@@ -103,6 +114,29 @@ public class MainApplication {
 			u1.setPostings(cpl1);
 			urepo.save(u1);
 
+			// CarPosting carposting1 = cpRepo.findCarPostById(2);
+
+			// Offer newOffer1 = new Offer(50000, u1, carposting1);
+			// Offer newOffer2 = new Offer(40000, u2, carposting1);
+			// orepo.save(newOffer1);
+			// orepo.save(newOffer2);
+
+			// Notifications notification1 = new Notifications("New Offer", u1, "An offer of
+			// " + "$" + newOffer1.getOffer()
+			// + " has been made for your post " + carposting1.getPostId() + "!");
+			// Notifications notification2 = new Notifications("New Offer", u2, "An offer of
+			// " + "$" + newOffer2.getOffer()
+			// + " has been made for your post " + carposting1.getPostId() + "!");
+			// nrepo.save(notification1);
+			// nrepo.save(notification2);
+
+			// u1.getNotifications().add(notification1);
+			// u2.getNotifications().add(notification2);
+			// urepo.save(u1);
+			// urepo.save(u2);
+
+			// List<Notifications> testlist = nrepo.findByUserId(1);
+			// System.out.println(testlist);
 		};
 	}
 
