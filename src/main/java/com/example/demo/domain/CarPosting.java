@@ -40,7 +40,7 @@ public class CarPosting {
 
     @ManyToOne
     private User owner;
-
+    //123
     @ManyToMany
     private List<User> history;
 
