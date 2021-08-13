@@ -113,30 +113,6 @@ public class MainApplication {
 
 			u1.setPostings(cpl1);
 			urepo.save(u1);
-
-			// CarPosting carposting1 = cpRepo.findCarPostById(2);
-
-			// Offer newOffer1 = new Offer(50000, u1, carposting1);
-			// Offer newOffer2 = new Offer(40000, u2, carposting1);
-			// orepo.save(newOffer1);
-			// orepo.save(newOffer2);
-
-			// Notifications notification1 = new Notifications("New Offer", u1, "An offer of
-			// " + "$" + newOffer1.getOffer()
-			// + " has been made for your post " + carposting1.getPostId() + "!");
-			// Notifications notification2 = new Notifications("New Offer", u2, "An offer of
-			// " + "$" + newOffer2.getOffer()
-			// + " has been made for your post " + carposting1.getPostId() + "!");
-			// nrepo.save(notification1);
-			// nrepo.save(notification2);
-
-			// u1.getNotifications().add(notification1);
-			// u2.getNotifications().add(notification2);
-			// urepo.save(u1);
-			// urepo.save(u2);
-
-			// List<Notifications> testlist = nrepo.findByUserId(1);
-			// System.out.println(testlist);
 		};
 	}
 
