@@ -87,16 +87,17 @@ public class postController {
 			return "car_post_form";
 		}
 
-		// if(carpost.getUsers() == null)
-		// {
-		// 	//add code to set user as whoever is logged in 
-		// 	User user = urepo.finduserById(1);
-		// 	List<CarPosting> newpost = new ArrayList<CarPosting>();
-		// 	newpost.add(carpost);
-		// 	user.setPostings(newpost);
-		// 	urepo.save(user);
-		// 	carpost.getUsers().add(user);
-		// }
+		//checks if this is a new post
+		if(carpost.getUsers() == null)
+		{
+			//add code to set user as whoever is logged in 
+			User user = urepo.finduserById(1);
+			List<CarPosting> newpost = new ArrayList<CarPosting>();
+			newpost.add(carpost);
+			user.setPostings(newpost);
+			urepo.save(user);
+			carpost.getUsers().add(user);
+		}
 
 		cprepo.save(carpost);
 		return "forward:/post/listPost";
