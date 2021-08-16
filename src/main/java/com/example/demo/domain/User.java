@@ -31,7 +31,7 @@ public class User {
     private List<CarPosting> favourites;
 
     @OneToOne(mappedBy = "user")
-    private Preferences preference;
+    private Preference preference;
 
     @OneToMany(mappedBy = "user")
     public List<Notifications> notifications;
@@ -49,6 +49,15 @@ public class User {
         this.username = username;
         this.password = password;
     }
+    
+
+    public User(String username, Preference preference) {
+        this.username = username;
+        this.preference = preference;
+    }
+
+
+
 
     public User(String username, String password, UserType role, List<CarPosting> postings, List<CarPosting> history,
 			List<CarPosting> favourites, Preferences preference, List<Notifications> notifications,
@@ -123,13 +132,6 @@ public class User {
         this.history = history;
     }
 
-    public Preferences getPreference() {
-        return preference;
-    }
-
-    public void setPreference(Preferences preference) {
-        this.preference = preference;
-    }
 
     public List<CarPosting> getFavourites() {
         return favourites;
@@ -154,5 +156,19 @@ public class User {
     public void setOffers(List<Offer> offers) {
         this.offers = offers;
     }
+
+
+    public Preference getPreference() {
+        return preference;
+    }
+
+
+    public void setPreference(Preference preference) {
+        this.preference = preference;
+    }
+
+    
+
+
 
 }
