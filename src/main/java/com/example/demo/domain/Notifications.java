@@ -42,8 +42,6 @@ public class Notifications {
         this.Msg = msg;
     }
 
-<<<<<<< HEAD
-=======
     
 
 
@@ -60,7 +58,6 @@ public class Notifications {
     }
 
 
->>>>>>> vidya
     public int getnotificationId() {
         return this.notificationId;
     }
