@@ -1,27 +1,22 @@
 package com.example.demo.controller;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.management.Notification;
 import javax.validation.Valid;
 
 import com.example.demo.domain.CarPosting;
-import com.example.demo.domain.Preferences;
-import com.example.demo.domain.Offer;
-
-import com.example.demo.domain.User;
-import com.example.demo.repo.CarPostRepository;
-import com.example.demo.repo.OfferRepository;
 import com.example.demo.domain.Notifications;
+import com.example.demo.domain.Offer;
+import com.example.demo.domain.Preference;
+import com.example.demo.domain.Preferences;
 import com.example.demo.domain.User;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.NotificationRepository;
+import com.example.demo.repo.OfferRepository;
 import com.example.demo.repo.UserRepository;
+import com.example.demo.service.PreferenceService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,6 +42,14 @@ public class postController {
 	@Autowired
 	NotificationRepository nrepo;
 
+	private PreferenceService prfservice;
+	@Autowired
+	public void setPreference(PreferenceService prfservice) {
+		this.prfservice=prfservice;
+	}
+	
+
+    
 	@GetMapping("/addPost")
 	public String showForm(Model model) {
 		CarPosting carpost = new CarPosting();
@@ -96,6 +99,19 @@ public class postController {
 			user.setPostings(newpost);
 			urepo.save(user);
 			carpost.getUsers().add(user);
+			carpost.setUser(user);
+			List<Preference> preflist=(ArrayList<Preference>) prfservice.listPref();
+			for (Preference preference : preflist) {
+				if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
+				preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
+				&& preference.getHighestPrice()<=carpost.getPrice()){
+					return "forward:/post/notification";
+				}
+
+				
+			}
+			
+			
 		}
 
 		cprepo.save(carpost);
@@ -221,5 +237,11 @@ public class postController {
 
 	// return "forward:/post/listPost";
 	// }
+	@RequestMapping("/notification")
+    public String createNotification(Model model) {
+		Notifications ntf=new Notifications("New Arrival that matches your preference");
+    	model.addAttribute("ntf",ntf);
+    	return "notification.html";
+    }
 
 }
