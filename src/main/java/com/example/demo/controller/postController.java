@@ -77,6 +77,7 @@ public class postController {
 			user.notifications.add(notification);
 		}
 
+		carpost.setOwner(null);
 		cprepo.delete(carpost);
 		return "forward:/post/listPost";
 	}
