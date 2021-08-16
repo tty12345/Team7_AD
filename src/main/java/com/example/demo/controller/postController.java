@@ -99,7 +99,7 @@ public class postController {
 			user.setPostings(newpost);
 			urepo.save(user);
 			carpost.getUsers().add(user);
-			carpost.setUser(user);
+			carpost.setOwner(user);
 			List<Preference> preflist=(ArrayList<Preference>) prfservice.listPref();
 			for (Preference preference : preflist) {
 				if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
