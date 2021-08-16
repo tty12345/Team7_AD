@@ -33,15 +33,22 @@
 </style>
 </head>
 <body>
-	<header>Car Posts </header>
+	<header >Welcome <span th:text=${name}></span> !</header>
 	<div class="dropdown">
 	  <button>Browse by:</button>
 	  <div class="dropdown-content">
-		  <a th:href="@{/post/recommended}">Recommended</a>
+		  <a th:href="@{/post/recommended}">Preferences</a>
 		  <a th:href="@{/post/mostViewed}">Most viewed</a>
 	  </div>
 	</div>
 
+	<br>
+	<span th:if="${session.seller == null and session.buyer == null}">
+		<a th:href="@{/login}">LOG IN</a>
+	</span>
+	<span th:unless="${session.seller == null and session.buyer == null}">
+		<a th:href="@{/logout}">LOG OUT</a>
+	</span>
 
 	<form action="" th:action="@{/post/listPost}" method="GET">
 		<table>

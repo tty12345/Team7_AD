@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Sign up</title>
+</head>
+<body>
+	 <form th:action="@{/signup}" th:object="${user}" method="POST">
+        <table id="">
+            <tr>
+                <td>Username:</td>
+                <td><input class="" type="text" th:field="*{username}"></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input class="" type="password" th:field="*{password}"></td>
+            </tr>
+            <tr>
+            	<td></td>
+                <td><input class="" type="radio" th:field="*{role}" th:value=${T(com.example.demo.domain.UserType).BUYER}> Buy a car<br>
+                <input class="" type="radio" th:field="*{role}" th:value=${T(com.example.demo.domain.UserType).SELLER}> Sell a car</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="" >Submit</button>
+                </td>
+            </tr>
+         </table>
+	 </form>
+	 
+</body>
+</html>
