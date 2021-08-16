@@ -60,7 +60,7 @@ public class User {
 
 
     public User(String username, String password, UserType role, List<CarPosting> postings, List<CarPosting> history,
-			List<CarPosting> favourites, Preferences preference, List<Notifications> notifications,
+			List<CarPosting> favourites, Preference preference, List<Notifications> notifications,
 			List<Offer> offers) {
 		super();
 		this.username = username;
