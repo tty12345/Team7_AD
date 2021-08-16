@@ -18,7 +18,7 @@ public class User {
     private int userId;
     private String username;
     private String password;
-
+    private UserType role;
     // post owned
     @OneToMany(mappedBy = "owner")
     private List<CarPosting> postings;
@@ -59,10 +59,40 @@ public class User {
 
 
 
-    public User() {
+    public User(String username, String password, UserType role, List<CarPosting> postings, List<CarPosting> history,
+			List<CarPosting> favourites, Preference preference, List<Notifications> notifications,
+			List<Offer> offers) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.postings = postings;
+		this.history = history;
+		this.favourites = favourites;
+		this.preference = preference;
+		this.notifications = notifications;
+		this.offers = offers;
+	}
+
+	public User(String username, String password, UserType role) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.role = role;
+	}
+
+	public User() {
     }
 
-    public int getUserId() {
+    public UserType getRole() {
+		return role;
+	}
+
+	public void setRole(UserType role) {
+		this.role = role;
+	}
+
+	public int getUserId() {
         return userId;
     }
 

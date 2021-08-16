@@ -161,6 +161,7 @@ public class postController {
 
 		else
 			model.addAttribute("carpost", cprepo.filterAllIgnoreCase(brand, minPrice, maxPrice, description));
+		
 		return "list_car.html";
 	}
 

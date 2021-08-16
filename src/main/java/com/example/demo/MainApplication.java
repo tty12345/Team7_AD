@@ -11,6 +11,7 @@ import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Offer;
 import com.example.demo.domain.Preferences;
 import com.example.demo.domain.User;
+import com.example.demo.domain.UserType;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.NotificationRepository;
 import com.example.demo.repo.OfferRepository;
@@ -24,6 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class MainApplication {
@@ -52,8 +54,11 @@ public class MainApplication {
 	CommandLineRunner runner() {
 		return args -> {
 
-			User u1 = new User("tin", "tin");
-			User u2 = new User("cherwah", "cherwah");
+			SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
+			String Pass = sCryptPasswordEncoder.encode("tin");
+			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
+			User u1 = new User("tin",Pass, UserType.BUYER);
+			User u2 = new User("cherwah",Pass1, UserType.SELLER);
 			urepo.save(u1);
 			urepo.save(u2);
 
