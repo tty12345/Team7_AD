@@ -25,5 +25,6 @@ public interface CarPostRepository extends JpaRepository<CarPosting, Integer> {
     @Query("SELECT cp FROM CarPosting cp WHERE cp.owner.userId = :id")
     public List<CarPosting> findCarPostByUserId(@Param("id")int id);
 
-//	@Query("SELECT cp FROM CarPosting cp WHERE cp.car_view.count")
+	@Query("SELECT cp FROM CarPosting cp WHERE cp.views > 2")
+	public List<CarPosting> findMostViewedCars();
 }

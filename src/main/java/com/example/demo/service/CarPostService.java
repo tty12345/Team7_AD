@@ -13,5 +13,5 @@ public interface CarPostService {
     public List<CarPosting> filterAllIgnoreCase(String brand, int minPrice, int maxPrice, String description);
     public List<CarPosting> findCarPostByPref(String model, String brand);
     public List<CarPosting> findCarPostByUserId(int userId);
-
+    public List<CarPosting> findMostViewedCars();
 }

@@ -157,7 +157,7 @@ public class postController {
 		else
 			model.addAttribute("carpost", cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description));
 		
-		return "list_car.html";
+		return "list_car";
 	}
 
 	@GetMapping("/recommended")
@@ -169,8 +169,10 @@ public class postController {
 	}
 
 	@GetMapping("/mostViewed")
-	public String mostViewed() {
-		return "forward:/post/listPost";
+	public String mostViewed(Model model) {
+		List<CarPosting> mostviewed = cpservice.findMostViewedCars();
+		model.addAttribute("carpost", mostviewed);
+		return "list_car";
 	}
 
 	@GetMapping("/viewOwnPost")
@@ -178,7 +180,7 @@ public class postController {
 		User user = uservice.finduserById(1);
 		List<CarPosting> ownPostings = cpservice.findCarPostByUserId(user.getUserId());
 		model.addAttribute("carpost", ownPostings);
-		return "list_seller.html";
+		return "list_seller";
 	}
 
 	@GetMapping("/viewOffer/{id}")
@@ -193,7 +195,10 @@ public class postController {
 	public String offer(Model model, @PathVariable("id") Integer id) {
 		CarPosting carpost = cpservice.findCarPostById(id);
 		model.addAttribute("carpost", carpost);
-	
+		
+		//increment number of views for a car
+		carpost.setViews(carpost.getViews() + 1);
+		cpservice.save(carpost);
 		return "detailsPage";
 	}
 	
@@ -239,7 +244,7 @@ public class postController {
     public String createNotification(Model model) {
 		Notifications ntf=new Notifications("New Arrival that matches your preference");
     	model.addAttribute("ntf",ntf);
-    	return "notification.html";
+    	return "notification";
     }
 
 }
