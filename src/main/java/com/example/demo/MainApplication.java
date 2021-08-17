@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.demo.domain.CarPosting;
-import com.example.demo.domain.Notifications;
-import com.example.demo.domain.Offer;
 import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
 import com.example.demo.domain.UserType;
@@ -23,7 +21,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
