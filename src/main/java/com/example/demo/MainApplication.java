@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,19 +17,12 @@ import com.example.demo.repo.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
-<<<<<<< HEAD
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-=======
-// Warren
-
-@SpringBootApplication
->>>>>>> Warren
 public class MainApplication {
 
 	@Autowired
@@ -47,12 +39,7 @@ public class MainApplication {
 
 	@Autowired
 	NotificationRepository nrepo;
-
-	public static void main(String[] args) throws ParseException {
-		SpringApplication.run(MainApplication.class, args);
-		//comment1
-	}
-
+	
 	@Bean
 	CommandLineRunner runner() {
 		return args -> {
