@@ -87,6 +87,14 @@ public class Preference {
 		this.engineCapacityMax = engineCapacityMax;
 	}
 
+	
+	public Preference(String model, String brand, User user) {
+		super();
+		this.model = model;
+		this.brand = brand;
+		this.user = user;
+	}
+
 	public int getId() {
 		return id;
 	}
