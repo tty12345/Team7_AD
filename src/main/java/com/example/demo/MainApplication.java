@@ -9,14 +9,14 @@ import java.util.List;
 import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Offer;
-import com.example.demo.domain.Preferences;
+import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
 import com.example.demo.domain.UserType;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.NotificationRepository;
 import com.example.demo.repo.OfferRepository;
+import com.example.demo.repo.PreferenceRepository;
 import com.example.demo.repo.UserRepository;
-import com.example.demo.repo.preferenceRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -37,7 +37,7 @@ public class MainApplication {
 	UserRepository urepo;
 
 	@Autowired
-	preferenceRepo prepo;
+	PreferenceRepository prepo;
 
 	@Autowired
 	OfferRepository orepo;
@@ -62,7 +62,7 @@ public class MainApplication {
 			urepo.save(u1);
 			urepo.save(u2);
 
-			Preferences pref1 = new Preferences("911 Carrera Cabriolet 3.6A PDK", "Porsche", u1);
+			Preference pref1 = new Preference("911 Carrera Cabriolet 3.6A PDK", "Porsche", u1);
 			prepo.save(pref1);
 
 			String sDate1 = "22/11/2018";

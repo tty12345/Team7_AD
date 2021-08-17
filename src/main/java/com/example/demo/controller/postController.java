@@ -10,7 +10,6 @@ import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Offer;
 import com.example.demo.domain.Preference;
-import com.example.demo.domain.Preferences;
 import com.example.demo.domain.User;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.NotificationRepository;
@@ -166,7 +165,7 @@ public class postController {
 
 	@GetMapping("/recommended")
 	public String recommendedCars(Model model) {
-		Preferences pref = urepo.findprefByuserId(1);
+		Preference pref = urepo.findprefByuserId(1);
 		List<CarPosting> cars = cprepo.findCarPostByPref(pref.getModel(), pref.getBrand());
 		model.addAttribute("prefcars", cars);
 		return "recommended_cars";
