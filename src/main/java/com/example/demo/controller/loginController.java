@@ -2,6 +2,10 @@ package com.example.demo.controller;
 
 import javax.servlet.http.HttpSession;
 
+import com.example.demo.domain.User;
+import com.example.demo.domain.UserType;
+import com.example.demo.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -10,15 +14,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.demo.domain.User;
-import com.example.demo.domain.UserType;
-import com.example.demo.repo.UserRepository;
-
 @Controller
 public class loginController {
 		
 	@Autowired
-	UserRepository urepo;
+	UserService uservice;
 		
 	SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 	
@@ -33,7 +33,7 @@ public class loginController {
 	public String authenticate(@ModelAttribute("user")User user, HttpSession session, Model model) {
 		if (authenticateUser(user))
 		{
-			User loggeduser = urepo.findUserByUsername(user.getUsername());
+			User loggeduser = uservice.findUserByUsername(user.getUsername());
 			model.addAttribute("name", loggeduser.getUsername());
 			
 			if(loggeduser.getRole() == UserType.BUYER)
@@ -55,7 +55,7 @@ public class loginController {
 	}
 		
 	public boolean authenticateUser(User user) {
-		User username_object = urepo.findUserByUsername(user.getUsername());
+		User username_object = uservice.findUserByUsername(user.getUsername());
 		if (username_object == null)
 			return false;
 		else 
@@ -73,7 +73,7 @@ public class loginController {
 	public String signup(@ModelAttribute("user")User user, Model model) {
 		String pass = sCryptPasswordEncoder.encode(user.getPassword());
 		user.setPassword(pass);
-		urepo.save(user);
+		uservice.save(user);
 		model.addAttribute("user", user);
 		return "forward:/authenticate";
 	}

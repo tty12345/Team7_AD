@@ -25,6 +25,11 @@ public class PreferenceServiceImplementation implements PreferenceService {
 		
 		return prefrepo.findAll();
 	}
+	
+	@Override
+	public Preference findprefByuserId(int id) {
+		return prefrepo.findprefByuserId(id);
+	}
     
 
 

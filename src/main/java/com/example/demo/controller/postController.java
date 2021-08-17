@@ -11,11 +11,11 @@ import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Offer;
 import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
-import com.example.demo.repo.CarPostRepository;
-import com.example.demo.repo.NotificationRepository;
-import com.example.demo.repo.OfferRepository;
-import com.example.demo.repo.UserRepository;
+import com.example.demo.service.CarPostService;
+import com.example.demo.service.NotificationService;
+import com.example.demo.service.OfferService;
 import com.example.demo.service.PreferenceService;
+import com.example.demo.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,19 +33,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class postController {
 
 	@Autowired
-	CarPostRepository cprepo;
+	CarPostService cpservice;
 	@Autowired
-	UserRepository urepo;
+	UserService uservice;
 	@Autowired
-	OfferRepository orepo;
+	OfferService oservice;
 	@Autowired
-	NotificationRepository nrepo;
-
+	NotificationService nservice;
+	@Autowired
 	private PreferenceService prfservice;
-	@Autowired
-	public void setPreference(PreferenceService prfservice) {
-		this.prfservice=prfservice;
-	}
+
 
     
 	@GetMapping("/addPost")
@@ -58,14 +55,14 @@ public class postController {
 	// Edit car post's detail
 	@GetMapping("/editPost/{id}")
 	public String editCarPost(Model model, @PathVariable("id") Integer id) {
-		CarPosting carpost = cprepo.findCarPostById(id);
+		CarPosting carpost = cpservice.findCarPostById(id);
 		model.addAttribute("carpost", carpost);
 		return "car_post_form";
 	}
 
 	@GetMapping("/deletePost/{id}")
 	public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
-		CarPosting carpost = cprepo.findCarPostById(id);
+		CarPosting carpost = cpservice.findCarPostById(id);
 		List<User> users = carpost.getUsers();
 
 		for (User user : users) {
@@ -75,7 +72,8 @@ public class postController {
 			user.notifications.add(notification);
 		}
 
-		cprepo.delete(carpost);
+		carpost.setOwner(null);
+		cpservice.delete(carpost);
 		return "forward:/post/listPost";
 	}
 
@@ -91,11 +89,11 @@ public class postController {
 		// checks if this is a new post
 		if (carpost.getUsers() == null) {
 			// add code to set user as whoever is logged in
-			User user = urepo.finduserById(1);
+			User user = uservice.finduserById(1);
 			List<CarPosting> newpost = new ArrayList<CarPosting>();
 			newpost.add(carpost);
 			user.setPostings(newpost);
-			urepo.save(user);
+			uservice.save(user);
 			carpost.getUsers().add(user);
 			carpost.setOwner(user);
 			List<Preference> preflist=(ArrayList<Preference>) prfservice.listPref();
@@ -112,7 +110,7 @@ public class postController {
 			
 		}
 
-		cprepo.save(carpost);
+		cpservice.save(carpost);
 		return "forward:/post/listPost";
 	}
 
@@ -154,18 +152,18 @@ public class postController {
 		// depending on which field is entered, do the corresponding query
 		// if all null, display all
 		if (brand == null && maxPrice == 0 && description == null)
-			model.addAttribute("carpost", cprepo.findAll());
+			model.addAttribute("carpost", cpservice.findAll());
 
 		else
-			model.addAttribute("carpost", cprepo.filterAllIgnoreCase(brand, minPrice, maxPrice, description));
+			model.addAttribute("carpost", cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description));
 		
 		return "list_car.html";
 	}
 
 	@GetMapping("/recommended")
 	public String recommendedCars(Model model) {
-		Preference pref = urepo.findprefByuserId(1);
-		List<CarPosting> cars = cprepo.findCarPostByPref(pref.getModel(), pref.getBrand());
+		Preference pref = prfservice.findprefByuserId(1);
+		List<CarPosting> cars = cpservice.findCarPostByPref(pref.getModel(), pref.getBrand());
 		model.addAttribute("prefcars", cars);
 		return "recommended_cars";
 	}
@@ -177,23 +175,23 @@ public class postController {
 
 	@GetMapping("/viewOwnPost")
 	public String viewOwnPost(Model model) {
-		User user = urepo.finduserById(1);
-		List<CarPosting> ownPostings = cprepo.findCarPostByUserId(user.getUserId());
+		User user = uservice.finduserById(1);
+		List<CarPosting> ownPostings = cpservice.findCarPostByUserId(user.getUserId());
 		model.addAttribute("carpost", ownPostings);
 		return "list_seller.html";
 	}
 
 	@GetMapping("/viewOffer/{id}")
 	public String viewOffer(Model model, @PathVariable("id") Integer id) {
-		List<Offer> offers = orepo.findOffersByCarPostId(id);
-		model.addAttribute("carpost", cprepo.findCarPostById(id));
+		List<Offer> offers = oservice.findOffersByCarPostId(id);
+		model.addAttribute("carpost", cpservice.findCarPostById(id));
 		model.addAttribute("offers", offers);
 		return "offerDetails";
 	}
 
 	@GetMapping("/offer/{id}")
 	public String offer(Model model, @PathVariable("id") Integer id) {
-		CarPosting carpost = cprepo.findCarPostById(id);
+		CarPosting carpost = cpservice.findCarPostById(id);
 		model.addAttribute("carpost", carpost);
 	
 		return "detailsPage";
@@ -201,18 +199,18 @@ public class postController {
 	
 	@PostMapping("/saveOffer/{id}")
 	public String leaveOffer(@PathVariable("id") Integer id, @RequestParam("offer") Integer offer) {
-		User user1 = urepo.finduserById(1);
-		CarPosting carposting1 = cprepo.findCarPostById(id);
+		User user1 = uservice.finduserById(1);
+		CarPosting carposting1 = cpservice.findCarPostById(id);
 
 		Offer newOffer = new Offer(offer, user1, carposting1);
-		orepo.save(newOffer);
+		oservice.save(newOffer);
 
 		Notifications notification1 = new Notifications("New Offer", user1, "An offer of " + "$" + newOffer.getOffer()
 				+ " has been made for your post " + carposting1.getPostId() + "!");
-		nrepo.save(notification1);
+		nservice.save(notification1);
 
 		user1.getNotifications().add(notification1);
-		urepo.save(user1);
+		uservice.save(user1);
 
 		return "redirect:/post/listPost";
 	}
