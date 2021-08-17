@@ -194,9 +194,7 @@ public class CarPosting {
         this.offers = offers;
     }
 
-    
-
-    @Override
+	@Override
     public String toString() {
         return "{" +
             " postId='" + getPostId() + "'" +

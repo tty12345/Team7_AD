@@ -46,7 +46,6 @@ public class postController {
 	public void setPreference(PreferenceService prfservice) {
 		this.prfservice=prfservice;
 	}
-	
 
     
 	@GetMapping("/addPost")
@@ -196,9 +195,10 @@ public class postController {
 	public String offer(Model model, @PathVariable("id") Integer id) {
 		CarPosting carpost = cprepo.findCarPostById(id);
 		model.addAttribute("carpost", carpost);
+	
 		return "detailsPage";
 	}
-
+	
 	@PostMapping("/saveOffer/{id}")
 	public String leaveOffer(@PathVariable("id") Integer id, @RequestParam("offer") Integer offer) {
 		User user1 = urepo.finduserById(1);
