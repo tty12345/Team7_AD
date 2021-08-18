@@ -54,8 +54,8 @@ public class MainApplication {
 			SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 			String Pass = sCryptPasswordEncoder.encode("tin");
 			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
-			User u1 = new User("tin",Pass, UserType.BUYER);
-			User u2 = new User("cherwah",Pass1, UserType.SELLER);
+			User u1 = new User("tin",Pass);
+			User u2 = new User("cherwah",Pass1);
 			urepo.save(u1);
 			urepo.save(u2);
 
