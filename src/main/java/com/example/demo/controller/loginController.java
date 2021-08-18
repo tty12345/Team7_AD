@@ -22,6 +22,11 @@ public class loginController {
 		
 	SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 	
+	@RequestMapping("/dash")
+	public String dash(){
+		return "dashboard";
+	}
+
 	@RequestMapping("/login")
 	public String loginForm(Model model) {
 		User u = new User();
