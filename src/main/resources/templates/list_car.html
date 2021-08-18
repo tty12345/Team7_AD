@@ -42,6 +42,8 @@
 	  </div>
 	</div>
 
+<header>Car Posts </header>
+
 	<br>
 	<span th:if="${session.user == null and session.admin == null}">
 		<a th:href="@{/login}">LOG IN</a>
@@ -79,6 +81,11 @@
 	<a th:href="@{/post/addPost/}"> New Post</a></td>
 	<a th:href="@{/post/viewOwnPost/}"> View Your Post</a></td>
 
+<<<<<<< HEAD
+=======
+<a href="addPost.html" th:href="@{/post/addPost/}"> New Post</a></td>
+
+>>>>>>> 479a21d497031f49b0e455fc32aa106e97aaab87
 	<table>
         <tr>
 			<th>Id</th>
