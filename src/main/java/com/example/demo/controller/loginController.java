@@ -36,10 +36,10 @@ public class loginController {
 			User loggeduser = uservice.findUserByUsername(user.getUsername());
 			model.addAttribute("name", loggeduser.getUsername());
 			
-			if(loggeduser.getRole() == UserType.BUYER)
-				session.setAttribute("buyer",loggeduser);
+			if(loggeduser.getRole() == UserType.USER)
+				session.setAttribute("user",loggeduser);
 			else
-				session.setAttribute("seller", loggeduser);
+				session.setAttribute("admin", loggeduser);
 			
 			return "index";
 		}
@@ -49,8 +49,8 @@ public class loginController {
 		
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("buyer");
-		session.removeAttribute("seller");
+		session.removeAttribute("user");
+		session.removeAttribute("admin");
 		return "index";
 	}
 		
