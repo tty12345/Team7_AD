@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.management.Notification;
+
 import com.example.demo.domain.CarPosting;
+import com.example.demo.domain.Notifications;
 import com.example.demo.domain.User;
 import com.example.demo.repo.CarPostRepository;
+import com.example.demo.repo.NotificationRepository;
 import com.example.demo.repo.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,9 @@ public class MainApplication {
 
 	@Autowired
 	UserRepository urepo;
+
+	@Autowired
+	NotificationRepository nrepo;
 
 	public static void main(String[] args) throws ParseException {
 		SpringApplication.run(MainApplication.class, args);
@@ -81,6 +88,11 @@ public class MainApplication {
 			cpRepo.save(post7);
 			cpRepo.save(post8);
 
+			Notifications ntf1=new Notifications("welcome","Welcome to the web!",u1);
+			Notifications ntf2=new Notifications("delete","Your favorite product information has been deleted, please click here for details",u1);
+			nrepo.save(ntf1);
+			nrepo.save(ntf2);
+
 			List<CarPosting> cpl1 = new ArrayList<CarPosting>();
 			cpl1.add(post1);
 			cpl1.add(post2);
@@ -92,6 +104,10 @@ public class MainApplication {
 			cpl1.add(post8);
 
 			u1.setPostings(cpl1);
+			urepo.save(u1);
+			
+			u1.notifications.add(ntf1);
+			u1.notifications.add(ntf2);
 			urepo.save(u1);
 
 		};

@@ -41,6 +41,12 @@ public class Notifications {
         this.Msg=msg;
     }
 
+    public Notifications(String type, String msg, User user) {
+        this.type = type;
+        this.Msg = msg;
+        this.user = user;
+    }
+
 
     public int getnotificationId() {
         return this.notificationId;

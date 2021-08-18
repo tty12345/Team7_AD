@@ -28,5 +28,12 @@ public class notificationController {
 		model.addAttribute("notifications", nrepo.findAll());
 		return "list_notifications.html";
 	}
+	@GetMapping("/deleteNotification/{id}")
+    public String deleteNotification(Model model, @PathVariable("id") Integer id) {
+      Notifications notification = nrepo.findNotificationById(id);
+	  nrepo.delete(notification);
+      return "forward:/notification/listNotification/{id}";
+    }
+    
 
 }

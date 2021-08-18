@@ -56,6 +56,8 @@ public class postController {
 		Notifications notification =new Notifications();
 		notification.setType("delete");
 		notification.setUser(user);
+		String msg="Your favorite product information has been deleted, please click here for details";
+		notification.setMsg(msg);
 		user.notifications.add(notification);
 	  }
 	 
@@ -93,4 +95,9 @@ public class postController {
 		model.addAttribute("carpost", cprepo.findAll());
 		return "list_car.html";
 	}
+	// @GetMapping("/listLikedPost/{id}")
+	// public String listLikedCarPost(Model model,@PathVariable("id") Integer id) {
+	// 	model.addAttribute("carpost", cprepo.findCarPostByUserId(id));
+	// 	return "list_likedcar.html";
+	// }
 }
