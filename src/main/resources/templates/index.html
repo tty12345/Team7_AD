@@ -51,13 +51,16 @@
                         <a href="#">Home</a>
                     </li>
                     <li>
-                        <a href="#">Buy Car</a>
+                        <a th:href="@{post/listPost}">Buy Car</a>
                     </li>
                     <li>
-                        <a href="#">Sell Car</a>
+                        <a th:href="@{post/addPost}">Sell Car</a>
                     </li>
-                    <li>
-                        <a href="#">Login/Register</a>
+                    <li th:if="${session.seller == null and session.buyer == null}">
+                            <a th:href="@{/login}">Log in/Register</a>
+                    </li>
+                    <li th:unless="${session.seller == null and session.buyer == null}">
+                            <a th:href="@{/logout}">Log Out</a>
                     </li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
