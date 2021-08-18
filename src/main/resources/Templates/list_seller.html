@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Your Car Posts</title>
+</head>
+<body>
+<header>Your Car Posts </header>
+	<table>
+        <tr>
+			<th>Id</th>
+			<th >Price</th>
+			<th >Description</th>
+			<th >Brand</th>
+			<th >Engine Capacity</th>
+			<th >Registration Date</th>
+			<th >Mileage</th>
+			<th >Category</th>
+			<th >Image</th>
+			<th></th>
+			<th></th>
+		</tr>
+        <tr th:each="carpost:${carpost}">
+			<td th:text=${carpost.postId}>postId</td>
+			<td th:text=${carpost.price}>price</td>
+			<td th:text=${carpost.description}>description</td>
+			<td th:text=${carpost.brand}>brand</td>
+			<td th:text=${carpost.engineCapacity}>engineCapacity</td>
+			<td th:text=${carpost.registeredDate}>reisgteredDate</td>
+			<td th:text=${carpost.mileage}>mileage</td>
+			<td th:text=${carpost.category}>category</td>
+			<td ><img th:src="${carpost.photoUrl}"/></td>
+			<td><a th:href="@{/post/viewOffer/}+${carpost.postId}"> View Offers </a></td>
+		</tr>
+	</table>
+	
+</body>
+</html>

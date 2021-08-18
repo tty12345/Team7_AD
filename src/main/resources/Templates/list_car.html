@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Car Posts</title>
+<style >
+	.dropdown {
+	  display: inline-block;
+	  position: relative;
+	  background-color: white;
+	}
+	.dropdown-content {
+	  display: none;
+	  position: absolute;
+	  width: 100%;
+	  overflow: auto;
+	  background-color:rgba(255,255,255);
+	}
+	.dropdown:hover .dropdown-content {
+	  display: block;
+	  width: 120px;
+	}
+	.dropdown-content a {
+	  display: block;
+	  color: #000000;
+	  padding: 5px;
+	  text-decoration: none;
+	}
+	.dropdown-content a:hover {
+	  color: #FFFFFF;
+	  background-color: #00A4BD;
+	}
+</style>
+</head>
+<body>
+	<header >Welcome <span th:text=${name}></span> !</header>
+	<div class="dropdown">
+	  <button>Browse by:</button>
+	  <div class="dropdown-content">
+		  <a th:href="@{/post/recommended}">Preferences</a>
+		  <a th:href="@{/post/mostViewed}">Most viewed</a>
+	  </div>
+	</div>
+
+<header>Car Posts </header>
+
+	<br>
+	<span th:if="${session.user == null and session.admin == null}">
+		<a th:href="@{/login}">LOG IN</a>
+	</span>
+	<span th:unless="${session.user == null and session.admin == null}">
+		<a th:href="@{/logout}">LOG OUT</a>
+	</span>
+
+	<form action="" th:action="@{/post/listPost}" method="GET">
+		<table>
+			<tr>
+				<th>Brand<select name = "brand">
+					<option></option>
+					<option value = "toyota">Toyota</option>
+					<option value = "honda">Honda</option>
+					<option value = "Mercedes-Benz">Mercedes</option>
+					<option value = "porsche">Porsche</option>
+					<option value = "mazda">Mazda</option>
+					<option value = "suzuki">Suzuki</option>
+					<option value = "others">Others</option>
+				</select></th>
+				<th>Price<select name = "price">
+					<option></option>
+					<option value = "0">$0 to $50,000</option>
+					<option value = "1">$50,001 to $100,000</option>
+					<option value = "2">$100,001 to $150,000</option>
+					<option value = "3">$150,000 and above</option>
+				</select></th>
+				<th>Model<input type="text", name = "description"/></th>
+				<th><input type="submit" value = "Submit" /></th>
+			</tr>
+		</table>
+	</form>
+
+	<a th:href="@{/post/addPost/}"> New Post</a></td>
+	<a th:href="@{/post/viewOwnPost/}"> View Your Post</a></td>
+
+<<<<<<< HEAD
+=======
+<a href="addPost.html" th:href="@{/post/addPost/}"> New Post</a></td>
+
+>>>>>>> 479a21d497031f49b0e455fc32aa106e97aaab87
+	<table>
+        <tr>
+			<th>Id</th>
+			<th >Price</th>
+			<th >Description</th>
+			<th >Brand</th>
+			<th >Engine Capacity</th>
+			<th >Registration Date</th>
+			<th >Mileage</th>
+			<th >Category</th>
+			<th >Image</th>
+			<th></th>
+			<th></th>
+		</tr>
+        <tr th:each="carpost:${carpost}">
+			<td th:text=${carpost.postId}>postId</td>
+			<td th:text=${carpost.price}>price</td>
+			<td><a th:href="@{/post/offer/}+${carpost.postId}" th:text="${carpost.description}"></a></td>
+			<td th:text=${carpost.brand}>brand</td>
+			<td th:text=${carpost.engineCapacity}>engineCapacity</td>
+			<td th:text=${carpost.registeredDate}>registeredDate</td>
+			<td th:text=${carpost.mileage}>mileage</td>
+			<td th:text=${carpost.category}>category</td>
+			<td ><img th:src="${carpost.photoUrl}"/></td>
+			<td><a th:href="@{/post/editPost/}+${carpost.postId}" th:text="Edit"> Edit </a></td>
+			<td><a th:href="@{/post/deletePost/}+${carpost.postId}" th:text="Delete"> Delete</a></td>
+		</tr>
+	</table>
+	
+</body>
+</html>
