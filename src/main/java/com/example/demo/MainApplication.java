@@ -58,6 +58,7 @@ public class MainApplication {
 			String Pass = sCryptPasswordEncoder.encode("tin");
 			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
 			User u1 = new User("tin",Pass, UserType.BUYER);
+			
 			User u2 = new User("cherwah",Pass1, UserType.SELLER);
 			urepo.save(u1);
 			urepo.save(u2);
@@ -125,8 +126,10 @@ public class MainApplication {
 			u1.setPostings(cpl1);
 			urepo.save(u1);
 			
-			u1.notifications.add(ntf1);
-			u1.notifications.add(ntf2);
+			List<Notifications> currentNTF = new ArrayList<>();
+			currentNTF.add(ntf1);
+			currentNTF.add(ntf2);
+			u1.setNotifications(currentNTF);
 			urepo.save(u1);
 
 		};

@@ -9,4 +9,6 @@ public interface NotificationService {
     public List<Notifications> findByUserId(Integer id);
     public List<Notifications> findAll();
     public void save(Notifications notification1);
+    public void delete(Notifications notification);
+    public Notifications findNotificationById(Integer id);
 }

@@ -33,8 +33,8 @@ public class notificationController {
 	}
 	@GetMapping("/deleteNotification/{id}")
     public String deleteNotification(Model model, @PathVariable("id") Integer id) {
-      Notifications notification = nrepo.findNotificationById(id);
-	  nrepo.delete(notification);
+      Notifications notification = nservice.findNotificationById(id);
+	  nservice.delete(notification);
       return "forward:/notification/listNotification/{id}";
     }
     

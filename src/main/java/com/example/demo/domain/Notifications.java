@@ -64,38 +64,30 @@ public class Notifications {
     }
 
 
-    public int getnotificationId() {
-        return this.notificationId;
+    public int getNotificationId() {
+        return notificationId;
     }
 
-    public void setnotificationId(int notificationId) {
+    public void setNotificationId(int notificationId) {
         this.notificationId = notificationId;
     }
 
     public String getType() {
-        return this.type;
+        return type;
     }
 
     public void setType(String type) {
         this.type = type;
     }
 
-    public Notifications type(String type) {
-        setType(type);
-        return this;
-    }
 
     public User getUser() {
-        return this.user;
+        return user;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
 
-    public Notifications user(User user) {
-        setUser(user);
-        return this;
-    }
 
 }

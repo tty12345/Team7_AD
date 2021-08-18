@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import java.util.List;
+
+import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.User;
 import com.example.demo.repo.UserRepository;
 
@@ -25,6 +28,14 @@ public class UserServiceImplementation implements UserService{
     @Override
     public User finduserById(int id) {
         return urepo.finduserById(id);
+    }
+    @Override
+    public List<CarPosting> findFavouritesByUserId(int id){
+        return urepo.findFavouritesByUserId(id);
+    }
+    @Override
+    public List<CarPosting> findAllFavourites(){
+        return urepo.findAllFavourites();
     }
     
 }
