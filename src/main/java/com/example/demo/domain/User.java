@@ -1,6 +1,5 @@
 package com.example.demo.domain;
 
-
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,7 +10,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-
 @Entity
 public class User {
 
@@ -20,24 +18,26 @@ public class User {
     private int userId;
     private String username;
     private String password;
-    
-    //post owned
+    private UserType role;
+    // post owned
     @OneToMany(mappedBy = "owner")
     private List<CarPosting> postings;
 
     @ManyToMany(mappedBy = "history")
     private List<CarPosting> history;
 
-    //post liked
+    // post liked
     @ManyToMany(mappedBy = "users")
     private List<CarPosting> favourites;
-    
+
     @OneToOne(mappedBy = "user")
-    private Preferences preference;
+    private Preference preference;
 
     @OneToMany(mappedBy = "user")
     public List<Notifications> notifications;
 
+    @OneToMany(mappedBy = "user")
+    private List<Offer> offers;
 
     public User(String username, String password, List<CarPosting> postings) {
         this.username = username;
@@ -45,17 +45,60 @@ public class User {
         this.postings = postings;
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    
 
-    public User() {
+    public User(String username, Preference preference) {
+        this.username = username;
+        this.preference = preference;
     }
 
-    public int getId() {
-		return userId;
-	}
-	public void setId(int id) {
-		this.userId = id;
+
+
+
+    public User(String username, String password, UserType role, List<CarPosting> postings, List<CarPosting> history,
+			List<CarPosting> favourites, Preference preference, List<Notifications> notifications,
+			List<Offer> offers) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.postings = postings;
+		this.history = history;
+		this.favourites = favourites;
+		this.preference = preference;
+		this.notifications = notifications;
+		this.offers = offers;
 	}
 
+	public User(String username, String password, UserType role) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.role = role;
+	}
+
+	public User() {
+    }
+
+    public UserType getRole() {
+		return role;
+	}
+
+	public void setRole(UserType role) {
+		this.role = role;
+	}
+
+	public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int id) {
+        this.userId = id;
+    }
 
     public String getUsername() {
         return username;
@@ -73,7 +116,6 @@ public class User {
         this.password = password;
     }
 
-
     public List<CarPosting> getPostings() {
         return postings;
     }
@@ -82,12 +124,51 @@ public class User {
         this.postings = postings;
     }
 
-    public List<CarPosting> getHistory(){
+    public List<CarPosting> getHistory() {
         return history;
     }
 
-    public void setHistory(List<CarPosting> history){
+    public void setHistory(List<CarPosting> history) {
         this.history = history;
     }
+
+
+    public List<CarPosting> getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(List<CarPosting> favourites) {
+        this.favourites = favourites;
+    }
+
+    public List<Notifications> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notifications> notifications) {
+        this.notifications = notifications;
+    }
+
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
+    }
+
+
+    public Preference getPreference() {
+        return preference;
+    }
+
+
+    public void setPreference(Preference preference) {
+        this.preference = preference;
+    }
+
+    
+
+
 
 }

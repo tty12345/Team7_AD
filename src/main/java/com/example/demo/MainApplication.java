@@ -10,9 +10,13 @@ import javax.management.Notification;
 
 import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
+import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
+import com.example.demo.domain.UserType;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.NotificationRepository;
+import com.example.demo.repo.OfferRepository;
+import com.example.demo.repo.PreferenceRepository;
 import com.example.demo.repo.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +25,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
-//pushagain
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class MainApplication {
 
@@ -33,18 +37,33 @@ public class MainApplication {
 	UserRepository urepo;
 
 	@Autowired
+	PreferenceRepository prepo;
+
+	@Autowired
+	OfferRepository orepo;
+
+	@Autowired
 	NotificationRepository nrepo;
 
 	public static void main(String[] args) throws ParseException {
 		SpringApplication.run(MainApplication.class, args);
+		//comment1
 	}
-
+	
 	@Bean
 	CommandLineRunner runner() {
 		return args -> {
 
-			User u1 = new User();
+			SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
+			String Pass = sCryptPasswordEncoder.encode("tin");
+			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
+			User u1 = new User("tin",Pass, UserType.BUYER);
+			User u2 = new User("cherwah",Pass1, UserType.SELLER);
 			urepo.save(u1);
+			urepo.save(u2);
+
+			Preference pref1 = new Preference("911 Carrera Cabriolet 3.6A PDK", "Porsche", u1);
+			prepo.save(pref1);
 
 			String sDate1 = "22/11/2018";
 			String sDate2 = "01/05/2008";

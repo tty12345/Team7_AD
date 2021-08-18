@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -40,7 +41,10 @@ public class CarPosting {
 
     @ManyToOne
     private User owner;
-    //123
+
+    @OneToMany(mappedBy = "post")
+    private List<Offer> offers;
+
     @ManyToMany
     private List<User> history;
 
@@ -182,5 +186,30 @@ public class CarPosting {
         this.history = history;
     }
 
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
+    }
+
+	@Override
+    public String toString() {
+        return "{" +
+            " postId='" + getPostId() + "'" +
+            ", price='" + getPrice() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", brand='" + getBrand() + "'" +
+            ", engineCapacity='" + getEngineCapacity() + "'" +
+            ", reisgteredDate='" + getRegisteredDate() + "'" +
+            ", mileage='" + getMileage() + "'" +
+            ", category='" + getCategory() + "'" +
+            ", photoUrl='" + getPhotoUrl() + "'" +
+            ", views='" + getViews() + "'" +
+            ", user='" + getUsers() + "'" +
+            ", history='" + getHistory() + "'" +
+            "}";
+    }
 
 }
