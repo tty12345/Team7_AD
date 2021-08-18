@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import com.example.demo.domain.CarPosting;
@@ -46,7 +47,12 @@ public class postController {
 
     
 	@GetMapping("/addPost")
-	public String showForm(Model model) {
+	public String showForm(Model model, HttpSession session) {
+		if (session.getAttribute("seller") == null)
+			return "forward:/login";
+		else if (session.getAttribute("buyer") != null)
+			return "index";
+
 		CarPosting carpost = new CarPosting();
 		model.addAttribute("carpost", carpost);
 		return "car_post_form";

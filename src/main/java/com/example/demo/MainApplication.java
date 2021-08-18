@@ -46,7 +46,7 @@ public class MainApplication {
 		SpringApplication.run(MainApplication.class, args);
 		//comment1
 	}
-
+	
 	@Bean
 	CommandLineRunner runner() {
 		return args -> {

@@ -41,7 +41,7 @@ public class loginController {
 			else
 				session.setAttribute("seller", loggeduser);
 			
-			return "forward:/post/listPost";
+			return "index";
 		}
 		else
 			return "login";
@@ -62,7 +62,7 @@ public class loginController {
 			return (sCryptPasswordEncoder.matches(user.getPassword(),username_object.getPassword()));
 	}
 	
-	@RequestMapping("signupform")
+	@RequestMapping("/signupform")
 	public String showform(Model model) {
 		User user = new User();
 		model.addAttribute("user", user);
@@ -77,5 +77,6 @@ public class loginController {
 		model.addAttribute("user", user);
 		return "forward:/authenticate";
 	}
+
 }
 
