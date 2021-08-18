@@ -19,7 +19,7 @@
 			<td th:text=${notifications.type}>type</td>
 			<td th:text=${notifications.Msg}>msg</td>
 			
-			<td><a href="DeleteNotification.html" th:href="@{/notification/deleteNotification/}+${notifications.notificationId}" th:text="Delete"> Delete</a></td>
+			<td><a th:href="@{/notification/deleteNotification/}+${notifications.notificationId}" th:text="Delete"> Delete</a></td>
 		</tr>
        
 	</table>

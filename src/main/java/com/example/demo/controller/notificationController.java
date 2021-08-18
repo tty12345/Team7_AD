@@ -35,7 +35,7 @@ public class notificationController {
     public String deleteNotification(Model model, @PathVariable("id") Integer id) {
       Notifications notification = nservice.findNotificationById(id);
 	  nservice.delete(notification);
-      return "forward:/notification/listNotification/{id}";
+      return "forward:/notification/listNotification";
     }
     
 
