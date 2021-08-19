@@ -12,7 +12,6 @@ import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
-import com.example.demo.domain.UserType;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.NotificationRepository;
 import com.example.demo.repo.OfferRepository;
