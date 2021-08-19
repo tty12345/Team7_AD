@@ -48,7 +48,7 @@ public class likeController {
         if(session.getAttribute("user")!=null){
             userId=(Integer)session.getAttribute("userId");
             User u= uservice.finduserById(userId);
-            if(u.getFavourites()==null){
+            if(u.getFavourites().size()==0){
                 List<CarPosting> favourites = new ArrayList<>();
                 favourites.add(carposting);
                 
@@ -67,6 +67,7 @@ public class likeController {
            }
         }
         else if(session.getAttribute("user")==null){
+            session.setAttribute("return", "/post/offer/"+id);
             return "forward:/login";
         }
        

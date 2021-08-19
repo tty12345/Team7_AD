@@ -62,7 +62,14 @@ public class loginController {
 	public String logout(HttpSession session) {
 		session.removeAttribute("user");
 		session.removeAttribute("admin");
-		return "index";
+		if(session.getAttribute("return")!=null)
+		{
+			String returnLink = (String) session.getAttribute("return");
+			session.removeAttribute("return");
+			return "redirect:"+returnLink;
+		}
+		else
+			return "index";
 	}
 		
 	public boolean authenticateUser(User user) {
