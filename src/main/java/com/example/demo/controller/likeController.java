@@ -45,21 +45,28 @@ public class likeController {
     public String addLike (Model model,@PathVariable("id") int id,HttpSession session){
         CarPosting carposting =cpservice.findCarPostById(id);
         int userId;
-        if(session.getAttribute("buyer")!=null){
+        if(session.getAttribute("user")!=null){
             userId=(Integer)session.getAttribute("userId");
             User u= uservice.finduserById(userId);
             if(u.getFavourites()==null){
-                List<CarPosting> favourites=new ArrayList<>();
+                List<CarPosting> favourites = new ArrayList<>();
                 favourites.add(carposting);
+                
                 u.setFavourites(favourites);
                 uservice.save(u);
+                List<User> list1 = carposting.getUsers();
+                list1.add(u);
+                carposting.setUsers(list1);
+                cpservice.save(carposting);
+                
+                
             }
            else{
                u.getFavourites().add(carposting);
                uservice.save(u);
            }
         }
-        else if(session.getAttribute("buyer")==null){
+        else if(session.getAttribute("user")==null){
             return "forward:/login";
         }
        
@@ -70,12 +77,12 @@ public class likeController {
     public String deleteLike(Model model,@PathVariable("id") int id,HttpSession session){
         CarPosting carposting=cpservice.findCarPostById(id);
         int userId;
-        if(session.getAttribute("buyer")!=null){
+        if(session.getAttribute("user")!=null){
             userId=(Integer)session.getAttribute("userId");
             User u= uservice.finduserById(userId);
             u.getFavourites().remove(carposting);
         }
-        else if(session.getAttribute("buyer")==null){
+        else if(session.getAttribute("user")==null){
             return "forward:/login";
         }
         model.addAttribute("carpost",carposting);

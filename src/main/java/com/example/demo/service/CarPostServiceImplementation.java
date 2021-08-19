@@ -53,5 +53,12 @@ public class CarPostServiceImplementation implements CarPostService {
 	public List<CarPosting> findMostViewedCars() {
 		return cprepo.findMostViewedCars();
 	}
+
+    // @Override
+    // public void saveList(List<CarPosting> favourites) {
+    //     // TODO Auto-generated method stub
+    //     cprepo.save(favourites);
+        
+    // }
     
 }

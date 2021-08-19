@@ -12,6 +12,7 @@ import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
+import com.example.demo.domain.UserType;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.NotificationRepository;
 import com.example.demo.repo.OfferRepository;
@@ -56,8 +57,8 @@ public class MainApplication {
 			SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 			String Pass = sCryptPasswordEncoder.encode("tin");
 			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
-			User u1 = new User("tin",Pass);
-			User u2 = new User("cherwah",Pass1);
+			User u1 = new User("tin",Pass,UserType.USER);
+			User u2 = new User("cherwah",Pass1,UserType.USER);
 			urepo.save(u1);
 			urepo.save(u2);
 

@@ -41,10 +41,16 @@ public class loginController {
 			User loggeduser = uservice.findUserByUsername(user.getUsername());
 			model.addAttribute("name", loggeduser.getUsername());
 			
-			if(loggeduser.getRole() == UserType.USER)
+			if(loggeduser.getRole() == UserType.USER){
 				session.setAttribute("user",loggeduser);
-			else
+				session.setAttribute("userId", loggeduser.getUserId());
+			}
+				
+			else{
 				session.setAttribute("admin", loggeduser);
+				session.setAttribute("userId", loggeduser.getUserId());
+			}
+				
 			
 			return "index";
 		}

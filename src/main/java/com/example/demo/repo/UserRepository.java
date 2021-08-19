@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     public User findUserByUsername(String un);
 
     @Query("select u.favourites from User u where u.userId= :id")
-    public List<CarPosting> findFavouritesByUserId(int id);
+    public List<CarPosting> findFavouritesByUserId(@Param("id")int id);
     @Query("select u.favourites from User u")
     public List<CarPosting> findAllFavourites();
 }

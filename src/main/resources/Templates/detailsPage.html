@@ -57,6 +57,9 @@
             <td>
                <a th:href="@{/like/addLike/}+${carpost.postId}" th:text="Like"> Like Icon</a>
             </td>
+            <td>
+                <a th:href="@{/like/listFavourites}+${session.userId}" th:text="ShowFavoutites">Show Your Favourites</a>  
+            </td>
         </tr>
 	</table>
 	
