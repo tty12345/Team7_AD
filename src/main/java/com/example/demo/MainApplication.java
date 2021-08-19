@@ -54,10 +54,16 @@ public class MainApplication {
 			SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 			String Pass = sCryptPasswordEncoder.encode("tin");
 			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
-			User u1 = new User("tin",Pass);
-			User u2 = new User("cherwah",Pass1);
+			String Pass2= sCryptPasswordEncoder.encode("esther");
+			String Pass3= sCryptPasswordEncoder.encode("suriya");
+			User u1 = new User("tin",Pass,UserType.USER);
+			User u2 = new User("cherwah",Pass1,UserType.USER);
+			User u3=new User("esther",Pass2,UserType.USER);
+			User u4=new User("suriya",Pass3,UserType.USER);
 			urepo.save(u1);
 			urepo.save(u2);
+			urepo.save(u3);
+			urepo.save(u4);
 
 			Preference pref1 = new Preference("911 Carrera Cabriolet 3.6A PDK", "Porsche", u1);
 			prepo.save(pref1);

@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import javax.servlet.http.HttpSession;
+
 import com.example.demo.domain.User;
 import com.example.demo.repo.UserRepository;
 
@@ -26,5 +28,13 @@ public class UserServiceImplementation implements UserService{
     public User finduserById(int id) {
         return urepo.finduserById(id);
     }
+
+    @Override
+	public boolean checkSession(HttpSession session, String s_name) {
+		if (session.getAttribute(s_name) != null )
+			return true;
+		else 
+			return false;
+	}
     
 }

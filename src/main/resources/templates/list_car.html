@@ -33,9 +33,13 @@
 </style>
 </head>
 <body>
-	<header >Welcome <span th:text=${name}></span> !</header>
+	Testing
+	<header >WELCOME <span th:text=${name}></span> !
+		
+	</header>
+	
 	<div class="dropdown">
-	  <button>Browse by:</button>
+	  <button>Browse By:</button>
 	  <div class="dropdown-content">
 		  <a th:href="@{/post/recommended}">Preferences</a>
 		  <a th:href="@{/post/mostViewed}">Most viewed</a>
@@ -78,14 +82,11 @@
 		</table>
 	</form>
 
-	<a th:href="@{/post/addPost/}"> New Post</a></td>
-	<a th:href="@{/post/viewOwnPost/}"> View Your Post</a></td>
+	<a th:href="@{/post/addPost/}"> New Post</a>
+	<a th:href="@{/post/viewOwnPost/}"> View Your Post</a>
+	<a th:href="@{/preference/setpreference/}+${session.user.userId}"> Save Preference </a>
+	<a href="addPost.html" th:href="@{/post/addPost/}"> New Post</a>
 
-<<<<<<< HEAD
-=======
-<a href="addPost.html" th:href="@{/post/addPost/}"> New Post</a></td>
-
->>>>>>> 479a21d497031f49b0e455fc32aa106e97aaab87
 	<table>
         <tr>
 			<th>Id</th>

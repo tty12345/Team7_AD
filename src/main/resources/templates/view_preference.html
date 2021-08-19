@@ -8,7 +8,7 @@
 <body>
   <header th:insert="layout/layout.html :: header"></header>
   <div th:replace="layout/layout.html :: menu" ></div>
-  <h1>Listing</h1>
+  <h1>Your preferences</h1>
   <table>
  <tr>
    <th>ID</th>
@@ -19,8 +19,10 @@
    <th>Category</th>
    <th>UserID</th>
    <th>UserName</th>
+   <th>Edit Preference</th>
+
  </tr>
- <tr th:each="pref:${preflist}">
+ <tr th:object="${pref}">
    <td th:text="${pref.id}">ID</td> 
    <td th:text="${pref.model}">Model</td>
    <td th:text="${pref.brand}">Brand</td>
@@ -29,6 +31,11 @@
    <td th:text="${pref.category}">Category</td>
    <td th:text="${pref.user.userId}">UserID</td>
    <td th:text="${pref.user.username}">UserName</td>
+   <td><a href="EditPreference.html"
+    th:href="@{/preference/edit/}+${pref.id}"> Edit </a></td>
+      
+
+
    
 
    

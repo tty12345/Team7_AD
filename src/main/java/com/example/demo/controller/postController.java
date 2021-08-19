@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 @RequestMapping("/post")
@@ -42,6 +44,13 @@ public class postController {
 	NotificationService nservice;
 	@Autowired
 	private PreferenceService prfservice;
+
+	@Autowired
+	public void setPrefService(PreferenceService prfservice) {
+		this.prfservice=prfservice;
+	}
+
+
 
 
     
@@ -161,9 +170,11 @@ public class postController {
 	}
 
 	@GetMapping("/recommended")
-	public String recommendedCars(Model model) {
-		Preference pref = prfservice.findprefByuserId(1);
-		List<CarPosting> cars = cpservice.findCarPostByPref(pref.getModel(), pref.getBrand());
+	public String recommendedCars(Model model, HttpSession session ) {
+		User user=(User) session.getAttribute("user");
+		Preference pref = prfservice.findprefByuserId(user.getUserId());
+		//List<CarPosting> cars = cpservice.findCarPostByPref(pref.getModel(), pref.getBrand());
+		List<CarPosting> cars=cpservice.findCarPostsByPreferences(pref.getModel(), pref.getBrand(), pref.getEngineCapacityMin(), pref.getCategory());
 		model.addAttribute("prefcars", cars);
 		return "recommended_cars";
 	}
@@ -241,10 +252,11 @@ public class postController {
 	// return "forward:/post/listPost";
 	// }
 	@RequestMapping("/notification")
-    public String createNotification(Model model) {
+    public String createsNotification(Model model) {
 		Notifications ntf=new Notifications("New Arrival that matches your preference");
     	model.addAttribute("ntf",ntf);
     	return "notification";
     }
 
 }
+

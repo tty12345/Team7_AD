@@ -11,11 +11,15 @@
 	<div th:replace="layout/layout.html :: menu"></div>
 	<h1>Set your preferences</h1><br><br>
 	<form action="" th:object="${pref}" th:action="@{/preference/save}"
-		method="get" class="form-horizontal">
+		method="GET" class="form-horizontal">
 		<fieldset>
 			<input type="hidden" th:field="*{id}" />
-			
+			<input type="hidden" th:field="*{user.userId}" />
+			<input type="hidden" th:field="*{user.username}" />
+				
 		</fieldset>
+		
+		
 		<fieldset>
 			Model: <input type="text" th:field="*{model}">
 			Brand: <input type="text" th:field="*{brand}">

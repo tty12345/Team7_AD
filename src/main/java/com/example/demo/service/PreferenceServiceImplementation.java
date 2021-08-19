@@ -30,6 +30,17 @@ public class PreferenceServiceImplementation implements PreferenceService {
 	public Preference findprefByuserId(int id) {
 		return prefrepo.findprefByuserId(id);
 	}
+	@Override
+	public Preference findPreferenceById(int id) {
+	
+		return prefrepo.findById(id);
+	}
+	@Override
+	public void delete(Preference prf) {
+		
+		prefrepo.delete(prf);
+		
+	}
     
 
 
