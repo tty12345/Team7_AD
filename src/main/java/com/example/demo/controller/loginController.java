@@ -36,10 +36,17 @@ public class loginController {
 			User loggeduser = uservice.findUserByUsername(user.getUsername());
 			model.addAttribute("name", loggeduser.getUsername());
 			
-			if(loggeduser.getRole() == UserType.BUYER)
+			if(loggeduser.getRole() == UserType.BUYER){
+
 				session.setAttribute("buyer",loggeduser);
-			else
+				session.setAttribute("userId", loggeduser.getUserId());
+			}
+				
+			else{
 				session.setAttribute("seller", loggeduser);
+				session.setAttribute("userId", loggeduser.getUserId());
+			}
+			
 			
 			return "index";
 		}

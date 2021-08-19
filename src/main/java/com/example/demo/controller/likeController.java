@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -29,39 +30,55 @@ public class likeController {
 
 		List<CarPosting> favouriteList = uservice.findFavouritesByUserId(id);
 
-		model.addAttribute("favouritesByUser", favouriteList);
+		model.addAttribute("carpost", favouriteList);
+		return "list_favourites.html";
+	}
+    @GetMapping("/listFavourites")
+	public String listFavourites(Model model) {
+
+		List<CarPosting> favouriteList = uservice.findAllFavourites();
+
+		model.addAttribute("carpost", favouriteList);
 		return "list_favourites.html";
 	}
     @GetMapping("/addLike/{id}")
     public String addLike (Model model,@PathVariable("id") int id,HttpSession session){
         CarPosting carposting =cpservice.findCarPostById(id);
-        int userId=0;
+        int userId;
         if(session.getAttribute("buyer")!=null){
             userId=(Integer)session.getAttribute("userId");
+            User u= uservice.finduserById(userId);
+            if(u.getFavourites()==null){
+                List<CarPosting> favourites=new ArrayList<>();
+                favourites.add(carposting);
+                u.setFavourites(favourites);
+                uservice.save(u);
+            }
+           else{
+               u.getFavourites().add(carposting);
+               uservice.save(u);
+           }
         }
         else if(session.getAttribute("buyer")==null){
             return "forward:/login";
         }
-        User u= uservice.finduserById(userId);
-        u.getFavourites().add(carposting);
-        
-        model.addAttribute("carposting", carposting);
+       
+        model.addAttribute("carpost", carposting);
         return "detailsPageWithLike.html";
     }
     @GetMapping("/deleteLike/{id}")
     public String deleteLike(Model model,@PathVariable("id") int id,HttpSession session){
         CarPosting carposting=cpservice.findCarPostById(id);
-        int userId=0;
+        int userId;
         if(session.getAttribute("buyer")!=null){
             userId=(Integer)session.getAttribute("userId");
+            User u= uservice.finduserById(userId);
+            u.getFavourites().remove(carposting);
         }
         else if(session.getAttribute("buyer")==null){
             return "forward:/login";
-            }
-        User u= uservice.finduserById(userId);
-        u.getFavourites().remove(carposting);
-
-        model.addAttribute("carposting",carposting);
+        }
+        model.addAttribute("carpost",carposting);
         return "detailsPage.html";
 
 
