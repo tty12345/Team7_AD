@@ -63,14 +63,11 @@ public class SetPreferenceController {
 		else{
 			Preference pref=new Preference();
 			pref.setUser(user);
-			user.setPreference(pref);
 			model.addAttribute("pref",pref);
-		//model.addAttribute("user", user);
 			return "preferenceform";
 
 		}
-		//model.addAttribute("user", user);
-		//User user=uservice.finduserById(userId);
+		
 		
 		
 		
@@ -79,10 +76,12 @@ public class SetPreferenceController {
 	@GetMapping("/save")
 	public String savePreference(@ModelAttribute("pref") Preference pref, Model model,HttpSession session)
 	{
-		prfservice.save(pref);
+		
 		User user=(User) session.getAttribute("user");
-		user.setPreference(pref);
-		return "forward:/preference/viewPref"; 
+		pref.setUser(user);
+		prfservice.save(pref);
+		model.addAttribute("pref", pref);
+		return "view_preference";
 	}
 	
 	@RequestMapping("/list")

@@ -18,6 +18,13 @@
 		</fieldset>
 
         <h2>A new car arrival that matches your preference</h2>
+		<table>
+			<tr th:object="${ntf}">
+				 <td th:text=${ntf.notificationId}></td>
+				 <td th:text=${ntf.type}></td>
+				 <td th:text=${ntf.Msg}></td>
+			</tr>
+		 </table>
 	
 		
 		<fieldset>

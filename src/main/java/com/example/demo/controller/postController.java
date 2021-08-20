@@ -89,7 +89,7 @@ public class postController {
 	// Save car's details after editing
 	@GetMapping("/savePost")
 	public String saveCarPost(@ModelAttribute("carpost") @Valid CarPosting carpost, BindingResult bindingResult,
-			Model model) {
+			Model model, HttpSession session) {
 
 		if (bindingResult.hasErrors()) {
 			return "car_post_form";
@@ -98,26 +98,31 @@ public class postController {
 		// checks if this is a new post
 		if (carpost.getUsers() == null) {
 			// add code to set user as whoever is logged in
+			//User userPref=(User) session.getAttribute("user");
 			User user = uservice.finduserById(1);
 			List<CarPosting> newpost = new ArrayList<CarPosting>();
 			newpost.add(carpost);
 			user.setPostings(newpost);
+			//userPref.setPostings(newpost);
 			uservice.save(user);
+			//uservice.save(userPref);
 			carpost.getUsers().add(user);
+			//carpost.getUsers().add(userPref);
 			carpost.setOwner(user);
-			List<Preference> preflist=(ArrayList<Preference>) prfservice.listPref();
-			for (Preference preference : preflist) {
+			//carpost.setOwner(userPref);
+			Preference preference=user.getPreference();
 				if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
 				preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
 				&& preference.getHighestPrice()<=carpost.getPrice()){
-					return "forward:/post/notification";
-				}
+					Notifications ntf=new Notifications("New Arrival", user, "A new arrival that matches your preference is  "+carpost.getPostId());
+					nservice.save(ntf);
 
-				
+					user.getNotifications().add(ntf);
+					uservice.save(user);
+					//model.addAttribute("ntf", ntf);
+					//return "notification";
+				}
 			}
-			
-			
-		}
 
 		cpservice.save(carpost);
 		return "forward:/post/listPost";
