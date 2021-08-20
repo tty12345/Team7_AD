@@ -51,25 +51,24 @@ public class loginController {
 				session.setAttribute("userId", loggeduser.getUserId());
 			}
 				
-			
-			return "index";
-		}
-		else
-			return "login";
+			if(session.getAttribute("return")!=null)
+			{
+				String returnLink = (String) session.getAttribute("return");
+				session.removeAttribute("return");
+				return "redirect:"+returnLink;
+			}
+			else
+				return "index";
+			}
+			else
+				return "login";
 	}
 		
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 		session.removeAttribute("user");
 		session.removeAttribute("admin");
-		if(session.getAttribute("return")!=null)
-		{
-			String returnLink = (String) session.getAttribute("return");
-			session.removeAttribute("return");
-			return "redirect:"+returnLink;
-		}
-		else
-			return "index";
+		return "index";
 	}
 		
 	public boolean authenticateUser(User user) {
