@@ -10,6 +10,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class User {
 
@@ -21,22 +23,27 @@ public class User {
     private UserType role;
     // post owned
     @OneToMany(mappedBy = "owner")
+    @JsonManagedReference
     private List<CarPosting> postings;
 
     @ManyToMany(mappedBy = "history")
+    @JsonManagedReference
     private List<CarPosting> history;
 
     // post liked
     @ManyToMany(mappedBy = "users")
+    @JsonManagedReference
     private List<CarPosting> favourites;
 
     @OneToOne(mappedBy = "user")
     private Preference preference;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     public List<Notifications> notifications;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Offer> offers;
 
     public User(String username, String password, List<CarPosting> postings) {

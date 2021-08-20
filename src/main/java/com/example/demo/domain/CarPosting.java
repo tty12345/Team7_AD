@@ -13,6 +13,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -39,12 +42,15 @@ public class CarPosting {
     private List<User> users;
 
     @ManyToOne
+    @JsonBackReference
     private User owner;
 
     @OneToMany(mappedBy = "post")
+    @JsonManagedReference
     private List<Offer> offers;
 
     @ManyToMany
+    @JsonManagedReference
     private List<User> history;
 
     public CarPosting() {

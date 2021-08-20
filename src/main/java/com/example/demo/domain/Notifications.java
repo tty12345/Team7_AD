@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Notifications {
 
@@ -24,6 +26,7 @@ public class Notifications {
     }
 
     @ManyToOne
+    @JsonBackReference
     private User user;
 
     public Notifications() {

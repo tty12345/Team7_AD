@@ -19,17 +19,19 @@ import com.example.demo.service.PreferenceService;
 import com.example.demo.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@CrossOrigin(origins= "http://localhost:3000")
+@RestController
 @RequestMapping("/post")
 public class postController {
 
@@ -164,6 +166,11 @@ public class postController {
 			model.addAttribute("carpost", cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description));
 		
 		return "list_car";
+	}
+
+	@GetMapping("/listPost2")
+	public List<CarPosting> listCarPost(){
+		return cpservice.findAll();
 	}
 
 	@GetMapping("/recommended")
