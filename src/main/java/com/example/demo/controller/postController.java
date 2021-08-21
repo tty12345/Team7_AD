@@ -12,6 +12,7 @@ import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Offer;
 import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
+import com.example.demo.repo.OfferRepository;
 import com.example.demo.service.CarPostService;
 import com.example.demo.service.NotificationService;
 import com.example.demo.service.OfferService;
@@ -19,6 +20,9 @@ import com.example.demo.service.PreferenceService;
 import com.example.demo.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,9 +50,14 @@ public class postController {
 	NotificationService nservice;
 	@Autowired
 	private PreferenceService prfservice;
+	@Autowired
+	private OfferRepository orepo;
 
+	@GetMapping("/getOne/{id}")
+    public CarPosting getCar(@PathVariable("id") Integer id){
+		return cpservice.findCarPostById(id);
+	}
 
-    
 	@GetMapping("/addPost")
 	public String showForm(Model model, HttpSession session) {
 		if (session.getAttribute("seller") == null)
@@ -215,24 +225,48 @@ public class postController {
 		return "detailsPage";
 	}
 	
-	@PostMapping("/saveOffer/{id}")
-	public String leaveOffer(@PathVariable("id") Integer id, @RequestParam("offer") Integer offer) {
-		User user1 = uservice.finduserById(1);
-		CarPosting carposting1 = cpservice.findCarPostById(id);
+	// @PostMapping("/saveOffer/{id}")
+	// public String leaveOffer(@PathVariable("id") Integer id, @RequestParam("offer") Integer offer) {
+	// 	User user1 = uservice.finduserById(1);
+	// 	CarPosting carposting1 = cpservice.findCarPostById(id);
 
-		Offer newOffer = new Offer(offer, user1, carposting1);
-		oservice.save(newOffer);
+	// 	Offer newOffer = new Offer(offer, user1, carposting1);
+	// 	oservice.save(newOffer);
 
-		Notifications notification1 = new Notifications("New Offer", user1, "An offer of " + "$" + newOffer.getOffer()
-				+ " has been made for your post " + carposting1.getPostId() + "!");
-		nservice.save(notification1);
+	// 	Notifications notification1 = new Notifications("New Offer", user1, "An offer of " + "$" + newOffer.getOffer()
+	// 			+ " has been made for your post " + carposting1.getPostId() + "!");
+	// 	nservice.save(notification1);
 
-		user1.getNotifications().add(notification1);
-		uservice.save(user1);
+	// 	user1.getNotifications().add(notification1);
+	// 	uservice.save(user1);
 
-		return "redirect:/post/listPost";
-	}
+	// 	return "redirect:/post/listPost";
+	// }
 
+	// @PostMapping(value = "/saveOffer")
+	// public ResponseEntity<Offer> createOffer(@RequestBody Offer offer) {
+	// 	try {
+	// 		System.out.println(offer);
+	// 		Offer newOffer = orepo.save(offer);
+	// 		return new ResponseEntity<>(newOffer, HttpStatus.CREATED);
+	// 	} catch (Exception e) {
+	// 		return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+	// 	}
+	// }
+
+	@PostMapping("/saveOffer")
+    public ResponseEntity<Offer> createOffer(@RequestBody Offer offer){
+        try {
+            Offer u = orepo.save(new Offer(offer.getOffer()));
+            return new ResponseEntity<>(u, HttpStatus.CREATED);
+        }
+        catch(Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+        }
+
+
+
+    }
 	// @GetMapping("/populate")
 	// public String populateData(){
 

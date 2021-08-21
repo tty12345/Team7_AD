@@ -13,12 +13,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+      property = "postId")
 public class CarPosting {
 
     @Id 
@@ -39,18 +41,19 @@ public class CarPosting {
 
     //likers
     @ManyToMany
+    // @JsonManagedReference
     private List<User> users;
 
     @ManyToOne
-    @JsonBackReference
+    // @JsonBackReference
     private User owner;
 
     @OneToMany(mappedBy = "post")
-    @JsonManagedReference
+    // @JsonManagedReference
     private List<Offer> offers;
 
     @ManyToMany
-    @JsonManagedReference
+    // @JsonManagedReference
     private List<User> history;
 
     public CarPosting() {
@@ -167,6 +170,7 @@ public class CarPosting {
         this.views = views;
     }
 
+    // @JsonIgnore
     public List<User> getUsers() {
         return users;
     }
@@ -174,7 +178,7 @@ public class CarPosting {
     public void setUsers(List<User> users) {
         this.users = users;
     }
-
+    // @JsonIgnore
     public User getOwner() {
         return owner;
     }
@@ -182,7 +186,7 @@ public class CarPosting {
     public void setOwner(User owner) {
         this.owner = owner;
     }
-
+    // @JsonIgnore
     public List<User> getHistory() {
         return history;
     }
@@ -190,7 +194,7 @@ public class CarPosting {
     public void setHistory(List<User> history) {
         this.history = history;
     }
-
+    // @JsonIgnore
     public List<Offer> getOffers() {
         return offers;
     }

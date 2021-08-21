@@ -6,9 +6,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+      property = "notificationId")
 public class Notifications {
 
     @Id
@@ -26,7 +30,7 @@ public class Notifications {
     }
 
     @ManyToOne
-    @JsonBackReference
+    // @JsonBackReference
     private User user;
 
     public Notifications() {
@@ -82,6 +86,7 @@ public class Notifications {
         return this;
     }
 
+    @JsonIgnore
     public User getUser() {
         return this.user;
     }
