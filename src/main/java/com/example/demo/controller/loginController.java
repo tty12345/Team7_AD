@@ -82,6 +82,5 @@ public class loginController {
 		model.addAttribute("user", user);
 		return "forward:/authenticate";
 	}
-
 }
 
