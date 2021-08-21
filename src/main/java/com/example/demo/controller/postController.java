@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
@@ -21,23 +20,19 @@ import com.example.demo.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-@CrossOrigin(origins= "http://localhost:3000")
 @RestController
 @RequestMapping("/post")
+@CrossOrigin(origins = "http://localhost:3000")
 public class postController {
 
 	@Autowired
@@ -95,41 +90,45 @@ public class postController {
 		return "forward:/post/listPost";
 	}
 
-	// Save car's details after editing
-	@GetMapping("/savePost")
-	public String saveCarPost(@ModelAttribute("carpost") @Valid CarPosting carpost, BindingResult bindingResult,
-			Model model) {
-
-		if (bindingResult.hasErrors()) {
-			return "car_post_form";
-		}
-
+	// Save car's details
+	@PostMapping("/savePost")
+	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, Model model) {
 		// checks if this is a new post
-		if (carpost.getUsers() == null) {
-			// add code to set user as whoever is logged in
+		// if (carpost.getUsers() == null) {
+		// // add code to set user as whoever is logged in
+
+		// // List<Preference> preflist=(ArrayList<Preference>) prfservice.listPref();
+		// // for (Preference preference : preflist) {
+		// // if(preference.getBrand()==carpost.getBrand() &&
+		// // preference.getCategory()==carpost.getCategory() &&
+		// // preference.getEngineCapacityMax()<=carpost.getEngineCapacity() &&
+		// // preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
+		// // && preference.getHighestPrice()<=carpost.getPrice()){
+		// // return "forward:/post/notification";
+		// // }
+		// // }
+		// }
+		try {
 			User user = uservice.finduserById(1);
+
+			CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), carpost.getBrand(),
+					carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(),
+					carpost.getCategory(), carpost.getPhotoUrl(), user);
+			cpservice.save(newCarPosting);
+
 			List<CarPosting> newpost = new ArrayList<CarPosting>();
-			newpost.add(carpost);
+			newpost.add(newCarPosting);
 			user.setPostings(newpost);
 			uservice.save(user);
-			carpost.getUsers().add(user);
+			List<User> existingList = newCarPosting.getUsers();
+			existingList.add(user);
 			carpost.setOwner(user);
-			List<Preference> preflist=(ArrayList<Preference>) prfservice.listPref();
-			for (Preference preference : preflist) {
-				if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
-				preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
-				&& preference.getHighestPrice()<=carpost.getPrice()){
-					return "forward:/post/notification";
-				}
-
-				
-			}
-			
-			
+			cpservice.save(newCarPosting);
+			return new ResponseEntity<>(newCarPosting, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 		}
 
-		cpservice.save(carpost);
-		return "forward:/post/listPost";
 	}
 
 	// show all cars
@@ -174,7 +173,7 @@ public class postController {
 
 		else
 			model.addAttribute("carpost", cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description));
-		
+
 		return "list_car";
 	}
 
@@ -218,8 +217,8 @@ public class postController {
 	public String offer(Model model, @PathVariable("id") Integer id) {
 		CarPosting carpost = cpservice.findCarPostById(id);
 		model.addAttribute("carpost", carpost);
-		
-		//increment number of views for a car
+
+		// increment number of views for a car
 		carpost.setViews(carpost.getViews() + 1);
 		cpservice.save(carpost);
 		return "detailsPage";
@@ -288,10 +287,10 @@ public class postController {
 	// return "forward:/post/listPost";
 	// }
 	@RequestMapping("/notification")
-    public String createNotification(Model model) {
-		Notifications ntf=new Notifications("New Arrival that matches your preference");
-    	model.addAttribute("ntf",ntf);
-    	return "notification";
-    }
+	public String createNotification(Model model) {
+		Notifications ntf = new Notifications("New Arrival that matches your preference");
+		model.addAttribute("ntf", ntf);
+		return "notification";
+	}
 
 }
