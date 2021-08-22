@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -40,6 +42,9 @@ public class CarPosting {
     private String photoUrl;
     private int views;
 
+    @OneToOne(mappedBy = "carpost")
+    private CarImage carpostimage;
+
     // likers
     @ManyToMany
     private List<User> users = new ArrayList<>();
@@ -56,6 +61,12 @@ public class CarPosting {
 
     public CarPosting() {
         super();
+    }
+
+    public CarPosting(CarImage carpostimage){
+        super();
+        this.carpostimage=carpostimage;
+        
     }
 
     public CarPosting(int postId, int price, String description, String brand, int engineCapacity, Date registeredDate,
@@ -88,6 +99,20 @@ public class CarPosting {
         this.photoUrl = photoUrl;
         this.owner = owner;
     }
+
+    public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
+    String category, String photoUrl, CarImage carpostimage, User owner) {
+        this.price = price;
+        this.description = description;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.registeredDate = registeredDate;
+        this.mileage = mileage;
+        this.category = category;
+        this.photoUrl = photoUrl;
+        this.carpostimage = carpostimage;
+        this.owner = owner;
+}
 
     public int getPostId() {
         return postId;
@@ -200,6 +225,14 @@ public class CarPosting {
 
     public void setOffers(List<Offer> offers) {
         this.offers = offers;
+    }
+
+    public CarImage getCarPostImage() {
+        return carpostimage;
+    }
+
+    public void setCarPostImage(CarImage carpostimage) {
+        this.carpostimage = carpostimage;
     }
 
     @Override

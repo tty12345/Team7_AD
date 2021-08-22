@@ -6,11 +6,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.example.demo.domain.CarImage;
 import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Offer;
 import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
+import com.example.demo.repo.CarImageRepository;
+import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.OfferRepository;
 import com.example.demo.service.CarPostService;
 import com.example.demo.service.NotificationService;
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/post")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -47,6 +51,12 @@ public class postController {
 	private PreferenceService prfservice;
 	@Autowired
 	private OfferRepository orepo;
+	@Autowired
+	CarImageRepository cirepo;
+	@Autowired
+	CarPostRepository cprepo;
+
+	CarImage currentImage = new CarImage();
 
 	@GetMapping("/getOne/{id}")
     public CarPosting getCar(@PathVariable("id") Integer id){
@@ -92,7 +102,7 @@ public class postController {
 
 	// Save car's details
 	@PostMapping("/savePost")
-	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, Model model) {
+	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, Model model, HttpSession sessions) {
 		// checks if this is a new post
 		// if (carpost.getUsers() == null) {
 		// // add code to set user as whoever is logged in
@@ -123,8 +133,20 @@ public class postController {
 			List<User> existingList = newCarPosting.getUsers();
 			existingList.add(user);
 			carpost.setOwner(user);
-			cpservice.save(newCarPosting);
-			return new ResponseEntity<>(newCarPosting, HttpStatus.CREATED);
+			CarPosting newcarPosting2 = cprepo.save(newCarPosting);
+			newcarPosting2.setCarPostImage(this.currentImage);
+			cprepo.save(newcarPosting2);
+	
+			// try
+			// 	byte[] photoByte = file.getBytes();
+			// 	System.out.println(photoByte);
+			// 	}
+		
+			// 	catch(Exception e){
+			// 		System.out.println(e);
+			// 	};
+
+			return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 		}
@@ -266,6 +288,25 @@ public class postController {
 
 
     }
+
+	@PostMapping("/saveImage")
+	public void saveImage (@RequestParam("photoParam") MultipartFile file, HttpSession session){
+		
+		CarImage currentCarImage = new CarImage();
+		try{
+		this.currentImage.setCarpostImage(file.getBytes());
+		this.currentImage.setName(file.getName());
+		this.currentImage.setType(file.getContentType());
+		}
+
+		catch(Exception e){
+			System.out.println(e);
+		};
+		cirepo.save(this.currentImage);
+		// session.setAttribute("savedImage", savedImage.getImageId());
+
+	}
+
 	// @GetMapping("/populate")
 	// public String populateData(){
 
