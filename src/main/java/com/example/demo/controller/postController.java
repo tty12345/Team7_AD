@@ -56,8 +56,6 @@ public class postController {
 	@Autowired
 	CarPostRepository cprepo;
 
-	CarImage currentImage = new CarImage();
-
 	@GetMapping("/getOne/{id}")
     public CarPosting getCar(@PathVariable("id") Integer id){
 		return cpservice.findCarPostById(id);
@@ -101,51 +99,33 @@ public class postController {
 	}
 
 	// Save car's details
-	@PostMapping("/savePost")
-	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, Model model, HttpSession sessions) {
-		// checks if this is a new post
-		// if (carpost.getUsers() == null) {
-		// // add code to set user as whoever is logged in
+	@PostMapping("/savePost/{id}")
+	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, Model model, @PathVariable("id") Integer imgId) {
 
-		// // List<Preference> preflist=(ArrayList<Preference>) prfservice.listPref();
-		// // for (Preference preference : preflist) {
-		// // if(preference.getBrand()==carpost.getBrand() &&
-		// // preference.getCategory()==carpost.getCategory() &&
-		// // preference.getEngineCapacityMax()<=carpost.getEngineCapacity() &&
-		// // preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
-		// // && preference.getHighestPrice()<=carpost.getPrice()){
-		// // return "forward:/post/notification";
-		// // }
-		// // }
-		// }
 		try {
+			//find the current logged in
 			User user = uservice.finduserById(1);
 
+			//Instatiate a new carpost from the object received from client side
 			CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), carpost.getBrand(),
 					carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(),
 					carpost.getCategory(), carpost.getPhotoUrl(), user);
-			cpservice.save(newCarPosting);
 
-			List<CarPosting> newpost = new ArrayList<CarPosting>();
-			newpost.add(newCarPosting);
-			user.setPostings(newpost);
+			//set this post to the user
+			List<CarPosting> newpostList = new ArrayList<CarPosting>();
+			newpostList.add(newCarPosting);
+			user.setPostings(newpostList);
 			uservice.save(user);
 			List<User> existingList = newCarPosting.getUsers();
 			existingList.add(user);
 			carpost.setOwner(user);
-			CarPosting newcarPosting2 = cprepo.save(newCarPosting);
-			newcarPosting2.setCarPostImage(this.currentImage);
-			cprepo.save(newcarPosting2);
-			this.currentImage.setCarpost(newcarPosting2);
-			cirepo.save(this.currentImage);
-			// try
-			// 	byte[] photoByte = file.getBytes();
-			// 	System.out.println(photoByte);
-			// 	}
-		
-			// 	catch(Exception e){
-			// 		System.out.println(e);
-			// 	};
+
+			//set car image to the post
+			CarImage img1 = cirepo.findByImageId(imgId);
+			carpost.setCarPostImage(img1);
+			CarPosting newcarPosting2 = cprepo.save(carpost);
+			img1.setCarpost(carpost);
+			cirepo.save(img1);
 
 			return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -291,20 +271,20 @@ public class postController {
     }
 
 	@PostMapping("/saveImage")
-	public void saveImage (@RequestParam("photoParam") MultipartFile file, HttpSession session){
+	public ResponseEntity<Integer> saveImage (@RequestParam("photoParam") MultipartFile file, HttpSession session){
 		
 		CarImage currentCarImage = new CarImage();
 		try{
-		this.currentImage.setCarpostImage(file.getBytes());
-		this.currentImage.setName(file.getName());
-		this.currentImage.setType(file.getContentType());
+		currentCarImage.setCarpostImage(file.getBytes());
+		currentCarImage.setName(file.getName());
+		currentCarImage.setType(file.getContentType());
 		}
 
 		catch(Exception e){
 			System.out.println(e);
 		};
-		cirepo.save(this.currentImage);
-		// session.setAttribute("savedImage", savedImage.getImageId());
+		CarImage savedImage = cirepo.save(currentCarImage);
+		return new ResponseEntity<>(savedImage.getImageId(), HttpStatus.CREATED);
 
 	}
 

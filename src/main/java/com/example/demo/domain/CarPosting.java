@@ -88,7 +88,21 @@ public class CarPosting {
     }
 
     public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
-            String category, String photoUrl, User owner) {
+            String category, String photoUrl, User owner, CarImage carpostimage ) {
+        this.price = price;
+        this.description = description;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.registeredDate = registeredDate;
+        this.mileage = mileage;
+        this.category = category;
+        this.photoUrl = photoUrl;
+        this.owner = owner;
+        this.carpostimage = carpostimage;
+    }
+
+    public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
+    String category, String photoUrl, User owner) {
         this.price = price;
         this.description = description;
         this.brand = brand;

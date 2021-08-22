@@ -9,5 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface CarImageRepository extends JpaRepository<CarImage,Integer> {
 
+    public CarImage findByImageId(int id);
+
+
 
 }
