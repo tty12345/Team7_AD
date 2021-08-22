@@ -136,7 +136,8 @@ public class postController {
 			CarPosting newcarPosting2 = cprepo.save(newCarPosting);
 			newcarPosting2.setCarPostImage(this.currentImage);
 			cprepo.save(newcarPosting2);
-	
+			this.currentImage.setCarpost(newcarPosting2);
+			cirepo.save(this.currentImage);
 			// try
 			// 	byte[] photoByte = file.getBytes();
 			// 	System.out.println(photoByte);
