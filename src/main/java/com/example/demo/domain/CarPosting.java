@@ -23,6 +23,8 @@ public class CarPosting {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int postId;
     private int price;
+    private int depreciation;
+    private int priceEstimate;
     private String description;
     private String brand;
     private int engineCapacity;
@@ -30,6 +32,7 @@ public class CarPosting {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date registeredDate;
+    private int age;
     private int mileage;
     private String category;
     private String photoUrl;
@@ -52,11 +55,13 @@ public class CarPosting {
         super();
     }
 
-    public CarPosting(int postId, int price, String description, String brand, int engineCapacity, Date registeredDate,
-            int mileage, String category, String photoUrl, int views, List<User> users, User owner,
-            List<User> history) {
+    public CarPosting(int postId, int price, int priceEstimate, int depreciation, String description, String brand,
+            int engineCapacity, Date registeredDate, int mileage, String category, String photoUrl, int views,
+            List<User> users, User owner, List<User> history) {
         this.postId = postId;
         this.price = price;
+        this.priceEstimate = priceEstimate;
+        this.depreciation = depreciation;
         this.description = description;
         this.brand = brand;
         this.engineCapacity = engineCapacity;
@@ -83,6 +88,16 @@ public class CarPosting {
         this.owner = owner;
     }
 
+    // for the price estimate machine learning model
+    public CarPosting(int depreciation, String brand, int engineCapacity, int age, int mileage, String category) {
+        this.depreciation = depreciation;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.age = age;
+        this.mileage = mileage;
+        this.category = category;
+    }
+
     public int getPostId() {
         return postId;
     }
@@ -97,6 +112,22 @@ public class CarPosting {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getDepreciation() {
+        return depreciation;
+    }
+
+    public void setDepreciation(int depreciation) {
+        this.depreciation = depreciation;
+    }
+
+    public int getPriceEstimate() {
+        return priceEstimate;
+    }
+
+    public void setPriceEstimate(int priceEstimate) {
+        this.priceEstimate = priceEstimate;
     }
 
     public String getDescription() {
@@ -129,6 +160,14 @@ public class CarPosting {
 
     public void setRegisteredDate(Date registeredDate) {
         this.registeredDate = registeredDate;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public int getMileage() {

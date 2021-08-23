@@ -21,10 +21,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
+@EnableEurekaClient
 public class MainApplication {
 
 	@Autowired
@@ -44,9 +46,9 @@ public class MainApplication {
 
 	public static void main(String[] args) throws ParseException {
 		SpringApplication.run(MainApplication.class, args);
-		//comment1
+		// comment1
 	}
-	
+
 	@Bean
 	CommandLineRunner runner() {
 		return args -> {
@@ -54,8 +56,8 @@ public class MainApplication {
 			SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 			String Pass = sCryptPasswordEncoder.encode("tin");
 			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
-			User u1 = new User("tin",Pass, UserType.BUYER);
-			User u2 = new User("cherwah",Pass1, UserType.SELLER);
+			User u1 = new User("tin", Pass, UserType.BUYER);
+			User u2 = new User("cherwah", Pass1, UserType.SELLER);
 			urepo.save(u1);
 			urepo.save(u2);
 
