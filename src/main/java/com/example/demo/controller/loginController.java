@@ -1,65 +1,57 @@
 package com.example.demo.controller;
 
 import javax.servlet.http.HttpSession;
-
-import com.example.demo.domain.User;
-import com.example.demo.domain.UserType;
-import com.example.demo.service.UserService;
-
+import com.example.demo.domain.*;
+import com.example.demo.repo.*;
+import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@CrossOrigin(origins= "http://localhost:3000")
+@RestController
+@RequestMapping("/api")
 public class loginController {
 		
 	@Autowired
+	CarPostService cpservice;
+	
+	@Autowired
+	OfferRepository orepo;
+	
+	@Autowired
 	UserService uservice;
-		
+	
 	SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 	
-	@RequestMapping("/dash")
-	public String dash(){
-		return "dashboard";
+	@GetMapping("/getOne/{id}")
+    public CarPosting getCar(@PathVariable("id") Integer id){
+		return cpservice.findCarPostById(id);
 	}
-
-	@RequestMapping("/login")
-	public String loginForm(Model model) {
-		User u = new User();
-		model.addAttribute("user", u);
-		return "login";
-	}
-		
+	@PostMapping("/saveOffer")
+    public void createOffer(@RequestBody Offer offer){
+		orepo.save(new Offer(offer.getOffer()));
+    }
+	
 	@PostMapping("/authenticate")
-	public String authenticate(@ModelAttribute("user")User user, HttpSession session, Model model) {
-		if (authenticateUser(user))
-		{
+	public ResponseEntity<HttpStatus> authenticateUser(@RequestBody User user, HttpSession session){
+		if (authenticateUser(user)){
 			User loggeduser = uservice.findUserByUsername(user.getUsername());
-			model.addAttribute("name", loggeduser.getUsername());
 			
 			if(loggeduser.getRole() == UserType.USER)
 				session.setAttribute("user",loggeduser);
 			else
 				session.setAttribute("admin", loggeduser);
 			
-			return "index";
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		else
-			return "login";
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
-		
-	@RequestMapping("/logout")
-	public String logout(HttpSession session) {
-		session.removeAttribute("user");
-		session.removeAttribute("admin");
-		return "index";
-	}
-		
-	public boolean authenticateUser(User user) {
+	
+	private boolean authenticateUser(User user) {
 		User username_object = uservice.findUserByUsername(user.getUsername());
 		if (username_object == null)
 			return false;
@@ -67,20 +59,34 @@ public class loginController {
 			return (sCryptPasswordEncoder.matches(user.getPassword(),username_object.getPassword()));
 	}
 	
-	@RequestMapping("/signupform")
-	public String showform(Model model) {
-		User user = new User();
-		model.addAttribute("user", user);
-		return "signup_form";
+	@GetMapping("/checkloggedin")
+	@ResponseBody
+	public String checklogin(HttpSession session){
+		if (session.getAttribute("user") != null || session.getAttribute("admin") != null)
+			return "true";
+		else
+			return "false";
+	}
+	
+	// unfinished in react part
+	@PostMapping("/logout")
+	public ResponseEntity<HttpStatus> logout(HttpSession session){
+		session.removeAttribute("user");
+		session.removeAttribute("admin");
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/signup")
+	public ResponseEntity<HttpStatus> createUser(@RequestBody User user){
+		try {
+			String Pass = sCryptPasswordEncoder.encode(user.getPassword());
+			uservice.save(new User(user.getUsername(), Pass, UserType.USER));
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		}
 	}
 
-	@PostMapping("/signup")
-	public String signup(@ModelAttribute("user")User user, Model model) {
-		String pass = sCryptPasswordEncoder.encode(user.getPassword());
-		user.setPassword(pass);
-		uservice.save(user);
-		model.addAttribute("user", user);
-		return "forward:/authenticate";
-	}
 }
 
