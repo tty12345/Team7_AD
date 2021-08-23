@@ -2,15 +2,19 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpSession;
 
+import com.example.demo.domain.CarImage;
 import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Offer;
 import com.example.demo.domain.Preference;
+import com.example.demo.domain.SearchObject;
 import com.example.demo.domain.User;
+import com.example.demo.repo.CarImageRepository;
+import com.example.demo.repo.CarPostRepository;
+import com.example.demo.repo.OfferRepository;
 import com.example.demo.service.CarPostService;
 import com.example.demo.service.NotificationService;
 import com.example.demo.service.OfferService;
@@ -18,20 +22,21 @@ import com.example.demo.service.PreferenceService;
 import com.example.demo.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.servlet.http.HttpSession;
-
-
-@Controller
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+@RestController
 @RequestMapping("/post")
+@CrossOrigin(origins = "http://localhost:3000")
 public class postController {
 
 	@Autowired
@@ -44,6 +49,12 @@ public class postController {
 	NotificationService nservice;
 	@Autowired
 	private PreferenceService prfservice;
+	@Autowired
+	private OfferRepository orepo;
+	@Autowired
+	CarImageRepository cirepo;
+	@Autowired
+	CarPostRepository cprepo;
 
 	@Autowired
 	public void setPrefService(PreferenceService prfservice) {
@@ -52,10 +63,18 @@ public class postController {
 
 
 
+	@GetMapping("/getOne/{id}")
+    public CarPosting getCar(@PathVariable("id") Integer id){
+		return cpservice.findCarPostById(id);
+	}
 
-    
 	@GetMapping("/addPost")
-	public String showForm(Model model) {
+	public String showForm(Model model, HttpSession session) {
+		if (session.getAttribute("seller") == null)
+			return "forward:/login";
+		else if (session.getAttribute("buyer") != null)
+			return "index";
+
 		CarPosting carpost = new CarPosting();
 		model.addAttribute("carpost", carpost);
 		return "car_post_form";
@@ -123,28 +142,59 @@ public class postController {
 					//return "notification";
 				}
 			}
+	// Save car's details
+	@PostMapping("/savePost/{id}")
+	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, Model model, @PathVariable("id") Integer imgId) {
 
-		cpservice.save(carpost);
-		return "forward:/post/listPost";
+		try {
+			//find the current logged in
+			User user = uservice.finduserById(1);
+
+			//Instatiate a new carpost from the object received from client side
+			CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), carpost.getBrand(),
+					carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(),
+					carpost.getCategory(), carpost.getPhotoUrl(), user);
+
+			//set this post to the user
+			List<CarPosting> newpostList = new ArrayList<CarPosting>();
+			newpostList.add(newCarPosting);
+			user.setPostings(newpostList);
+			uservice.save(user);
+			List<User> existingList = newCarPosting.getUsers();
+			existingList.add(user);
+			carpost.setOwner(user);
+
+			//set car image to the post
+			CarImage img1 = cirepo.findByImageId(imgId);
+			carpost.setCarPostImage(img1);
+			CarPosting newcarPosting2 = cprepo.save(carpost);
+			img1.setCarpost(carpost);
+			cirepo.save(img1);
+
+			return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+		}
+
 	}
 
-	// show all cars
-	@RequestMapping("/listPost")
-	public String listCarPost(Model model, @RequestParam Map<String, String> allParams) {
+	@PostMapping("/listPost")
+	public List<CarPosting> listCarPost(@RequestBody SearchObject searchobject) {
 
-		// on first run, value = to null
-		// if serach without any value, the value will be = to "". So during first
-		// search, set to ""
-		// set brand
-		String brand = allParams.get("brand");
-		if (brand == "")
+
+		String brand = searchobject.getBrand();
+		String priceLabel = searchobject.getPrice();
+		String description = searchobject.getDescription();
+		
+		//set brand
+		if (searchobject.getBrand() == "")
 			brand = null;
-		String description = allParams.get("description");
+
+		//set description
 		if (description == "")
 			description = null;
 
 		// set price range
-		String priceLabel = allParams.get("price");
 		int minPrice = 0;
 		int maxPrice = 99999999;
 		if (priceLabel != null && priceLabel != "") {
@@ -166,12 +216,15 @@ public class postController {
 		// depending on which field is entered, do the corresponding query
 		// if all null, display all
 		if (brand == null && maxPrice == 0 && description == null)
-			model.addAttribute("carpost", cpservice.findAll());
+			return cpservice.findAll();
 
 		else
-			model.addAttribute("carpost", cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description));
-		
-		return "list_car";
+			return cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description);
+	}
+
+	@GetMapping("/listPost2")
+	public List<CarPosting> listCarPost(){
+		return cpservice.findAll();
 	}
 
 	@GetMapping("/recommended")
@@ -211,29 +264,44 @@ public class postController {
 	public String offer(Model model, @PathVariable("id") Integer id) {
 		CarPosting carpost = cpservice.findCarPostById(id);
 		model.addAttribute("carpost", carpost);
-		
-		//increment number of views for a car
+
+		// increment number of views for a car
 		carpost.setViews(carpost.getViews() + 1);
 		cpservice.save(carpost);
 		return "detailsPage";
 	}
 	
-	@PostMapping("/saveOffer/{id}")
-	public String leaveOffer(@PathVariable("id") Integer id, @RequestParam("offer") Integer offer) {
-		User user1 = uservice.finduserById(1);
-		CarPosting carposting1 = cpservice.findCarPostById(id);
 
-		Offer newOffer = new Offer(offer, user1, carposting1);
-		oservice.save(newOffer);
+	@PostMapping("/saveOffer")
+    public ResponseEntity<Offer> createOffer(@RequestBody Offer offer){
+        try {
+            Offer u = orepo.save(new Offer(offer.getOffer()));
+            return new ResponseEntity<>(u, HttpStatus.CREATED);
+        }
+        catch(Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+        }
 
-		Notifications notification1 = new Notifications("New Offer", user1, "An offer of " + "$" + newOffer.getOffer()
-				+ " has been made for your post " + carposting1.getPostId() + "!");
-		nservice.save(notification1);
 
-		user1.getNotifications().add(notification1);
-		uservice.save(user1);
 
-		return "redirect:/post/listPost";
+    }
+
+	@PostMapping("/saveImage")
+	public ResponseEntity<Integer> saveImage (@RequestParam("photoParam") MultipartFile file, HttpSession session){
+		
+		CarImage currentCarImage = new CarImage();
+		try{
+		currentCarImage.setCarpostImage(file.getBytes());
+		currentCarImage.setName(file.getName());
+		currentCarImage.setType(file.getContentType());
+		}
+
+		catch(Exception e){
+			System.out.println(e);
+		};
+		CarImage savedImage = cirepo.save(currentCarImage);
+		return new ResponseEntity<>(savedImage.getImageId(), HttpStatus.CREATED);
+
 	}
 
 	// @GetMapping("/populate")
@@ -257,11 +325,11 @@ public class postController {
 	// return "forward:/post/listPost";
 	// }
 	@RequestMapping("/notification")
-    public String createsNotification(Model model) {
-		Notifications ntf=new Notifications("New Arrival that matches your preference");
-    	model.addAttribute("ntf",ntf);
-    	return "notification";
-    }
+	public String createNotification(Model model) {
+		Notifications ntf = new Notifications("New Arrival that matches your preference");
+		model.addAttribute("ntf", ntf);
+		return "notification";
+	}
 
 }
 

@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,49 +12,66 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+      property = "postId")
 public class CarPosting {
 
-    @Id 
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int postId;
     private int price;
     private String description;
     private String brand;
     private int engineCapacity;
-    
+
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date registeredDate;
     private int mileage;
     private String category;
     private String photoUrl;
-    private int views; 
+    private int views;
 
-    //likers
+    @OneToOne(mappedBy = "carpost")
+    private CarImage carpostimage;
+
+    // likers
     @ManyToMany
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     @ManyToOne
+    // @JsonBackReference
     private User owner;
 
     @OneToMany(mappedBy = "post")
-    private List<Offer> offers;
+    private List<Offer> offers = new ArrayList<>();
 
     @ManyToMany
-    private List<User> history;
+    private List<User> history = new ArrayList<>();
 
     public CarPosting() {
         super();
     }
 
+    public CarPosting(CarImage carpostimage){
+        super();
+        this.carpostimage=carpostimage;
+        
+    }
+
     public CarPosting(int postId, int price, String description, String brand, int engineCapacity, Date registeredDate,
-            int mileage, String category, String photoUrl, int views, List<User> users, User owner, List<User> history) {
+            int mileage, String category, String photoUrl, int views, List<User> users, User owner,
+            List<User> history) {
         this.postId = postId;
         this.price = price;
         this.description = description;
@@ -68,8 +87,22 @@ public class CarPosting {
         this.history = history;
     }
 
-    public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage, String category, String photoUrl,
-            User owner) {
+    public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
+            String category, String photoUrl, User owner, CarImage carpostimage ) {
+        this.price = price;
+        this.description = description;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.registeredDate = registeredDate;
+        this.mileage = mileage;
+        this.category = category;
+        this.photoUrl = photoUrl;
+        this.owner = owner;
+        this.carpostimage = carpostimage;
+    }
+
+    public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
+    String category, String photoUrl, User owner) {
         this.price = price;
         this.description = description;
         this.brand = brand;
@@ -80,6 +113,20 @@ public class CarPosting {
         this.photoUrl = photoUrl;
         this.owner = owner;
     }
+
+    public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
+    String category, String photoUrl, CarImage carpostimage, User owner) {
+        this.price = price;
+        this.description = description;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.registeredDate = registeredDate;
+        this.mileage = mileage;
+        this.category = category;
+        this.photoUrl = photoUrl;
+        this.carpostimage = carpostimage;
+        this.owner = owner;
+}
 
     public int getPostId() {
         return postId;
@@ -161,6 +208,7 @@ public class CarPosting {
         this.views = views;
     }
 
+    // @JsonIgnore
     public List<User> getUsers() {
         return users;
     }
@@ -168,7 +216,7 @@ public class CarPosting {
     public void setUsers(List<User> users) {
         this.users = users;
     }
-
+    // @JsonIgnore
     public User getOwner() {
         return owner;
     }
@@ -176,7 +224,7 @@ public class CarPosting {
     public void setOwner(User owner) {
         this.owner = owner;
     }
-
+    // @JsonIgnore
     public List<User> getHistory() {
         return history;
     }
@@ -184,7 +232,7 @@ public class CarPosting {
     public void setHistory(List<User> history) {
         this.history = history;
     }
-
+    // @JsonIgnore
     public List<Offer> getOffers() {
         return offers;
     }
@@ -193,22 +241,21 @@ public class CarPosting {
         this.offers = offers;
     }
 
-	@Override
+    public CarImage getCarPostImage() {
+        return carpostimage;
+    }
+
+    public void setCarPostImage(CarImage carpostimage) {
+        this.carpostimage = carpostimage;
+    }
+
+    @Override
     public String toString() {
-        return "{" +
-            " postId='" + getPostId() + "'" +
-            ", price='" + getPrice() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", brand='" + getBrand() + "'" +
-            ", engineCapacity='" + getEngineCapacity() + "'" +
-            ", reisgteredDate='" + getRegisteredDate() + "'" +
-            ", mileage='" + getMileage() + "'" +
-            ", category='" + getCategory() + "'" +
-            ", photoUrl='" + getPhotoUrl() + "'" +
-            ", views='" + getViews() + "'" +
-            ", user='" + getUsers() + "'" +
-            ", history='" + getHistory() + "'" +
-            "}";
+        return "{" + " postId='" + getPostId() + "'" + ", price='" + getPrice() + "'" + ", description='"
+                + getDescription() + "'" + ", brand='" + getBrand() + "'" + ", engineCapacity='" + getEngineCapacity()
+                + "'" + ", reisgteredDate='" + getRegisteredDate() + "'" + ", mileage='" + getMileage() + "'"
+                + ", category='" + getCategory() + "'" + ", photoUrl='" + getPhotoUrl() + "'" + ", views='" + getViews()
+                + "'" + ", user='" + getUsers() + "'" + ", history='" + getHistory() + "'" + "}";
     }
 
 }

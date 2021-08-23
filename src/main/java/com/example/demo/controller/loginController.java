@@ -22,6 +22,11 @@ public class loginController {
 		
 	SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 	
+	@RequestMapping("/dash")
+	public String dash(){
+		return "dashboard";
+	}
+
 	@RequestMapping("/login")
 	public String loginForm(Model model) {
 		User u = new User();
@@ -41,7 +46,7 @@ public class loginController {
 			else
 				session.setAttribute("admin", loggeduser);
 			
-			return "forward:/post/listPost";
+			return "index";
 		}
 		else
 			return "login";
@@ -62,7 +67,7 @@ public class loginController {
 			return (sCryptPasswordEncoder.matches(user.getPassword(),username_object.getPassword()));
 	}
 	
-	@RequestMapping("signupform")
+	@RequestMapping("/signupform")
 	public String showform(Model model) {
 		User user = new User();
 		model.addAttribute("user", user);
