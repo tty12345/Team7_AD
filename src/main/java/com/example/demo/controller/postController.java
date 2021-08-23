@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +10,7 @@ import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Offer;
 import com.example.demo.domain.Preference;
+import com.example.demo.domain.SearchObject;
 import com.example.demo.domain.User;
 import com.example.demo.repo.CarImageRepository;
 import com.example.demo.repo.CarPostRepository;
@@ -134,23 +134,23 @@ public class postController {
 
 	}
 
-	// show all cars
-	@RequestMapping("/listPost")
-	public String listCarPost(Model model, @RequestParam Map<String, String> allParams) {
+	@PostMapping("/listPost")
+	public List<CarPosting> listCarPost(@RequestBody SearchObject searchobject) {
 
-		// on first run, value = to null
-		// if serach without any value, the value will be = to "". So during first
-		// search, set to ""
-		// set brand
-		String brand = allParams.get("brand");
-		if (brand == "")
+
+		String brand = searchobject.getBrand();
+		String priceLabel = searchobject.getPrice();
+		String description = searchobject.getDescription();
+		
+		//set brand
+		if (searchobject.getBrand() == "")
 			brand = null;
-		String description = allParams.get("description");
+
+		//set description
 		if (description == "")
 			description = null;
 
 		// set price range
-		String priceLabel = allParams.get("price");
 		int minPrice = 0;
 		int maxPrice = 99999999;
 		if (priceLabel != null && priceLabel != "") {
@@ -172,12 +172,10 @@ public class postController {
 		// depending on which field is entered, do the corresponding query
 		// if all null, display all
 		if (brand == null && maxPrice == 0 && description == null)
-			model.addAttribute("carpost", cpservice.findAll());
+			return cpservice.findAll();
 
 		else
-			model.addAttribute("carpost", cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description));
-
-		return "list_car";
+			return cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description);
 	}
 
 	@GetMapping("/listPost2")
@@ -227,34 +225,6 @@ public class postController {
 		return "detailsPage";
 	}
 	
-	// @PostMapping("/saveOffer/{id}")
-	// public String leaveOffer(@PathVariable("id") Integer id, @RequestParam("offer") Integer offer) {
-	// 	User user1 = uservice.finduserById(1);
-	// 	CarPosting carposting1 = cpservice.findCarPostById(id);
-
-	// 	Offer newOffer = new Offer(offer, user1, carposting1);
-	// 	oservice.save(newOffer);
-
-	// 	Notifications notification1 = new Notifications("New Offer", user1, "An offer of " + "$" + newOffer.getOffer()
-	// 			+ " has been made for your post " + carposting1.getPostId() + "!");
-	// 	nservice.save(notification1);
-
-	// 	user1.getNotifications().add(notification1);
-	// 	uservice.save(user1);
-
-	// 	return "redirect:/post/listPost";
-	// }
-
-	// @PostMapping(value = "/saveOffer")
-	// public ResponseEntity<Offer> createOffer(@RequestBody Offer offer) {
-	// 	try {
-	// 		System.out.println(offer);
-	// 		Offer newOffer = orepo.save(offer);
-	// 		return new ResponseEntity<>(newOffer, HttpStatus.CREATED);
-	// 	} catch (Exception e) {
-	// 		return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
-	// 	}
-	// }
 
 	@PostMapping("/saveOffer")
     public ResponseEntity<Offer> createOffer(@RequestBody Offer offer){
