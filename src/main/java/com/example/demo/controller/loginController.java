@@ -59,9 +59,9 @@ public class loginController {
 			}
 			else
 				return "index";
-			}
-			else
-				return "login";
+		}
+		else
+			return "login";
 	}
 		
 	@RequestMapping("/logout")

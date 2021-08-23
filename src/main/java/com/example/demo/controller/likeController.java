@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 import com.example.demo.domain.CarPosting;
@@ -26,9 +27,10 @@ public class likeController {
     CarPostService cpservice;
 
 	@GetMapping("/listFavourites/{id}")
-	public String listFavouritesByUser(Model model, @PathVariable("id") Integer id) {
+	public String listFavouritesByUser(Model model, @PathVariable("id") Integer id,HttpSession session) {
 
 		List<CarPosting> favouriteList = uservice.findFavouritesByUserId(id);
+        session.setAttribute("returnLike", "/like/listFavourites/"+id);
 
 		model.addAttribute("carpost", favouriteList);
 		return "list_favourites.html";
@@ -82,12 +84,24 @@ public class likeController {
             userId=(Integer)session.getAttribute("userId");
             User u= uservice.finduserById(userId);
             u.getFavourites().remove(carposting);
+            if(session.getAttribute("returnLike")!=null){
+                String returnLike = (String) session.getAttribute("returnLike");
+				session.removeAttribute("returnLike");
+				return "redirect:"+returnLike;
+
+            }
+            else{
+                model.addAttribute("carpost",carposting);
+                return "detailsPage.html";
+
+            }
+
         }
-        else if(session.getAttribute("user")==null){
+        else
             return "forward:/login";
-        }
-        model.addAttribute("carpost",carposting);
-        return "detailsPage.html";
+        
+       
+       
 
 
 
