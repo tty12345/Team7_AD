@@ -51,11 +51,8 @@ public class Notifications {
 
     
 
-
-
-
-    public Notifications(String type) {
-        this.type = type;
+    public Notifications(String msg) {
+        this.Msg = msg;
     }
 
 

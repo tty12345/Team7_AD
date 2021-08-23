@@ -6,13 +6,15 @@ import com.example.demo.domain.Notifications;
 import com.example.demo.service.NotificationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/notification")
 public class notificationController {
 	@Autowired
@@ -26,10 +28,18 @@ public class notificationController {
 		return "list_notifications.html";
 	}
 
+	// @GetMapping("/listNotification")
+	// public String listNotifications(Model model) {
+	// 	model.addAttribute("notifications", nservice.findAll());
+	// 	return "list_notifications.html";
+	// }
+
 	@GetMapping("/listNotification")
-	public String listNotifications(Model model) {
-		model.addAttribute("notifications", nservice.findAll());
-		return "list_notifications.html";
+	public List<Notifications> listNotifications() {
+
+		System.out.println(nservice.findAll());
+		return nservice.findAll();
 	}
+	
 
 }

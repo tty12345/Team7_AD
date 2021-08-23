@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.demo.domain.CarPosting;
+import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
 import com.example.demo.repo.CarPostRepository;
@@ -115,6 +116,11 @@ public class MainApplication {
 
 			u1.setPostings(cpl1);
 			urepo.save(u1);
+
+			nrepo.save(new Notifications("Hellow"));
+			nrepo.save(new Notifications("We"));
+			nrepo.save(new Notifications("Are"));
+			nrepo.save(new Notifications("Noobs!"));
 		};
 	}
 
