@@ -41,6 +41,7 @@ public class CarPosting {
     private String category;
     private String photoUrl;
     private int views;
+    private int userId;
 
     @OneToOne(mappedBy = "carpost")
     private CarImage carpostimage;
@@ -256,6 +257,10 @@ public class CarPosting {
                 + "'" + ", reisgteredDate='" + getRegisteredDate() + "'" + ", mileage='" + getMileage() + "'"
                 + ", category='" + getCategory() + "'" + ", photoUrl='" + getPhotoUrl() + "'" + ", views='" + getViews()
                 + "'" + ", user='" + getUsers() + "'" + ", history='" + getHistory() + "'" + "}";
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
 }

@@ -36,8 +36,6 @@ public class notificationController {
 
 	@GetMapping("/listNotification")
 	public List<Notifications> listNotifications() {
-
-		System.out.println(nservice.findAll());
 		return nservice.findAll();
 	}
 	

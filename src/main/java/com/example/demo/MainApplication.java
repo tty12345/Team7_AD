@@ -1,21 +1,26 @@
 package com.example.demo;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.example.demo.domain.CarImage;
 import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
+import com.example.demo.domain.UserType;
+import com.example.demo.repo.CarImageRepository;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.NotificationRepository;
 import com.example.demo.repo.OfferRepository;
 import com.example.demo.repo.PreferenceRepository;
 import com.example.demo.repo.UserRepository;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -42,6 +47,9 @@ public class MainApplication {
 	@Autowired
 	NotificationRepository nrepo;
 
+	@Autowired
+	CarImageRepository cirepo;
+
 	public static void main(String[] args) throws ParseException {
 		SpringApplication.run(MainApplication.class, args);
 		//comment1
@@ -54,8 +62,8 @@ public class MainApplication {
 			SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 			String Pass = sCryptPasswordEncoder.encode("tin");
 			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
-			User u1 = new User("tin",Pass);
-			User u2 = new User("cherwah",Pass1);
+			User u1 = new User("tin",Pass, UserType.USER);
+			User u2 = new User("cherwah",Pass1, UserType.USER);
 			urepo.save(u1);
 			urepo.save(u2);
 
@@ -79,8 +87,15 @@ public class MainApplication {
 			Date date7 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate7);
 			Date date8 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate8);
 
+			byte[] imgByte = FileUtils.readFileToByteArray(new File("C:/Users/Teck Yi/Desktop/orochimon-739x1024.jpg"));
+			CarImage img1 = new CarImage();
+			img1.setCarpostImage(imgByte);
+			CarImage img2 =  cirepo.save(img1);
+
 			CarPosting post1 = new CarPosting(65000, "Swift 1.0A Turbo GLX", "Suzuki", 998, date1, 25000, "Hatchback",
 					"https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg", u1);
+			post1.setCarPostImage(img1);
+			
 			CarPosting post2 = new CarPosting(14998, "Edix 2.0A", "Honda", 1998, date2, 155387, "Hatchback",
 					"https://i.i-sgcm.com/cars_used/202107/1018213_small.jpg", u1);
 			CarPosting post3 = new CarPosting(52515, "3 HB 1.5A Deluxe", "Mazda	", 1496, date3, 93000, "Hatchback",
@@ -103,6 +118,8 @@ public class MainApplication {
 			cpRepo.save(post6);
 			cpRepo.save(post7);
 			cpRepo.save(post8);
+			img2.setCarpost(post1);
+			cirepo.save(img2);
 
 			List<CarPosting> cpl1 = new ArrayList<CarPosting>();
 			cpl1.add(post1);

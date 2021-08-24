@@ -26,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -81,35 +82,44 @@ public class postController {
 		return "car_post_form";
 	}
 
-	@GetMapping("/deletePost/{id}")
-	public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
+	// @GetMapping("/deletePost/{id}")
+	// public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
+	// 	CarPosting carpost = cpservice.findCarPostById(id);
+	// 	List<User> users = carpost.getUsers();
+
+	// 	for (User user : users) {
+	// 		Notifications notification = new Notifications();
+	// 		notification.setType("delete");
+	// 		notification.setUser(user);
+	// 		user.notifications.add(notification);
+	// 	}
+
+	// 	carpost.setOwner(null);
+	// 	cpservice.delete(carpost);
+	// 	return "forward:/post/listPost";
+	// }
+
+	@DeleteMapping("/deletePost/{id}")
+	public ResponseEntity<HttpStatus> deleteCarPost( @PathVariable("id") Integer id) {
 		CarPosting carpost = cpservice.findCarPostById(id);
-		List<User> users = carpost.getUsers();
-
-		for (User user : users) {
-			Notifications notification = new Notifications();
-			notification.setType("delete");
-			notification.setUser(user);
-			user.notifications.add(notification);
-		}
-
 		carpost.setOwner(null);
+		if(carpost.getCarPostImage() != null)
+			cirepo.delete(carpost.getCarPostImage());
 		cpservice.delete(carpost);
-		return "forward:/post/listPost";
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	// Save car's details
 	@PostMapping("/savePost/{id}")
-	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, Model model, @PathVariable("id") Integer imgId) {
+	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, @PathVariable("id") Integer imgId) {
 
 		try {
 			//find the current logged in
-			User user = uservice.finduserById(1);
-
+			User user = uservice.finduserById(carpost.getUserId());
 			//Instatiate a new carpost from the object received from client side
 			CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), carpost.getBrand(),
-					carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(),
-					carpost.getCategory(), carpost.getPhotoUrl(), user);
+			carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(),
+			carpost.getCategory(), carpost.getPhotoUrl(), user);
 
 			//set this post to the user
 			List<CarPosting> newpostList = new ArrayList<CarPosting>();
@@ -171,6 +181,7 @@ public class postController {
 
 		// depending on which field is entered, do the corresponding query
 		// if all null, display all
+
 		if (brand == null && maxPrice == 0 && description == null)
 			return cpservice.findAll();
 
@@ -283,6 +294,12 @@ public class postController {
 		Notifications ntf = new Notifications("New Arrival that matches your preference");
 		model.addAttribute("ntf", ntf);
 		return "notification";
+	}
+
+	@GetMapping("/getowncars/{id}")
+	public List<CarPosting> getOwnCar(@PathVariable("id") Integer id){
+		User user = uservice.finduserById(id);
+		return user.getPostings();
 	}
 
 }

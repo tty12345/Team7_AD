@@ -36,19 +36,20 @@ public class loginController {
     }
 	
 	@PostMapping("/authenticate")
-	public ResponseEntity<HttpStatus> authenticateUser(@RequestBody User user, HttpSession session){
+	public ResponseEntity<Integer> authenticateUser(@RequestBody User user, HttpSession session){
 		if (authenticateUser(user)){
 			User loggeduser = uservice.findUserByUsername(user.getUsername());
-			
+
 			if(loggeduser.getRole() == UserType.USER)
-				session.setAttribute("user",loggeduser);
+				session.setAttribute("user", loggeduser.getUserId());
+		
 			else
-				session.setAttribute("admin", loggeduser);
-			
-			return new ResponseEntity<>(HttpStatus.OK);
+				session.setAttribute("admin", loggeduser.getUserId());
+
+			return new ResponseEntity<>(loggeduser.getUserId(),HttpStatus.OK);
 		}
 		else
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(-1,HttpStatus.UNAUTHORIZED);
 	}
 	
 	private boolean authenticateUser(User user) {
@@ -78,14 +79,14 @@ public class loginController {
 	
 	@PostMapping("/signup")
 	public ResponseEntity<HttpStatus> createUser(@RequestBody User user){
-		try {
-			String Pass = sCryptPasswordEncoder.encode(user.getPassword());
-			uservice.save(new User(user.getUsername(), Pass, UserType.USER));
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		}
-		catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-		}
+	 try {
+	  String Pass = sCryptPasswordEncoder.encode(user.getPassword());
+	  uservice.save(new User(user.getUsername(), Pass, UserType.USER));
+	  return new ResponseEntity<>(HttpStatus.CREATED);
+	 }
+	 catch(Exception e) {
+	  return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+	 }
 	}
 
 }
