@@ -106,42 +106,42 @@ public class postController {
 	}
 
 	// Save car's details after editing
-	@GetMapping("/savePost")
-	public String saveCarPost(@ModelAttribute("carpost") @Valid CarPosting carpost, BindingResult bindingResult,
-			Model model, HttpSession session) {
+	// @GetMapping("/savePost")
+	// public String saveCarPost(@ModelAttribute("carpost") @Valid CarPosting carpost, BindingResult bindingResult,
+	// 		Model model, HttpSession session) {
 
-		if (bindingResult.hasErrors()) {
-			return "car_post_form";
-		}
+	// 	if (bindingResult.hasErrors()) {
+	// 		return "car_post_form";
+	// 	}
 
-		// checks if this is a new post
-		if (carpost.getUsers() == null) {
-			// add code to set user as whoever is logged in
-			//User userPref=(User) session.getAttribute("user");
-			User user = uservice.finduserById(1);
-			List<CarPosting> newpost = new ArrayList<CarPosting>();
-			newpost.add(carpost);
-			user.setPostings(newpost);
-			//userPref.setPostings(newpost);
-			uservice.save(user);
-			//uservice.save(userPref);
-			carpost.getUsers().add(user);
-			//carpost.getUsers().add(userPref);
-			carpost.setOwner(user);
-			//carpost.setOwner(userPref);
-			Preference preference=user.getPreference();
-				if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
-				preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
-				&& preference.getHighestPrice()<=carpost.getPrice()){
-					Notifications ntf=new Notifications("New Arrival", user, "A new arrival that matches your preference is  "+carpost.getPostId());
-					nservice.save(ntf);
+	// 	// checks if this is a new post
+	// 	if (carpost.getUsers() == null) {
+	// 		// add code to set user as whoever is logged in
+	// 		//User userPref=(User) session.getAttribute("user");
+	// 		User user = uservice.finduserById(1);
+	// 		List<CarPosting> newpost = new ArrayList<CarPosting>();
+	// 		newpost.add(carpost);
+	// 		user.setPostings(newpost);
+	// 		//userPref.setPostings(newpost);
+	// 		uservice.save(user);
+	// 		//uservice.save(userPref);
+	// 		carpost.getUsers().add(user);
+	// 		//carpost.getUsers().add(userPref);
+	// 		carpost.setOwner(user);
+	// 		//carpost.setOwner(userPref);
+	// 		Preference preference=user.getPreference();
+	// 			if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
+	// 			preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
+	// 			&& preference.getHighestPrice()<=carpost.getPrice()){
+	// 				Notifications ntf=new Notifications("New Arrival", user, "A new arrival that matches your preference is  "+carpost.getPostId());
+	// 				nservice.save(ntf);
 
-					user.getNotifications().add(ntf);
-					uservice.save(user);
-					//model.addAttribute("ntf", ntf);
-					//return "notification";
-				}
-			}
+	// 				user.getNotifications().add(ntf);
+	// 				uservice.save(user);
+	// 				//model.addAttribute("ntf", ntf);
+	// 				//return "notification";
+	// 			}
+	// 		}
 	// Save car's details
 	@PostMapping("/savePost/{id}")
 	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, Model model, @PathVariable("id") Integer imgId) {
@@ -170,6 +170,21 @@ public class postController {
 			CarPosting newcarPosting2 = cprepo.save(carpost);
 			img1.setCarpost(carpost);
 			cirepo.save(img1);
+			
+			if(user.getPreference()!=null){
+				Preference preference=user.getPreference();
+				if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
+				preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
+				&& preference.getHighestPrice()<=carpost.getPrice()){
+					Notifications ntf=new Notifications("New Arrival", user, "A new arrival that matches your preference is  "+carpost.getPostId());
+					nservice.save(ntf);
+
+					user.getNotifications().add(ntf);
+					uservice.save(user);
+				
+
+			}
+		}
 
 			return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
 		} catch (Exception e) {
