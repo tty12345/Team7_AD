@@ -29,5 +29,17 @@ public class NotificationServiceImplementation implements NotificationService{
         nrepo.save(notification1);
         
     }
+
+    @Override
+    public void delete(Notifications notification) {
+        nrepo.delete(notification);
+        
+    }
+
+    @Override
+    public Notifications findNotificationById(Integer id) {
+        // TODO Auto-generated method stub
+        return nrepo.findNotificationById(id);
+    }
     
 }

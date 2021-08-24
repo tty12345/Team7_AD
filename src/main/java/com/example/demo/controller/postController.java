@@ -190,8 +190,10 @@ public class postController {
 	}
 
 	@GetMapping("/listPost2")
-	public List<CarPosting> listCarPost(){
-		return cpservice.findAll();
+	public String listCarPost(Model model){
+		
+		model.addAttribute("carpost", cpservice.findAll());
+		return "forward:/list_car";
 	}
 
 	@GetMapping("/recommended")
@@ -208,6 +210,11 @@ public class postController {
 		model.addAttribute("carpost", mostviewed);
 		return "list_car";
 	}
+	// @GetMapping("/listLikedPost/{id}")
+	// public String listLikedCarPost(Model model,@PathVariable("id") Integer id) {
+	// 	model.addAttribute("carpost", cprepo.findCarPostByUserId(id));
+	// 	return "list_likedcar.html";
+	// }
 
 	@GetMapping("/viewOwnPost")
 	public String viewOwnPost(Model model) {

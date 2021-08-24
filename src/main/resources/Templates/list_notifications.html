@@ -6,12 +6,22 @@
 </head>
 <body>
 <header>Notification</header>
+<a href="list_notifications.html" th:href="@{/notification/listNotification}"> Notification</a></td>
 	<table>
-       <tr th:each="notification: ${notifications}">
-			<td th:text=${notification.notificationId}></td>
-			<td th:text=${notification.type}></td>
-			<td th:text=${notification.Msg}></td>
-	   </tr>
+		<tr>
+			<th>Id</th>
+			<th >Type</th>
+			<th >Message</th>
+			
+		</tr>
+        <tr th:each="notifications:${notifications}">
+			<td th:text=${notifications.notificationId}>notificationId</td>
+			<td th:text=${notifications.type}>type</td>
+			<td th:text=${notifications.Msg}>msg</td>
+			
+			<td><a th:href="@{/notification/deleteNotification/}+${notifications.notificationId}" th:text="Delete"> Delete</a></td>
+		</tr>
+       
 	</table>
 	
 </body>

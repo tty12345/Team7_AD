@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Car Posts</title>
+<title>Your Favourites</title>
 <style >
 	.dropdown {
 	  display: inline-block;
@@ -42,13 +42,11 @@
 	  </div>
 	</div>
 
-<header>Car Posts </header>
-
 	<br>
-	<span th:if="${session.user == null and session.admin == null}">
+	<span th:if="${session.seller == null and session.buyer == null}">
 		<a th:href="@{/login}">LOG IN</a>
 	</span>
-	<span th:unless="${session.user == null and session.admin == null}">
+	<span th:unless="${session.seller == null and session.buyer == null}">
 		<a th:href="@{/logout}">LOG OUT</a>
 	</span>
 
@@ -78,11 +76,6 @@
 		</table>
 	</form>
 
-	<a th:href="@{/post/addPost/}"> New Post</a></td>
-	<a th:href="@{/post/viewOwnPost/}"> View Your Post</a></td>
-
-<a href="addPost.html" th:href="@{/post/addPost/}"> New Post</a></td>
-
 	<table>
         <tr>
 			<th>Id</th>
@@ -100,15 +93,14 @@
         <tr th:each="carpost:${carpost}">
 			<td th:text=${carpost.postId}>postId</td>
 			<td th:text=${carpost.price}>price</td>
-			<td><a th:href="@{/test/offer/}+${carpost.postId}" th:text="${carpost.description}"></a></td>
+			<td><a th:href="@{/post/offer/}+${carpost.postId}" th:text="${carpost.description}"></a></td>
 			<td th:text=${carpost.brand}>brand</td>
 			<td th:text=${carpost.engineCapacity}>engineCapacity</td>
 			<td th:text=${carpost.registeredDate}>registeredDate</td>
 			<td th:text=${carpost.mileage}>mileage</td>
 			<td th:text=${carpost.category}>category</td>
 			<td ><img th:src="${carpost.photoUrl}"/></td>
-			<td><a th:href="@{/post/editPost/}+${carpost.postId}" th:text="Edit"> Edit </a></td>
-			<td><a th:href="@{/test/deletePost/}+${carpost.postId}" th:text="Delete"> Delete</a></td>
+			<td><a th:href="@{/like/deleteLike/}+${carpost.postId}" th:text="Delete"> Delete</a></td>
 		</tr>
 	</table>
 	

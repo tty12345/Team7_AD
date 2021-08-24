@@ -55,10 +55,10 @@
         </tr>
         <tr>
             <td>
-               <a th:href="@{/like/addLike/}+${carpost.postId}" th:text="Like"> Like Icon</a>
+               <a th:href="@{/like/deleteLike/}+${carpost.postId}" th:text="DeleteLike"> Click Again To Cancel</a>
             </td>
             <td>
-                <a th:href="@{/like/listFavourites}+${session.userId}" th:text="ShowFavoutites">Show Your Favourites</a>  
+                <a th:href="@{/like/listFavourites/}+${session.userId}" th:text="ShowFavourites">Show Your Favourites</a>
             </td>
         </tr>
 	</table>

@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.demo.domain.CarImage;
+import javax.management.Notification;
+
 import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Preference;
@@ -121,6 +123,11 @@ public class MainApplication {
 			img2.setCarpost(post1);
 			cirepo.save(img2);
 
+			Notifications ntf1=new Notifications("welcome","Welcome to the web!",u1);
+			Notifications ntf2=new Notifications("delete","Your favorite product information has been deleted, please click here for details",u1);
+			nrepo.save(ntf1);
+			nrepo.save(ntf2);
+
 			List<CarPosting> cpl1 = new ArrayList<CarPosting>();
 			cpl1.add(post1);
 			cpl1.add(post2);
@@ -133,6 +140,13 @@ public class MainApplication {
 
 			u1.setPostings(cpl1);
 			urepo.save(u1);
+			
+			List<Notifications> currentNTF = new ArrayList<>();
+			currentNTF.add(ntf1);
+			currentNTF.add(ntf2);
+			u1.setNotifications(currentNTF);
+			urepo.save(u1);
+
 
 			nrepo.save(new Notifications("Hellow"));
 			nrepo.save(new Notifications("We"));
