@@ -3,10 +3,10 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 import com.example.demo.domain.CarPosting;
+import com.example.demo.domain.Notifications;
 import com.example.demo.domain.User;
 import com.example.demo.service.CarPostService;
 import com.example.demo.service.UserService;
@@ -19,29 +19,56 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/like")
-public class likeController {
+@RequestMapping("/test")
+public class testController {
+
     @Autowired
-	UserService uservice;
+	CarPostService cpservice;
     @Autowired
-    CarPostService cpservice;
+    UserService uservice;
 
-	@GetMapping("/listFavourites/{id}")
-	public String listFavouritesByUser(Model model, @PathVariable("id") Integer id,HttpSession session) {
+    @GetMapping("/deletePost/{id}")
+	public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
+		CarPosting carpost = cpservice.findCarPostById(id);
+        if(carpost.getUsers().size()==0){
+            List<User> users=new ArrayList<>();
+            carpost.setUsers(users);
+        }
+		List<User> userlist = carpost.getUsers();
 
-		List<CarPosting> favouriteList = uservice.findFavouritesByUserId(id);
-        session.setAttribute("returnFromLike", "/like/listFavourites/"+id);
+		for (User user : userlist) {
+			Notifications notification = new Notifications();
+			notification.setType("delete");
+			notification.setUser(user);
+            notification.setMsg("One of your favourite carposting was deleted");
+            if(user.getNotifications().size()==0){
+                List<Notifications> notifications=new ArrayList<>();
+                user.setNotifications(notifications);
+            }
+			user.getNotifications().add(notification);
+		}
 
-		model.addAttribute("carpost", favouriteList);
-		return "list_favourites.html";
+		carpost.setOwner(null);
+		cpservice.delete(carpost);
+		return "forward:/test/listPost";
 	}
-    @GetMapping("/listFavourites")
-	public String listFavourites(Model model) {
+    
+    @GetMapping("/listPost")
+	public String listCarPost(Model model){
+		
+		model.addAttribute("carpost", cpservice.findAll());
+		return "list_car.html";
+	}
 
-		List<CarPosting> favouriteList = uservice.findAllFavourites();
+    @GetMapping("/offer/{id}")
+	public String offer(Model model, @PathVariable("id") Integer id) {
+		CarPosting carpost = cpservice.findCarPostById(id);
+		model.addAttribute("carpost", carpost);
 
-		model.addAttribute("carpost", favouriteList);
-		return "list_favourites.html";
+		// increment number of views for a car
+		carpost.setViews(carpost.getViews() + 1);
+		cpservice.save(carpost);
+		return "detailsPage";
 	}
     @GetMapping("/addLike/{id}")
     public String addLike (Model model,@PathVariable("id") int id,HttpSession session){
@@ -75,37 +102,6 @@ public class likeController {
        
         model.addAttribute("carpost", carposting);
         return "detailsPageWithLike.html";
-    }
-    @GetMapping("/deleteLike/{id}")
-    public String deleteLike(Model model,@PathVariable("id") int id,HttpSession session){
-        CarPosting carposting=cpservice.findCarPostById(id);
-        int userId;
-        if(session.getAttribute("user")!=null){
-            userId=(Integer)session.getAttribute("userId");
-            User u= uservice.finduserById(userId);
-            u.getFavourites().remove(carposting);
-            if(session.getAttribute("returnFromLike")!=null){
-                String returnLike = (String) session.getAttribute("returnFromLike");
-				session.removeAttribute("returnFromLike");
-				return "redirect:"+returnLike;
-
-            }
-            else{
-                model.addAttribute("carpost",carposting);
-                return "detailsPage.html";
-
-            }
-
-        }
-        else
-            return "forward:/login";
-        
-       
-       
-
-
-
-
     }
 
 }

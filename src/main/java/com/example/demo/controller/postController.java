@@ -84,18 +84,27 @@ public class postController {
 	@GetMapping("/deletePost/{id}")
 	public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
 		CarPosting carpost = cpservice.findCarPostById(id);
-		List<User> users = carpost.getUsers();
+        if(carpost.getUsers().size()==0){
+            List<User> users=new ArrayList<>();
+            carpost.setUsers(users);
+        }
+		List<User> userlist = carpost.getUsers();
 
-		for (User user : users) {
+		for (User user : userlist) {
 			Notifications notification = new Notifications();
 			notification.setType("delete");
 			notification.setUser(user);
-			user.notifications.add(notification);
+            notification.setMsg("One of your favourite carposting was deleted");
+            if(user.getNotifications().size()==0){
+                List<Notifications> notifications=new ArrayList<>();
+                user.setNotifications(notifications);
+            }
+			user.getNotifications().add(notification);
 		}
 
 		carpost.setOwner(null);
 		cpservice.delete(carpost);
-		return "forward:/post/listPost";
+		return "forward:/test/listPost";
 	}
 
 	// Save car's details
@@ -179,8 +188,10 @@ public class postController {
 	}
 
 	@GetMapping("/listPost2")
-	public List<CarPosting> listCarPost(){
-		return cpservice.findAll();
+	public String listCarPost(Model model){
+		
+		model.addAttribute("carpost", cpservice.findAll());
+		return "forward:/list_car";
 	}
 
 	@GetMapping("/recommended")
