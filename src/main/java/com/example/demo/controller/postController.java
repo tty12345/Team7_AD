@@ -253,9 +253,6 @@ public class postController {
         catch(Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
-
-
-
     }
 
 	@PostMapping("/saveImage")
