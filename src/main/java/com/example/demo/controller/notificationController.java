@@ -44,8 +44,8 @@ public class notificationController {
                 
             }
            
-			List<Notifications> notifications = uservice.findNotificationsByUserId(userId);
-			model.addAttribute("notifications", notifications);
+			// List<Notifications> notifications = uservice.findNotificationsByUserId(userId);
+			// model.addAttribute("notifications", notifications);
            
         }
         else if(session.getAttribute("user")==null){
