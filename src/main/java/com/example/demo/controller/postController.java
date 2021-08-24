@@ -102,10 +102,29 @@ public class postController {
 	@DeleteMapping("/deletePost/{id}")
 	public ResponseEntity<HttpStatus> deleteCarPost( @PathVariable("id") Integer id) {
 		CarPosting carpost = cpservice.findCarPostById(id);
+
+		//get likers
+		List<User> users = carpost.getUsers();
+
+		//unmap and delete
 		carpost.setOwner(null);
 		if(carpost.getCarPostImage() != null)
 			cirepo.delete(carpost.getCarPostImage());
 		cpservice.delete(carpost);
+
+		//send out notification
+		for (User user : users) {
+		List<CarPosting> currentFavourite = user.getFavourites();
+		currentFavourite.remove(carpost);
+		user.setFavourites(currentFavourite);
+		Notifications notification = new Notifications(carpost.getDescription()+"has been deleted!");
+		notification.setType("delete");
+		notification.setUser(user);
+		nservice.save(notification);
+		user.notifications.add(notification);
+		uservice.save(user);
+	 	}
+
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
