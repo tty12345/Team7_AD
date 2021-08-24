@@ -56,8 +56,8 @@ public class CarPostServiceImplementation implements CarPostService {
 
     @Override
     public List<CarPosting> findCarPostsByPreferences(String model, String brand, int engineCapacity,
-            String category) {
-        return cprepo.findCarPostsByPreferences(model, brand, engineCapacity, category);
+            String category,int highestPrice) {
+        return cprepo.findCarPostsByPreferences(model, brand, engineCapacity, category, highestPrice);
     }
     
 }

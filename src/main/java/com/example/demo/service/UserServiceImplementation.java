@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import com.example.demo.domain.User;
@@ -36,5 +38,11 @@ public class UserServiceImplementation implements UserService{
 		else 
 			return false;
 	}
+
+    @Override
+    public List<User> listUser() {
+        
+        return urepo.findAll();
+    }
     
 }

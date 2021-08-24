@@ -68,7 +68,7 @@ public class MainApplication {
 			Preference pref1 = new Preference("911 Carrera Cabriolet 3.6A PDK", "Porsche",10000,80000,"Sports",2010,2020,1800,2000,900,10000, u1);
 			prepo.save(pref1);
 
-			Preference pref3=new Preference("Swift 1.0A Turbo GLX","Suzuki" , 10000, 66000,"Hatchback" , 2010, 2020, 1800, 2000, 900, 000,u3);
+			Preference pref3=new Preference("Swift 1.0A Turbo GLX","Suzuki" , 10000, 66000,"Hatchback" , 2010, 2020, 1800, 2000, 900, 10000,u3);
 			prepo.save(pref3);
 
 			

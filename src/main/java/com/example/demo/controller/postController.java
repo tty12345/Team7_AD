@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+//import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
@@ -170,21 +171,28 @@ public class postController {
 			CarPosting newcarPosting2 = cprepo.save(carpost);
 			img1.setCarpost(carpost);
 			cirepo.save(img1);
-			
-			if(user.getPreference()!=null){
-				Preference preference=user.getPreference();
-				if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
-				preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
-				&& preference.getHighestPrice()<=carpost.getPrice()){
-					Notifications ntf=new Notifications("New Arrival", user, "A new arrival that matches your preference is  "+carpost.getPostId());
-					nservice.save(ntf);
+			List<User> users=(ArrayList<User>) uservice.listUser();
+			for (User user2 : users) {
+				if(user2.getUserId()!=user.getUserId()){
+					if(user2.getPreference()!=null){
+						Preference preference=user2.getPreference();
+						if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
+						preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
+						&& preference.getHighestPrice()<=carpost.getPrice()){
+							Notifications ntf=new Notifications("New Arrival", user2, "A new arrival that matches your preference is  "+carpost.getPostId());
+							nservice.save(ntf);
+		
+							user2.getNotifications().add(ntf);
+							uservice.save(user2);
+						
+		
+					}
+				}
 
-					user.getNotifications().add(ntf);
-					uservice.save(user);
+				}
 				
-
 			}
-		}
+			
 
 			return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -247,7 +255,7 @@ public class postController {
 		User user=(User) session.getAttribute("user");
 		Preference pref = prfservice.findprefByuserId(user.getUserId());
 		//List<CarPosting> cars = cpservice.findCarPostByPref(pref.getModel(), pref.getBrand());
-		List<CarPosting> cars=cpservice.findCarPostsByPreferences(pref.getModel(), pref.getBrand(), pref.getEngineCapacityMin(), pref.getCategory());
+		List<CarPosting> cars=cpservice.findCarPostsByPreferences(pref.getModel(),pref.getBrand(),pref.getEngineCapacityMin(),pref.getCategory(),pref.getHighestPrice());
 		model.addAttribute("prefcars", cars);
 		return "recommended_cars";
 	}
