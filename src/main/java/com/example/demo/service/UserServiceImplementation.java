@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.domain.CarPosting;
+import com.example.demo.domain.Notifications;
 import com.example.demo.domain.User;
 import com.example.demo.repo.UserRepository;
 
@@ -36,6 +37,10 @@ public class UserServiceImplementation implements UserService{
     @Override
     public List<CarPosting> findAllFavourites(){
         return urepo.findAllFavourites();
+    }
+    @Override
+    public List<Notifications> findNotificationsByUserId(int id){
+        return urepo.findNotificationsByUserId(id);
     }
     
 }

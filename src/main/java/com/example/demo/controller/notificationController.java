@@ -29,34 +29,38 @@ public class notificationController {
 	@GetMapping("/listNotification/{id}")
 	public String listNotifications(Model model, @PathVariable("id") Integer id,HttpSession session) {
 
-		int userId;
-        if(session.getAttribute("user")!=null){
-            userId=(Integer)session.getAttribute("userId");
-            User u= uservice.finduserById(userId);
+		List<Notifications> ntflist = uservice.findNotificationsByUserId(id);
+		model.addAttribute("notifications", ntflist);
+		return "list_notifications.html";
+	}
+		// int userId;
+        // if(session.getAttribute("user")!=null){
+        //     userId=(Integer)session.getAttribute("userId");
+        //     User u= uservice.finduserById(userId);
 		
-            if(u.getNotifications().size()==0){
-                List<Notifications> notifications = new ArrayList<>();
+        //     if(u.getNotifications().size()==0){
+        //         List<Notifications> notifications = new ArrayList<>();
                 
-                u.setNotifications(notifications);
-                uservice.save(u);
-				for(Notifications ntf : notifications){
-					ntf.setUser(u);
-					nservice.save(ntf);
-				}
+        //         u.setNotifications(notifications);
+        //         uservice.save(u);
+		// 		for(Notifications ntf : notifications){
+		// 			ntf.setUser(u);
+		// 			nservice.save(ntf);
+		// 		}
                 
-            }
+          
            
 			// List<Notifications> notifications = uservice.findNotificationsByUserId(userId);
 			// model.addAttribute("notifications", notifications);
            
-        }
-        else if(session.getAttribute("user")==null){
-            session.setAttribute("return", "/notification/listNotification/"+id);
-            return "forward:/login";
-        }
+    //     }
+    //     else if(session.getAttribute("user")==null){
+    //         session.setAttribute("return", "/notification/listNotification/"+id);
+    //         return "forward:/login";
+    //     }
        
-		return "list_notifications.html";
-    }
+	// 	return "list_notifications.html";
+    // }
 		
 
 		
