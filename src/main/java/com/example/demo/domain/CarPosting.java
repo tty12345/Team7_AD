@@ -24,7 +24,6 @@ public class CarPosting {
     private int postId;
     private int price;
     private int depreciation;
-    private int priceEstimate;
     private String description;
     private String brand;
     private int engineCapacity;
@@ -55,12 +54,11 @@ public class CarPosting {
         super();
     }
 
-    public CarPosting(int postId, int price, int priceEstimate, int depreciation, String description, String brand,
-            int engineCapacity, Date registeredDate, int mileage, String category, String photoUrl, int views,
-            List<User> users, User owner, List<User> history) {
+    public CarPosting(int postId, int price, int depreciation, String description, String brand, int engineCapacity,
+            Date registeredDate, int mileage, String category, String photoUrl, int views, List<User> users, User owner,
+            List<User> history) {
         this.postId = postId;
         this.price = price;
-        this.priceEstimate = priceEstimate;
         this.depreciation = depreciation;
         this.description = description;
         this.brand = brand;
@@ -120,14 +118,6 @@ public class CarPosting {
 
     public void setDepreciation(int depreciation) {
         this.depreciation = depreciation;
-    }
-
-    public int getPriceEstimate() {
-        return priceEstimate;
-    }
-
-    public void setPriceEstimate(int priceEstimate) {
-        this.priceEstimate = priceEstimate;
     }
 
     public String getDescription() {

@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.CarPosting;
+import com.example.demo.service.CarPostService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,9 @@ import org.springframework.web.client.RestTemplate;
 @CrossOrigin(origins = "http://localhost:3000")
 public class FlaskController {
 
+    @Autowired
+    CarPostService cpservice;
+
     String url = "http://localhost:5000";
 
     @PostMapping(path = "/estimate", consumes = { "multipart/form-data" })
@@ -36,6 +41,8 @@ public class FlaskController {
         System.out.println(toEstimate.getCategory());
 
         String estimate = getPriceEstimateFlask(toEstimate);
+
+        System.out.println(estimate);
 
         return new ResponseEntity<>(estimate, HttpStatus.OK);
     }
