@@ -131,6 +131,11 @@ public class MainApplication {
 			u1.setNotifications(currentNTF);
 			urepo.save(u1);
 
+
+			nrepo.save(new Notifications("Hellow"));
+			nrepo.save(new Notifications("We"));
+			nrepo.save(new Notifications("Are"));
+			nrepo.save(new Notifications("Noobs!"));
 		};
 	}
 

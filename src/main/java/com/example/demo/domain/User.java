@@ -10,7 +10,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+      property = "userId")
 public class User {
 
     @Id
@@ -21,22 +27,27 @@ public class User {
     private UserType role;
     // post owned
     @OneToMany(mappedBy = "owner")
+    // @JsonManagedReference
     private List<CarPosting> postings;
 
     @ManyToMany(mappedBy = "history")
+    // @JsonManagedReference
     private List<CarPosting> history;
 
     // post liked
     @ManyToMany(mappedBy = "users")
+    // @JsonManagedReference
     private List<CarPosting> favourites;
 
     @OneToOne(mappedBy = "user")
     private Preference preference;
 
     @OneToMany(mappedBy = "user")
+    // @JsonManagedReference
     public List<Notifications> notifications;
 
     @OneToMany(mappedBy = "user")
+    // @JsonManagedReference
     private List<Offer> offers;
 
     public User(String username, String password, List<CarPosting> postings) {
@@ -115,7 +126,8 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    
+    @JsonIgnore
     public List<CarPosting> getPostings() {
         return postings;
     }
@@ -123,7 +135,7 @@ public class User {
     public void setPostings(List<CarPosting> postings) {
         this.postings = postings;
     }
-
+    @JsonIgnore
     public List<CarPosting> getHistory() {
         return history;
     }
@@ -132,7 +144,7 @@ public class User {
         this.history = history;
     }
 
-
+    @JsonIgnore
     public List<CarPosting> getFavourites() {
         return favourites;
     }
@@ -140,7 +152,7 @@ public class User {
     public void setFavourites(List<CarPosting> favourites) {
         this.favourites = favourites;
     }
-
+    @JsonIgnore
     public List<Notifications> getNotifications() {
         return notifications;
     }
@@ -148,7 +160,7 @@ public class User {
     public void setNotifications(List<Notifications> notifications) {
         this.notifications = notifications;
     }
-
+    @JsonIgnore
     public List<Offer> getOffers() {
         return offers;
     }
