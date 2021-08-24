@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import com.example.demo.domain.CarImage;
 import com.example.demo.domain.CarPosting;
@@ -100,6 +101,7 @@ public class postController {
 	// }
 
 	@DeleteMapping("/deletePost/{id}")
+	@Transactional
 	public ResponseEntity<HttpStatus> deleteCarPost( @PathVariable("id") Integer id) {
 		CarPosting carpost = cpservice.findCarPostById(id);
 
@@ -114,14 +116,10 @@ public class postController {
 
 		//send out notification
 		for (User user : users) {
-		List<CarPosting> currentFavourite = user.getFavourites();
-		currentFavourite.remove(carpost);
-		user.setFavourites(currentFavourite);
-		Notifications notification = new Notifications(carpost.getDescription()+"has been deleted!");
-		notification.setType("delete");
+		Notifications notification = new Notifications(carpost.getDescription()+" has been deleted!");
 		notification.setUser(user);
 		nservice.save(notification);
-		user.notifications.add(notification);
+		user.getNotifications().add(notification);
 		uservice.save(user);
 	 	}
 

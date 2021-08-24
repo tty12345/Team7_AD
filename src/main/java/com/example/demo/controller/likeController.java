@@ -167,15 +167,6 @@ public class likeController {
         carposting.setUsers(currentLikers);
         cpservice.save(carposting);
 
-            // react handles return from login
-            // if(session.getAttribute("returnFromLike")!=null){
-            //     String returnLike = (String) session.getAttribute("returnFromLike");
-			// 	session.removeAttribute("returnFromLike");
-			// 	return "redirect:"+returnLike;
-
-            //     model.addAttribute("carpost",carposting);
-            //     return "detailsPage.html";
-        System.out.println("On Delete" + uservice.finduserById(user.getUserId()).getFavourites());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -186,7 +177,6 @@ public class likeController {
         int userId = user.getUserId();
         User u= uservice.finduserById(userId);
         List<CarPosting> currentLikes = u.getFavourites();
-        System.out.println(uservice.finduserById(user.getUserId()).getFavourites());
         if(currentLikes.size()>0)
             for(CarPosting carpost:currentLikes)
                 {
