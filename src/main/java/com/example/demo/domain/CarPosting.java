@@ -23,14 +23,14 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-      property = "postId")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "postId")
 public class CarPosting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int postId;
     private int price;
+    private int depreciation;
     private String description;
     private String brand;
     private int engineCapacity;
@@ -38,6 +38,7 @@ public class CarPosting {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date registeredDate;
+    private int age;
     private int mileage;
     private String category;
     private String photoUrl;
@@ -65,17 +66,12 @@ public class CarPosting {
         super();
     }
 
-    public CarPosting(CarImage carpostimage){
-        super();
-        this.carpostimage=carpostimage;
-        
-    }
-
-    public CarPosting(int postId, int price, String description, String brand, int engineCapacity, Date registeredDate,
-            int mileage, String category, String photoUrl, int views, List<User> users, User owner,
+    public CarPosting(int postId, int price, int depreciation, String description, String brand, int engineCapacity,
+            Date registeredDate, int mileage, String category, String photoUrl, int views, List<User> users, User owner,
             List<User> history) {
         this.postId = postId;
         this.price = price;
+        this.depreciation = depreciation;
         this.description = description;
         this.brand = brand;
         this.engineCapacity = engineCapacity;
@@ -90,7 +86,7 @@ public class CarPosting {
     }
 
     public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
-            String category, String photoUrl, User owner, CarImage carpostimage ) {
+            String category, String photoUrl, User owner, CarImage carpostimage) {
         this.price = price;
         this.description = description;
         this.brand = brand;
@@ -104,7 +100,7 @@ public class CarPosting {
     }
 
     public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
-    String category, String photoUrl, User owner) {
+            String category, String photoUrl, User owner) {
         this.price = price;
         this.description = description;
         this.brand = brand;
@@ -117,7 +113,7 @@ public class CarPosting {
     }
 
     public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
-    String category, String photoUrl, CarImage carpostimage, User owner) {
+            String category, String photoUrl, CarImage carpostimage, User owner) {
         this.price = price;
         this.description = description;
         this.brand = brand;
@@ -128,7 +124,17 @@ public class CarPosting {
         this.photoUrl = photoUrl;
         this.carpostimage = carpostimage;
         this.owner = owner;
-}
+    }
+
+    // for the price estimate machine learning model
+    public CarPosting(int depreciation, String brand, int engineCapacity, int age, int mileage, String category) {
+        this.depreciation = depreciation;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.age = age;
+        this.mileage = mileage;
+        this.category = category;
+    }
 
     public int getPostId() {
         return postId;
@@ -144,6 +150,14 @@ public class CarPosting {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getDepreciation() {
+        return depreciation;
+    }
+
+    public void setDepreciation(int depreciation) {
+        this.depreciation = depreciation;
     }
 
     public String getDescription() {
@@ -176,6 +190,14 @@ public class CarPosting {
 
     public void setRegisteredDate(Date registeredDate) {
         this.registeredDate = registeredDate;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public int getMileage() {
@@ -218,6 +240,7 @@ public class CarPosting {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
     // @JsonIgnore
     public User getOwner() {
         return owner;
@@ -226,6 +249,7 @@ public class CarPosting {
     public void setOwner(User owner) {
         this.owner = owner;
     }
+
     // @JsonIgnore
     public List<User> getHistory() {
         return history;
@@ -234,6 +258,7 @@ public class CarPosting {
     public void setHistory(List<User> history) {
         this.history = history;
     }
+
     // @JsonIgnore
     public List<Offer> getOffers() {
         return offers;
