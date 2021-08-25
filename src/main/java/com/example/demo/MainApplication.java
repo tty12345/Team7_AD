@@ -28,10 +28,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
+@EnableEurekaClient
 public class MainApplication {
 
 	@Autowired
@@ -54,9 +56,9 @@ public class MainApplication {
 
 	public static void main(String[] args) throws ParseException {
 		SpringApplication.run(MainApplication.class, args);
-		//comment1
+		// comment1
 	}
-	
+
 	@Bean
 	CommandLineRunner runner() {
 		return args -> {
@@ -64,8 +66,8 @@ public class MainApplication {
 			SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 			String Pass = sCryptPasswordEncoder.encode("tin");
 			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
-			User u1 = new User("tin",Pass, UserType.USER);
-			User u2 = new User("cherwah",Pass1, UserType.USER);
+			User u1 = new User("tin", Pass, UserType.USER);
+			User u2 = new User("cherwah", Pass1, UserType.USER);
 			urepo.save(u1);
 			urepo.save(u2);
 
@@ -92,12 +94,12 @@ public class MainApplication {
 			byte[] imgByte = FileUtils.readFileToByteArray(new File("C:/Users/Teck Yi/Desktop/orochimon-739x1024.jpg"));
 			CarImage img1 = new CarImage();
 			img1.setCarpostImage(imgByte);
-			CarImage img2 =  cirepo.save(img1);
+			CarImage img2 = cirepo.save(img1);
 
 			CarPosting post1 = new CarPosting(65000, "Swift 1.0A Turbo GLX", "Suzuki", 998, date1, 25000, "Hatchback",
 					"https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg", u1);
 			post1.setCarPostImage(img1);
-			
+
 			CarPosting post2 = new CarPosting(14998, "Edix 2.0A", "Honda", 1998, date2, 155387, "Hatchback",
 					"https://i.i-sgcm.com/cars_used/202107/1018213_small.jpg", u1);
 			CarPosting post3 = new CarPosting(52515, "3 HB 1.5A Deluxe", "Mazda	", 1496, date3, 93000, "Hatchback",
@@ -123,8 +125,9 @@ public class MainApplication {
 			img2.setCarpost(post1);
 			cirepo.save(img2);
 
-			Notifications ntf1=new Notifications("welcome","Welcome to the web!",u1);
-			Notifications ntf2=new Notifications("delete","Your favorite product information has been deleted, please click here for details",u1);
+			Notifications ntf1 = new Notifications("welcome", "Welcome to the web!", u1);
+			Notifications ntf2 = new Notifications("delete",
+					"Your favorite product information has been deleted, please click here for details", u1);
 			nrepo.save(ntf1);
 			nrepo.save(ntf2);
 
@@ -140,13 +143,12 @@ public class MainApplication {
 
 			u1.setPostings(cpl1);
 			urepo.save(u1);
-			
+
 			List<Notifications> currentNTF = new ArrayList<>();
 			currentNTF.add(ntf1);
 			currentNTF.add(ntf2);
 			u1.setNotifications(currentNTF);
 			urepo.save(u1);
-
 
 			nrepo.save(new Notifications("Hellow"));
 			nrepo.save(new Notifications("We"));
