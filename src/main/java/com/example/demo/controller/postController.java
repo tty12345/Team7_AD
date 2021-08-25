@@ -266,19 +266,51 @@ public class postController {
 	}
 	
 
-	@PostMapping("/saveOffer")
-    public ResponseEntity<Offer> createOffer(@RequestBody Offer offer){
+	@PostMapping("/saveOffer/{id}")
+    public ResponseEntity<Offer> createOffer(@PathVariable("id") int postId,@RequestBody Offer offer){
         try {
-            Offer u = orepo.save(new Offer(offer.getOffer()));
-            return new ResponseEntity<>(u, HttpStatus.CREATED);
+				//check if offer before
+				CarPosting currentPost = cpservice.findCarPostById(postId);
+				List<Offer>allCurrentOfferForCurrentPost =  currentPost.getOffers();
+				for (Offer oldOffer : allCurrentOfferForCurrentPost)
+				{
+					//if offer before
+					if(oldOffer.getUser().getUserId() == offer.getUserId()){
+						oldOffer.setOffer(offer.getOffer());
+						orepo.save(oldOffer);
+						return new ResponseEntity<>(oldOffer, HttpStatus.CREATED);
+					}
+				}
+
+				//if never offer before
+				User user = uservice.finduserById(offer.getUserId());
+				Offer newOffer = new Offer (offer.getOffer(),user,currentPost);
+				orepo.save(newOffer);
+				return new ResponseEntity<>(newOffer, HttpStatus.CREATED);
         }
         catch(Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
+	}
 
+	@PostMapping("/checkOwnOffer/{id}")
+	public ResponseEntity<Offer> checkOwnOffer(@PathVariable("id") int postId,@RequestBody Offer offer)
+	{
+		//check if got post before
+		CarPosting currentPost = cpservice.findCarPostById(postId);
+		List<Offer>allCurrentOfferForCurrentPost =  currentPost.getOffers();
+		for (Offer oldOffer : allCurrentOfferForCurrentPost)
+		{
+			//if offer before
+			if(oldOffer.getUser().getUserId() == offer.getUserId()){
+				return new ResponseEntity<>(oldOffer, HttpStatus.CREATED);
+			}
+		}
+		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 
+	}
 
-    }
+    
 
 	@PostMapping("/saveImage")
 	public ResponseEntity<Integer> saveImage (@RequestParam("photoParam") MultipartFile file, HttpSession session){
@@ -298,32 +330,12 @@ public class postController {
 
 	}
 
-	// @GetMapping("/populate")
-	// public String populateData(){
-
-	// try {
-	// BufferedReader bufferedReader = new BufferedReader(
-	// new FileReader("demo/src/main/resources/static/cars.csv"));
-
-	// String input;
-	// int count = 0;
-	// while((input = bufferedReader.readLine()) != null)
-	// {
-	// count++;
+	// @RequestMapping("/notification")
+	// public String createNotification(Model model) {
+	// 	Notifications ntf = new Notifications("New Arrival that matches your preference");
+	// 	model.addAttribute("ntf", ntf);
+	// 	return "notification";
 	// }
-	// bufferedReader.close();
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-
-	// return "forward:/post/listPost";
-	// }
-	@RequestMapping("/notification")
-	public String createNotification(Model model) {
-		Notifications ntf = new Notifications("New Arrival that matches your preference");
-		model.addAttribute("ntf", ntf);
-		return "notification";
-	}
 
 }
 
