@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,29 +26,24 @@ public class User {
     private String username;
     private String password;
     private UserType role;
-    // post owned
+   
     @OneToMany(mappedBy = "owner")
-    // @JsonManagedReference
     private List<CarPosting> postings;
 
     @ManyToMany(mappedBy = "history")
-    // @JsonManagedReference
     private List<CarPosting> history;
 
     // post liked
     @ManyToMany(mappedBy = "users")
-    // @JsonManagedReference
     private List<CarPosting> favourites;
 
     @OneToOne(mappedBy = "user")
     private Preference preference;
 
     @OneToMany(mappedBy = "user")
-    // @JsonManagedReference
     public List<Notifications> notifications;
 
     @OneToMany(mappedBy = "user")
-    // @JsonManagedReference
     private List<Offer> offers;
 
     public User(String username, String password, List<CarPosting> postings) {
@@ -61,14 +57,10 @@ public class User {
         this.password = password;
     }
     
-
     public User(String username, Preference preference) {
         this.username = username;
         this.preference = preference;
     }
-
-
-
 
     public User(String username, String password, UserType role, List<CarPosting> postings, List<CarPosting> history,
 			List<CarPosting> favourites, Preference preference, List<Notifications> notifications,
@@ -169,17 +161,29 @@ public class User {
         this.offers = offers;
     }
 
-
-    public Preference getPreference() {
+     public Preference getPreference() {
         return preference;
     }
-
 
     public void setPreference(Preference preference) {
         this.preference = preference;
     }
 
-    
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof User)) {
+            return false;
+        }
+        User user = (User) o;
+        return userId == user.userId && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(role, user.role) && Objects.equals(postings, user.postings) && Objects.equals(history, user.history) && Objects.equals(favourites, user.favourites) && Objects.equals(preference, user.preference) && Objects.equals(notifications, user.notifications) && Objects.equals(offers, user.offers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, username, password, role, postings, history, favourites, preference, notifications, offers);
+    }
 
 
 

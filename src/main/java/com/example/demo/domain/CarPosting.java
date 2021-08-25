@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class CarPosting {
     private String description;
     private String brand;
     private int engineCapacity;
-
+ 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date registeredDate;
@@ -43,6 +44,7 @@ public class CarPosting {
     private String photoUrl;
     private int views;
     private int userId;
+    private int likeCount;
 
     @OneToOne(mappedBy = "carpost")
     private CarImage carpostimage;
@@ -90,7 +92,7 @@ public class CarPosting {
     }
 
     public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
-            String category, String photoUrl, User owner, CarImage carpostimage ) {
+    String category, String photoUrl, User owner, int views, List<User> users, int likes) {
         this.price = price;
         this.description = description;
         this.brand = brand;
@@ -100,7 +102,9 @@ public class CarPosting {
         this.category = category;
         this.photoUrl = photoUrl;
         this.owner = owner;
-        this.carpostimage = carpostimage;
+        this.views = views;
+        this.users = users;
+        this.likeCount = likes;
     }
 
     public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
@@ -128,7 +132,7 @@ public class CarPosting {
         this.photoUrl = photoUrl;
         this.carpostimage = carpostimage;
         this.owner = owner;
-}
+    }
 
     public int getPostId() {
         return postId;
@@ -210,7 +214,6 @@ public class CarPosting {
         this.views = views;
     }
 
-    // @JsonIgnore
     public List<User> getUsers() {
         return users;
     }
@@ -218,7 +221,7 @@ public class CarPosting {
     public void setUsers(List<User> users) {
         this.users = users;
     }
-    // @JsonIgnore
+   
     public User getOwner() {
         return owner;
     }
@@ -226,7 +229,7 @@ public class CarPosting {
     public void setOwner(User owner) {
         this.owner = owner;
     }
-    // @JsonIgnore
+  
     public List<User> getHistory() {
         return history;
     }
@@ -234,7 +237,7 @@ public class CarPosting {
     public void setHistory(List<User> history) {
         this.history = history;
     }
-    // @JsonIgnore
+  
     public List<Offer> getOffers() {
         return offers;
     }
@@ -251,6 +254,26 @@ public class CarPosting {
         this.carpostimage = carpostimage;
     }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getLikeCount() {
+        return this.likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public CarImage getCarpostimage() {
+        return this.carpostimage;
+    }
+
+    public void setCarpostimage(CarImage carpostimage) {
+        this.carpostimage = carpostimage;
+    }
+
     @Override
     public String toString() {
         return "{" + " postId='" + getPostId() + "'" + ", price='" + getPrice() + "'" + ", description='"
@@ -263,5 +286,22 @@ public class CarPosting {
     public int getUserId() {
         return userId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof CarPosting)) {
+            return false;
+        }
+        CarPosting carPosting = (CarPosting) o;
+        return postId == carPosting.postId && price == carPosting.price && Objects.equals(description, carPosting.description) && Objects.equals(brand, carPosting.brand) && engineCapacity == carPosting.engineCapacity && Objects.equals(registeredDate, carPosting.registeredDate) && mileage == carPosting.mileage && Objects.equals(category, carPosting.category) && Objects.equals(photoUrl, carPosting.photoUrl) && views == carPosting.views && userId == carPosting.userId && Objects.equals(carpostimage, carPosting.carpostimage) && Objects.equals(users, carPosting.users) && Objects.equals(owner, carPosting.owner) && Objects.equals(offers, carPosting.offers) && Objects.equals(history, carPosting.history);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(postId, price, description, brand, engineCapacity, registeredDate, mileage, category, photoUrl, views, userId, carpostimage, users, owner, offers, history);
+    }
+
 
 }

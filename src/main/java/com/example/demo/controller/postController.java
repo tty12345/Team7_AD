@@ -6,21 +6,11 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
-import com.example.demo.domain.CarImage;
-import com.example.demo.domain.CarPosting;
-import com.example.demo.domain.Notifications;
-import com.example.demo.domain.Offer;
-import com.example.demo.domain.Preference;
-import com.example.demo.domain.SearchObject;
-import com.example.demo.domain.User;
+import com.example.demo.domain.*;
 import com.example.demo.repo.CarImageRepository;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.OfferRepository;
-import com.example.demo.service.CarPostService;
-import com.example.demo.service.NotificationService;
-import com.example.demo.service.OfferService;
-import com.example.demo.service.PreferenceService;
-import com.example.demo.service.UserService;
+import com.example.demo.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -206,32 +196,48 @@ public class postController {
 			return cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description);
 	}
 
-	@GetMapping("/listPost2")
-	public String listCarPost(Model model){
-		
-		model.addAttribute("carpost", cpservice.findAll());
-		return "forward:/list_car";
-	}
-
-	@GetMapping("/recommended")
-	public String recommendedCars(Model model) {
-		Preference pref = prfservice.findprefByuserId(1);
-		List<CarPosting> cars = cpservice.findCarPostByPref(pref.getModel(), pref.getBrand());
-		model.addAttribute("prefcars", cars);
-		return "recommended_cars";
-	}
-
-	@GetMapping("/mostViewed")
-	public String mostViewed(Model model) {
-		List<CarPosting> mostviewed = cpservice.findMostViewedCars();
-		model.addAttribute("carpost", mostviewed);
-		return "list_car";
-	}
-	// @GetMapping("/listLikedPost/{id}")
-	// public String listLikedCarPost(Model model,@PathVariable("id") Integer id) {
-	// 	model.addAttribute("carpost", cprepo.findCarPostByUserId(id));
-	// 	return "list_likedcar.html";
+	// @GetMapping("/listPost2")
+	// public String listCarPost(Model model){
+	// 	model.addAttribute("carpost", cpservice.findAll());
+	// 	return "forward:/list_car";
 	// }
+
+	@GetMapping("/hotcars")
+	public List<CarPosting> hotcars() {
+		List<CarPosting> popularCars = filtertop3Cars(cpservice.findMostViewedCars());
+		List<CarPosting> mostliked = filtertop3Cars(cpservice.findMostLikedCars());
+		return concatenate(popularCars, mostliked);
+	}
+	
+	private List<CarPosting> filtertop3Cars(List<CarPosting> list){
+		List<CarPosting> result =  new ArrayList<>();
+		int top = 0;
+		for (CarPosting cp: list){
+			if ( top < 3){
+				result.add(cp);
+				top++;
+			}
+			else {
+				top = 0;
+				break;
+			}
+		}
+		return result;
+	}
+
+	private List<CarPosting> concatenate(List<CarPosting> list1,List<CarPosting> list2){
+		for (int i = 0; i < list1.size(); i++) {
+			for (int j = 0; j < list1.size(); j++){
+				if (list1.get(i).equals(list2.get(j))){
+					list2.remove(j);
+				}
+			}
+		}
+		for (CarPosting car: list2){
+			list1.add(car);
+		}
+		return list1;
+	}
 
 	@GetMapping("/viewOwnPost")
 	public String viewOwnPost(Model model) {
