@@ -27,7 +27,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,6 +57,13 @@ public class postController {
 	@Autowired
 	CarPostRepository cprepo;
 
+	@Autowired
+	public void setPrefService(PreferenceService prfservice) {
+		this.prfservice=prfservice;
+	}
+
+
+
 	@GetMapping("/getOne/{id}")
     public CarPosting getCar(@PathVariable("id") Integer id){
 		return cpservice.findCarPostById(id);
@@ -83,60 +89,73 @@ public class postController {
 		return "car_post_form";
 	}
 
-	// @GetMapping("/deletePost/{id}")
-	// public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
-	// 	CarPosting carpost = cpservice.findCarPostById(id);
-	// 	List<User> users = carpost.getUsers();
-
-	// 	for (User user : users) {
-	// 		Notifications notification = new Notifications();
-	// 		notification.setType("delete");
-	// 		notification.setUser(user);
-	// 		user.notifications.add(notification);
-	// 	}
-
-	// 	carpost.setOwner(null);
-	// 	cpservice.delete(carpost);
-	// 	return "forward:/post/listPost";
-	// }
-
-	@DeleteMapping("/deletePost/{id}")
 	@Transactional
-	public ResponseEntity<HttpStatus> deleteCarPost( @PathVariable("id") Integer id) {
+	@GetMapping("/deletePost/{id}")
+	public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
 		CarPosting carpost = cpservice.findCarPostById(id);
-
-		//get likers
 		List<User> users = carpost.getUsers();
 
-		//unmap and delete
-		carpost.setOwner(null);
-		if(carpost.getCarPostImage() != null)
-			cirepo.delete(carpost.getCarPostImage());
-		cpservice.delete(carpost);
-
-		//send out notification
 		for (User user : users) {
-		Notifications notification = new Notifications(carpost.getDescription()+" has been deleted!");
-		notification.setUser(user);
-		nservice.save(notification);
-		user.getNotifications().add(notification);
-		uservice.save(user);
-	 	}
+			Notifications notification = new Notifications();
+			notification.setType("delete");
+			notification.setUser(user);
+			user.notifications.add(notification);
+		}
 
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		carpost.setOwner(null);
+		cpservice.delete(carpost);
+		return "forward:/post/listPost";
 	}
 
+	// Save car's details after editing
+	// @GetMapping("/savePost")
+	// public String saveCarPost(@ModelAttribute("carpost") @Valid CarPosting carpost, BindingResult bindingResult,
+	// 		Model model, HttpSession session) {
+
+	// 	if (bindingResult.hasErrors()) {
+	// 		return "car_post_form";
+	// 	}
+
+	// 	// checks if this is a new post
+	// 	if (carpost.getUsers() == null) {
+	// 		// add code to set user as whoever is logged in
+	// 		//User userPref=(User) session.getAttribute("user");
+	// 		User user = uservice.finduserById(1);
+	// 		List<CarPosting> newpost = new ArrayList<CarPosting>();
+	// 		newpost.add(carpost);
+	// 		user.setPostings(newpost);
+	// 		//userPref.setPostings(newpost);
+	// 		uservice.save(user);
+	// 		//uservice.save(userPref);
+	// 		carpost.getUsers().add(user);
+	// 		//carpost.getUsers().add(userPref);
+	// 		carpost.setOwner(user);
+	// 		//carpost.setOwner(userPref);
+	// 		Preference preference=user.getPreference();
+	// 			if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
+	// 			preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
+	// 			&& preference.getHighestPrice()<=carpost.getPrice()){
+	// 				Notifications ntf=new Notifications("New Arrival", user, "A new arrival that matches your preference is  "+carpost.getPostId());
+	// 				nservice.save(ntf);
+
+	// 				user.getNotifications().add(ntf);
+	// 				uservice.save(user);
+	// 				//model.addAttribute("ntf", ntf);
+	// 				//return "notification";
+	// 			}
+	// 		}
 	// Save car's details
 	@PostMapping("/savePost/{id}")
-	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, @PathVariable("id") Integer imgId) {
+	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, Model model, @PathVariable("id") Integer imgId) {
 
 		try {
 			//find the current logged in
-			User user = uservice.finduserById(carpost.getUserId());
+			User user = uservice.finduserById(1);
+
 			//Instatiate a new carpost from the object received from client side
 			CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), carpost.getBrand(),
-			carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(),
-			carpost.getCategory(), carpost.getPhotoUrl(), user);
+					carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(),
+					carpost.getCategory(), carpost.getPhotoUrl(), user);
 
 			//set this post to the user
 			List<CarPosting> newpostList = new ArrayList<CarPosting>();
@@ -153,6 +172,23 @@ public class postController {
 			CarPosting newcarPosting2 = cprepo.save(carpost);
 			img1.setCarpost(carpost);
 			cirepo.save(img1);
+			
+			List<User> users=(ArrayList<User>) uservice.findAll();
+			
+			if(user.getPreference()!=null){
+				Preference preference=user.getPreference();
+				if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
+				preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
+				&& preference.getHighestPrice()<=carpost.getPrice()){
+					Notifications ntf=new Notifications("New Arrival", user, "A new arrival that matches your preference is  "+carpost.getPostId());
+					nservice.save(ntf);
+
+					user.getNotifications().add(ntf);
+					uservice.save(user);
+				
+
+			}
+		}
 
 			return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -198,7 +234,6 @@ public class postController {
 
 		// depending on which field is entered, do the corresponding query
 		// if all null, display all
-
 		if (brand == null && maxPrice == 0 && description == null)
 			return cpservice.findAll();
 
@@ -207,16 +242,17 @@ public class postController {
 	}
 
 	@GetMapping("/listPost2")
-	public String listCarPost(Model model){
-		
-		model.addAttribute("carpost", cpservice.findAll());
-		return "forward:/list_car";
+	public List<CarPosting> listCarPost(){
+		return cpservice.findAll();
 	}
 
 	@GetMapping("/recommended")
-	public String recommendedCars(Model model) {
-		Preference pref = prfservice.findprefByuserId(1);
-		List<CarPosting> cars = cpservice.findCarPostByPref(pref.getModel(), pref.getBrand());
+	public String recommendedCars(Model model, HttpSession session ) {
+		User user=(User) session.getAttribute("user");
+		Preference pref = prfservice.findprefByuserId(user.getUserId());
+		//List<CarPosting> cars = cpservice.findCarPostByPref(pref.getModel(), pref.getBrand());
+		List<CarPosting> cars= new ArrayList<>();
+		// cpservice.findCarPostsByPreferences(pref.getModel(), pref.getBrand(), pref.getEngineCapacityMin(), pref.getCategory());
 		model.addAttribute("prefcars", cars);
 		return "recommended_cars";
 	}
@@ -227,11 +263,6 @@ public class postController {
 		model.addAttribute("carpost", mostviewed);
 		return "list_car";
 	}
-	// @GetMapping("/listLikedPost/{id}")
-	// public String listLikedCarPost(Model model,@PathVariable("id") Integer id) {
-	// 	model.addAttribute("carpost", cprepo.findCarPostByUserId(id));
-	// 	return "list_likedcar.html";
-	// }
 
 	@GetMapping("/viewOwnPost")
 	public String viewOwnPost(Model model) {
@@ -270,6 +301,9 @@ public class postController {
         catch(Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
+
+
+
     }
 
 	@PostMapping("/saveImage")
@@ -317,10 +351,5 @@ public class postController {
 		return "notification";
 	}
 
-	@GetMapping("/getowncars/{id}")
-	public List<CarPosting> getOwnCar(@PathVariable("id") Integer id){
-		User user = uservice.finduserById(id);
-		return user.getPostings();
-	}
-
 }
+
