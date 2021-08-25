@@ -85,6 +85,16 @@ public class CarPosting {
         this.history = history;
     }
 
+    
+
+    public CarPosting(int price, String brand, int engineCapacity, String category, User owner) {
+        this.price = price;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.category = category;
+        this.owner = owner;
+    }
+
     public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
             String category, String photoUrl, User owner, CarImage carpostimage) {
         this.price = price;

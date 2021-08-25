@@ -27,6 +27,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -89,6 +90,7 @@ public class postController {
 		return "car_post_form";
 	}
 
+	@DeleteMapping("/deletePost/{id}")
 	@Transactional
 	@GetMapping("/deletePost/{id}")
 	public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
@@ -107,55 +109,20 @@ public class postController {
 		return "forward:/post/listPost";
 	}
 
-	// Save car's details after editing
-	// @GetMapping("/savePost")
-	// public String saveCarPost(@ModelAttribute("carpost") @Valid CarPosting carpost, BindingResult bindingResult,
-	// 		Model model, HttpSession session) {
-
-	// 	if (bindingResult.hasErrors()) {
-	// 		return "car_post_form";
-	// 	}
-
-	// 	// checks if this is a new post
-	// 	if (carpost.getUsers() == null) {
-	// 		// add code to set user as whoever is logged in
-	// 		//User userPref=(User) session.getAttribute("user");
-	// 		User user = uservice.finduserById(1);
-	// 		List<CarPosting> newpost = new ArrayList<CarPosting>();
-	// 		newpost.add(carpost);
-	// 		user.setPostings(newpost);
-	// 		//userPref.setPostings(newpost);
-	// 		uservice.save(user);
-	// 		//uservice.save(userPref);
-	// 		carpost.getUsers().add(user);
-	// 		//carpost.getUsers().add(userPref);
-	// 		carpost.setOwner(user);
-	// 		//carpost.setOwner(userPref);
-	// 		Preference preference=user.getPreference();
-	// 			if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
-	// 			preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
-	// 			&& preference.getHighestPrice()<=carpost.getPrice()){
-	// 				Notifications ntf=new Notifications("New Arrival", user, "A new arrival that matches your preference is  "+carpost.getPostId());
-	// 				nservice.save(ntf);
-
-	// 				user.getNotifications().add(ntf);
-	// 				uservice.save(user);
-	// 				//model.addAttribute("ntf", ntf);
-	// 				//return "notification";
-	// 			}
-	// 		}
-	// Save car's details
+	@Transactional
 	@PostMapping("/savePost/{id}")
-	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, Model model, @PathVariable("id") Integer imgId) {
+	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, @PathVariable("id") Integer imgId) {
 
 		try {
 			//find the current logged in
 			User user = uservice.finduserById(1);
 
 			//Instatiate a new carpost from the object received from client side
-			CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), carpost.getBrand(),
-					carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(),
-					carpost.getCategory(), carpost.getPhotoUrl(), user);
+			// CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), carpost.getBrand(),
+			// 		carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(),
+			// 		carpost.getCategory(), carpost.getPhotoUrl(), user);
+
+			CarPosting newCarPosting = new CarPosting(60000, "suzuki", 2000, "Hatchback", user);
 
 			//set this post to the user
 			List<CarPosting> newpostList = new ArrayList<CarPosting>();
@@ -172,19 +139,26 @@ public class postController {
 			CarPosting newcarPosting2 = cprepo.save(carpost);
 			img1.setCarpost(carpost);
 			cirepo.save(img1);
-			
+
+
+			//Notifitiona relevant ppl that new post created
 			List<User> users=(ArrayList<User>) uservice.findAll();
 			
-			if(user.getPreference()!=null){
-				Preference preference=user.getPreference();
+			for (User userCheckNotification : users) {
+				//if have notification and it is not the person doing the posting 
+			if(userCheckNotification.getPreference()!=null && userCheckNotification.getUserId()!= user.getUserId()){
+				Preference preference=userCheckNotification.getPreference();
+
+				// if the new post matches som1's preference
 				if(preference.getBrand()==carpost.getBrand() && preference.getCategory()==carpost.getCategory() &&
 				preference.getEngineCapacityMax()<=carpost.getEngineCapacity() && preference.getEngineCapacityMin()>=carpost.getEngineCapacity()
 				&& preference.getHighestPrice()<=carpost.getPrice()){
-					Notifications ntf=new Notifications("New Arrival", user, "A new arrival that matches your preference is  "+carpost.getPostId());
+					Notifications ntf=new Notifications("New Arrival", userCheckNotification, "A new arrival that matches your preference is  "+carpost.getPostId());
 					nservice.save(ntf);
 
-					user.getNotifications().add(ntf);
-					uservice.save(user);
+					userCheckNotification.getNotifications().add(ntf);
+					uservice.save(userCheckNotification);
+			}
 				
 
 			}
