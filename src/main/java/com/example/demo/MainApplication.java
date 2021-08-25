@@ -1,21 +1,28 @@
 package com.example.demo;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.example.demo.domain.CarImage;
+import javax.management.Notification;
+
 import com.example.demo.domain.CarPosting;
+import com.example.demo.domain.Notifications;
 import com.example.demo.domain.Preference;
 import com.example.demo.domain.User;
 import com.example.demo.domain.UserType;
+import com.example.demo.repo.CarImageRepository;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.NotificationRepository;
 import com.example.demo.repo.OfferRepository;
 import com.example.demo.repo.PreferenceRepository;
 import com.example.demo.repo.UserRepository;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -42,6 +49,9 @@ public class MainApplication {
 	@Autowired
 	NotificationRepository nrepo;
 
+	@Autowired
+	CarImageRepository cirepo;
+
 	public static void main(String[] args) throws ParseException {
 		SpringApplication.run(MainApplication.class, args);
 		//comment1
@@ -54,24 +64,13 @@ public class MainApplication {
 			SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 			String Pass = sCryptPasswordEncoder.encode("tin");
 			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
-			String Pass2= sCryptPasswordEncoder.encode("esther");
-			String Pass3= sCryptPasswordEncoder.encode("suriya");
-			User u1 = new User("tin",Pass,UserType.USER);
-			User u2 = new User("cherwah",Pass1,UserType.USER);
-			User u3=new User("esther",Pass2,UserType.USER);
-			User u4=new User("suriya",Pass3,UserType.USER);
+			User u1 = new User("tin",Pass, UserType.USER);
+			User u2 = new User("cherwah",Pass1, UserType.USER);
 			urepo.save(u1);
 			urepo.save(u2);
-			urepo.save(u3);
-			urepo.save(u4);
 
-			Preference pref1 = new Preference("911 Carrera Cabriolet 3.6A PDK", "Porsche",10000,80000,"Sports",2010,2020,1800,2000,900,10000, u1);
+			Preference pref1 = new Preference("911 Carrera Cabriolet 3.6A PDK", "Porsche", u1);
 			prepo.save(pref1);
-
-			Preference pref3=new Preference("Swift 1.0A Turbo GLX","Suzuki" , 10000, 66000,"Hatchback" , 2010, 2020, 1800, 2000, 900, 10000,u3);
-			prepo.save(pref3);
-
-			
 
 			String sDate1 = "22/11/2018";
 			String sDate2 = "01/05/2008";
@@ -90,8 +89,15 @@ public class MainApplication {
 			Date date7 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate7);
 			Date date8 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate8);
 
+			byte[] imgByte = FileUtils.readFileToByteArray(new File("C:/Users/Teck Yi/Desktop/orochimon-739x1024.jpg"));
+			CarImage img1 = new CarImage();
+			img1.setCarpostImage(imgByte);
+			CarImage img2 =  cirepo.save(img1);
+
 			CarPosting post1 = new CarPosting(65000, "Swift 1.0A Turbo GLX", "Suzuki", 998, date1, 25000, "Hatchback",
 					"https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg", u1);
+			post1.setCarPostImage(img1);
+			
 			CarPosting post2 = new CarPosting(14998, "Edix 2.0A", "Honda", 1998, date2, 155387, "Hatchback",
 					"https://i.i-sgcm.com/cars_used/202107/1018213_small.jpg", u1);
 			CarPosting post3 = new CarPosting(52515, "3 HB 1.5A Deluxe", "Mazda	", 1496, date3, 93000, "Hatchback",
@@ -114,6 +120,13 @@ public class MainApplication {
 			cpRepo.save(post6);
 			cpRepo.save(post7);
 			cpRepo.save(post8);
+			img2.setCarpost(post1);
+			cirepo.save(img2);
+
+			Notifications ntf1=new Notifications("welcome","Welcome to the web!",u1);
+			Notifications ntf2=new Notifications("delete","Your favorite product information has been deleted, please click here for details",u1);
+			nrepo.save(ntf1);
+			nrepo.save(ntf2);
 
 			List<CarPosting> cpl1 = new ArrayList<CarPosting>();
 			cpl1.add(post1);
@@ -127,6 +140,18 @@ public class MainApplication {
 
 			u1.setPostings(cpl1);
 			urepo.save(u1);
+			
+			List<Notifications> currentNTF = new ArrayList<>();
+			currentNTF.add(ntf1);
+			currentNTF.add(ntf2);
+			u1.setNotifications(currentNTF);
+			urepo.save(u1);
+
+
+			nrepo.save(new Notifications("Hellow"));
+			nrepo.save(new Notifications("We"));
+			nrepo.save(new Notifications("Are"));
+			nrepo.save(new Notifications("Noobs!"));
 		};
 	}
 

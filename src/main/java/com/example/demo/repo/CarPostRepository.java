@@ -15,10 +15,7 @@ public interface CarPostRepository extends JpaRepository<CarPosting, Integer> {
     
     @Query("SELECT cp FROM CarPosting cp WHERE cp.description = :model AND cp.brand = :brand")
    	public List<CarPosting> findCarPostByPref(@Param("model") String model, @Param("brand")String brand);
-
-    @Query("select cp from CarPosting cp where (:model IS NULL OR cp.description=:model) AND (:brand IS NULL OR cp.brand=:brand) AND cp.engineCapacity>=:engineCapacity AND (:category IS NULL OR cp.category=:category) AND cp.price<=:highestPrice")
-    public List<CarPosting> findCarPostsByPreferences(@Param("model") String model,@Param("brand")String brand,
-    @Param("engineCapacity") int engineCapacity,@Param("category") String category,@Param("highestPrice") int highestPrice );
+       
 
     @Query("SELECT cp FROM CarPosting cp WHERE (:brand IS NULL OR cp.brand = :brand) AND cp.price> :minPrice AND cp.price < :maxPrice AND (:description IS NULL OR cp.description LIKE %:description%)")
     public List<CarPosting> filterAllIgnoreCase(@Param("brand")String brand,@Param("minPrice")int minPrice,@Param("maxPrice")int maxPrice, @Param("description") String description);

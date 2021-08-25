@@ -66,12 +66,9 @@ public class User {
         this.username = username;
         this.preference = preference;
     }
-    
 
 
 
-
-    
 
     public User(String username, String password, UserType role, List<CarPosting> postings, List<CarPosting> history,
 			List<CarPosting> favourites, Preference preference, List<Notifications> notifications,

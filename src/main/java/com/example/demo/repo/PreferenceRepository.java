@@ -9,10 +9,5 @@ import org.springframework.data.repository.query.Param;
 public interface PreferenceRepository extends JpaRepository<Preference,Integer> {
 
     @Query("select u.preference from User u where u.id = :id")
-    public Preference findprefByuserId(@Param("id") int id);  
-    
-    @Query("select p from Preference p where p.id=:id")
-    public Preference findById(@Param("id") int id);
-
-    
+    public Preference findprefByuserId(@Param("id") int id);    
 }

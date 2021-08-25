@@ -51,11 +51,8 @@ public class Notifications {
 
     
 
-
-
-
-    public Notifications(String type) {
-        this.type = type;
+    public Notifications(String msg) {
+        this.Msg = msg;
     }
 
 
@@ -64,40 +61,38 @@ public class Notifications {
         this.user = user;
     }
 
-
-    public int getnotificationId() {
-        return this.notificationId;
+    public Notifications(String type, String msg, User user) {
+        this.type = type;
+        this.Msg = msg;
+        this.user = user;
     }
 
-    public void setnotificationId(int notificationId) {
+
+    public int getNotificationId() {
+        return notificationId;
+    }
+
+    public void setNotificationId(int notificationId) {
         this.notificationId = notificationId;
     }
 
     public String getType() {
-        return this.type;
+        return type;
     }
 
     public void setType(String type) {
         this.type = type;
     }
 
-    public Notifications type(String type) {
-        setType(type);
-        return this;
-    }
 
     @JsonIgnore
     public User getUser() {
-        return this.user;
+        return user;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
 
-    public Notifications user(User user) {
-        setUser(user);
-        return this;
-    }
 
 }

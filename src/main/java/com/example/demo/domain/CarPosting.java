@@ -11,11 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -42,6 +42,7 @@ public class CarPosting {
     private String category;
     private String photoUrl;
     private int views;
+    private int userId;
 
     @OneToOne(mappedBy = "carpost")
     private CarImage carpostimage;
@@ -257,6 +258,10 @@ public class CarPosting {
                 + "'" + ", reisgteredDate='" + getRegisteredDate() + "'" + ", mileage='" + getMileage() + "'"
                 + ", category='" + getCategory() + "'" + ", photoUrl='" + getPhotoUrl() + "'" + ", views='" + getViews()
                 + "'" + ", user='" + getUsers() + "'" + ", history='" + getHistory() + "'" + "}";
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
 }
