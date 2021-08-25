@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 @RestController
 @RequestMapping("/post")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -59,7 +60,7 @@ public class postController {
 	CarPostRepository cprepo;
 
 	@GetMapping("/getOne/{id}")
-    public CarPosting getCar(@PathVariable("id") Integer id){
+	public CarPosting getCar(@PathVariable("id") Integer id) {
 		return cpservice.findCarPostById(id);
 	}
 
@@ -85,43 +86,43 @@ public class postController {
 
 	// @GetMapping("/deletePost/{id}")
 	// public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
-	// 	CarPosting carpost = cpservice.findCarPostById(id);
-	// 	List<User> users = carpost.getUsers();
+	// CarPosting carpost = cpservice.findCarPostById(id);
+	// List<User> users = carpost.getUsers();
 
-	// 	for (User user : users) {
-	// 		Notifications notification = new Notifications();
-	// 		notification.setType("delete");
-	// 		notification.setUser(user);
-	// 		user.notifications.add(notification);
-	// 	}
+	// for (User user : users) {
+	// Notifications notification = new Notifications();
+	// notification.setType("delete");
+	// notification.setUser(user);
+	// user.notifications.add(notification);
+	// }
 
-	// 	carpost.setOwner(null);
-	// 	cpservice.delete(carpost);
-	// 	return "forward:/post/listPost";
+	// carpost.setOwner(null);
+	// cpservice.delete(carpost);
+	// return "forward:/post/listPost";
 	// }
 
 	@DeleteMapping("/deletePost/{id}")
 	@Transactional
-	public ResponseEntity<HttpStatus> deleteCarPost( @PathVariable("id") Integer id) {
+	public ResponseEntity<HttpStatus> deleteCarPost(@PathVariable("id") Integer id) {
 		CarPosting carpost = cpservice.findCarPostById(id);
 
-		//get likers
+		// get likers
 		List<User> users = carpost.getUsers();
 
-		//unmap and delete
+		// unmap and delete
 		carpost.setOwner(null);
-		if(carpost.getCarPostImage() != null)
+		if (carpost.getCarPostImage() != null)
 			cirepo.delete(carpost.getCarPostImage());
 		cpservice.delete(carpost);
 
-		//send out notification
+		// send out notification
 		for (User user : users) {
-		Notifications notification = new Notifications(carpost.getDescription()+" has been deleted!");
-		notification.setUser(user);
-		nservice.save(notification);
-		user.getNotifications().add(notification);
-		uservice.save(user);
-	 	}
+			Notifications notification = new Notifications(carpost.getDescription() + " has been deleted!");
+			notification.setUser(user);
+			nservice.save(notification);
+			user.getNotifications().add(notification);
+			uservice.save(user);
+		}
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -131,14 +132,132 @@ public class postController {
 	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, @PathVariable("id") Integer imgId) {
 
 		try {
-			//find the current logged in
+			// find the current logged in
 			User user = uservice.finduserById(carpost.getUserId());
-			//Instatiate a new carpost from the object received from client side
-			CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), carpost.getBrand(),
-			carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(),
-			carpost.getCategory(), carpost.getPhotoUrl(), user);
 
-			//set this post to the user
+			// One hot decoding for category and brand
+			String hotBrand = carpost.getBrand();
+			String realBrand = "";
+			switch (hotBrand) {
+				case "0":
+					realBrand = "Audi";
+					break;
+				case "1":
+					realBrand = "Austin";
+					break;
+				case "2":
+					realBrand = "BMW";
+					break;
+				case "3":
+					realBrand = "Citron";
+					break;
+				case "4":
+					realBrand = "Ferrari";
+					break;
+				case "5":
+					realBrand = "Fiat";
+					break;
+				case "6":
+					realBrand = "Honda";
+					break;
+				case "7":
+					realBrand = "Hyundai";
+					break;
+				case "8":
+					realBrand = "Kia";
+					break;
+				case "9":
+					realBrand = "Lexus";
+					break;
+				case "10":
+					realBrand = "Mini";
+					break;
+				case "11":
+					realBrand = "Mercedes-Benz";
+					break;
+				case "12":
+					realBrand = "Mitsubishi";
+					break;
+				case "13":
+					realBrand = "Morris";
+					break;
+				case "14":
+					realBrand = "Nissan";
+					break;
+				case "15":
+					realBrand = "Opel";
+					break;
+				case "16":
+					realBrand = "Peugeot";
+					break;
+				case "17":
+					realBrand = "Porsche";
+					break;
+				case "18":
+					realBrand = "Renault";
+					break;
+				case "19":
+					realBrand = "Subaru";
+					break;
+				case "20":
+					realBrand = "Suzuki";
+					break;
+				case "21":
+					realBrand = "Toyota";
+					break;
+				case "22":
+					realBrand = "Volkswagen";
+					break;
+				case "23":
+					realBrand = "Volvo";
+					break;
+				default:
+					realBrand = "";
+			}
+
+			String hotCategory = carpost.getCategory();
+			String realCategory = "";
+			switch (hotCategory) {
+				case "1":
+					realCategory = "Hatchback";
+					break;
+				case "2":
+					realCategory = "Luxury";
+					break;
+				case "3":
+					realCategory = "MPV";
+					break;
+				case "4":
+					realCategory = "Others";
+					break;
+				case "5":
+					realCategory = "SUV";
+					break;
+				case "6":
+					realCategory = "Sedan";
+					break;
+				case "7":
+					realCategory = "Sports";
+					break;
+				case "8":
+					realCategory = "Stationwagon";
+					break;
+				case "9":
+					realCategory = "Truck";
+					break;
+				case "10":
+					realCategory = "Van";
+					break;
+				default:
+					realCategory = "";
+			}
+
+			// Instatiate a new carpost from the object received from client side
+			CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), realCategory,
+					carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(), realCategory,
+					carpost.getPhotoUrl(), user);
+
+			// set this post to the user
 			List<CarPosting> newpostList = new ArrayList<CarPosting>();
 			newpostList.add(newCarPosting);
 			user.setPostings(newpostList);
@@ -147,7 +266,7 @@ public class postController {
 			existingList.add(user);
 			carpost.setOwner(user);
 
-			//set car image to the post
+			// set car image to the post
 			CarImage img1 = cirepo.findByImageId(imgId);
 			carpost.setCarPostImage(img1);
 			CarPosting newcarPosting2 = cprepo.save(carpost);
@@ -164,16 +283,15 @@ public class postController {
 	@PostMapping("/listPost")
 	public List<CarPosting> listCarPost(@RequestBody SearchObject searchobject) {
 
-
 		String brand = searchobject.getBrand();
 		String priceLabel = searchobject.getPrice();
 		String description = searchobject.getDescription();
-		
-		//set brand
+
+		// set brand
 		if (searchobject.getBrand() == "")
 			brand = null;
 
-		//set description
+		// set description
 		if (description == "")
 			description = null;
 
@@ -207,8 +325,8 @@ public class postController {
 	}
 
 	@GetMapping("/listPost2")
-	public String listCarPost(Model model){
-		
+	public String listCarPost(Model model) {
+
 		model.addAttribute("carpost", cpservice.findAll());
 		return "forward:/list_car";
 	}
@@ -229,8 +347,8 @@ public class postController {
 	}
 	// @GetMapping("/listLikedPost/{id}")
 	// public String listLikedCarPost(Model model,@PathVariable("id") Integer id) {
-	// 	model.addAttribute("carpost", cprepo.findCarPostByUserId(id));
-	// 	return "list_likedcar.html";
+	// model.addAttribute("carpost", cprepo.findCarPostByUserId(id));
+	// return "list_likedcar.html";
 	// }
 
 	@GetMapping("/viewOwnPost")
@@ -259,32 +377,31 @@ public class postController {
 		cpservice.save(carpost);
 		return "detailsPage";
 	}
-	
 
 	@PostMapping("/saveOffer")
-    public ResponseEntity<Offer> createOffer(@RequestBody Offer offer){
-        try {
-            Offer u = orepo.save(new Offer(offer.getOffer()));
-            return new ResponseEntity<>(u, HttpStatus.CREATED);
-        }
-        catch(Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
-        }
-    }
+	public ResponseEntity<Offer> createOffer(@RequestBody Offer offer) {
+		try {
+			Offer u = orepo.save(new Offer(offer.getOffer()));
+			return new ResponseEntity<>(u, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+		}
+	}
 
 	@PostMapping("/saveImage")
-	public ResponseEntity<Integer> saveImage (@RequestParam("photoParam") MultipartFile file, HttpSession session){
-		
+	public ResponseEntity<Integer> saveImage(@RequestParam("photoParam") MultipartFile file, HttpSession session) {
+
 		CarImage currentCarImage = new CarImage();
-		try{
-		currentCarImage.setCarpostImage(file.getBytes());
-		currentCarImage.setName(file.getName());
-		currentCarImage.setType(file.getContentType());
+		try {
+			currentCarImage.setCarpostImage(file.getBytes());
+			currentCarImage.setName(file.getName());
+			currentCarImage.setType(file.getContentType());
 		}
 
-		catch(Exception e){
+		catch (Exception e) {
 			System.out.println(e);
-		};
+		}
+		;
 		CarImage savedImage = cirepo.save(currentCarImage);
 		return new ResponseEntity<>(savedImage.getImageId(), HttpStatus.CREATED);
 
@@ -318,7 +435,7 @@ public class postController {
 	}
 
 	@GetMapping("/getowncars/{id}")
-	public List<CarPosting> getOwnCar(@PathVariable("id") Integer id){
+	public List<CarPosting> getOwnCar(@PathVariable("id") Integer id) {
 		User user = uservice.finduserById(id);
 		return user.getPostings();
 	}

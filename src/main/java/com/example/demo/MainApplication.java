@@ -91,14 +91,15 @@ public class MainApplication {
 			Date date7 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate7);
 			Date date8 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate8);
 
-			byte[] imgByte = FileUtils.readFileToByteArray(new File("C:/Users/Teck Yi/Desktop/orochimon-739x1024.jpg"));
-			CarImage img1 = new CarImage();
-			img1.setCarpostImage(imgByte);
-			CarImage img2 = cirepo.save(img1);
+			// byte[] imgByte = FileUtils.readFileToByteArray(new File("C:/Users/Teck
+			// Yi/Desktop/orochimon-739x1024.jpg"));
+			// CarImage img1 = new CarImage();
+			// img1.setCarpostImage(imgByte);
+			// CarImage img2 = cirepo.save(img1);
 
 			CarPosting post1 = new CarPosting(65000, "Swift 1.0A Turbo GLX", "Suzuki", 998, date1, 25000, "Hatchback",
 					"https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg", u1);
-			post1.setCarPostImage(img1);
+			// post1.setCarPostImage(img1);
 
 			CarPosting post2 = new CarPosting(14998, "Edix 2.0A", "Honda", 1998, date2, 155387, "Hatchback",
 					"https://i.i-sgcm.com/cars_used/202107/1018213_small.jpg", u1);
@@ -122,8 +123,8 @@ public class MainApplication {
 			cpRepo.save(post6);
 			cpRepo.save(post7);
 			cpRepo.save(post8);
-			img2.setCarpost(post1);
-			cirepo.save(img2);
+			// img2.setCarpost(post1);
+			// cirepo.save(img2);
 
 			Notifications ntf1 = new Notifications("welcome", "Welcome to the web!", u1);
 			Notifications ntf2 = new Notifications("delete",
