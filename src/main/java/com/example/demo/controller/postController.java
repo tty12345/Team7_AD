@@ -59,6 +59,11 @@ public class postController {
 	@Autowired
 	CarPostRepository cprepo;
 
+	@Autowired
+	public void setPrefService(PreferenceService prfservice) {
+		this.prfservice = prfservice;
+	}
+
 	@GetMapping("/getOne/{id}")
 	public CarPosting getCar(@PathVariable("id") Integer id) {
 		return cpservice.findCarPostById(id);
@@ -127,7 +132,26 @@ public class postController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	// Save car's details
+	@DeleteMapping("/deletePost/{id}")
+	@Transactional
+	@GetMapping("/deletePost/{id}")
+	public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
+		CarPosting carpost = cpservice.findCarPostById(id);
+		List<User> users = carpost.getUsers();
+
+		for (User user : users) {
+			Notifications notification = new Notifications();
+			notification.setType("delete");
+			notification.setUser(user);
+			user.notifications.add(notification);
+		}
+
+		carpost.setOwner(null);
+		cpservice.delete(carpost);
+		return "forward:/post/listPost";
+	}
+
+	@Transactional
 	@PostMapping("/savePost/{id}")
 	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, @PathVariable("id") Integer imgId) {
 
@@ -273,6 +297,31 @@ public class postController {
 			img1.setCarpost(carpost);
 			cirepo.save(img1);
 
+			// Notifitiona relevant ppl that new post created
+			List<User> users = (ArrayList<User>) uservice.findAll();
+
+			for (User userCheckNotification : users) {
+				// if have notification and it is not the person doing the posting
+				if (userCheckNotification.getPreference() != null
+						&& userCheckNotification.getUserId() != user.getUserId()) {
+					Preference preference = userCheckNotification.getPreference();
+
+					// if the new post matches som1's preference
+					if (preference.getBrand() == carpost.getBrand() && preference.getCategory() == carpost.getCategory()
+							&& preference.getEngineCapacityMax() <= carpost.getEngineCapacity()
+							&& preference.getEngineCapacityMin() >= carpost.getEngineCapacity()
+							&& preference.getHighestPrice() <= carpost.getPrice()) {
+						Notifications ntf = new Notifications("New Arrival", userCheckNotification,
+								"A new arrival that matches your preference is  " + carpost.getPostId());
+						nservice.save(ntf);
+
+						userCheckNotification.getNotifications().add(ntf);
+						uservice.save(userCheckNotification);
+					}
+
+				}
+			}
+
 			return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -316,7 +365,6 @@ public class postController {
 
 		// depending on which field is entered, do the corresponding query
 		// if all null, display all
-
 		if (brand == null && maxPrice == 0 && description == null)
 			return cpservice.findAll();
 
@@ -325,16 +373,20 @@ public class postController {
 	}
 
 	@GetMapping("/listPost2")
-	public String listCarPost(Model model) {
 
-		model.addAttribute("carpost", cpservice.findAll());
-		return "forward:/list_car";
+	public List<CarPosting> listCarPost() {
+		return cpservice.findAll();
 	}
 
 	@GetMapping("/recommended")
-	public String recommendedCars(Model model) {
-		Preference pref = prfservice.findprefByuserId(1);
-		List<CarPosting> cars = cpservice.findCarPostByPref(pref.getModel(), pref.getBrand());
+	public String recommendedCars(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		Preference pref = prfservice.findprefByuserId(user.getUserId());
+		// List<CarPosting> cars = cpservice.findCarPostByPref(pref.getModel(),
+		// pref.getBrand());
+		List<CarPosting> cars = new ArrayList<>();
+		// cpservice.findCarPostsByPreferences(pref.getModel(), pref.getBrand(),
+		// pref.getEngineCapacityMin(), pref.getCategory());
 		model.addAttribute("prefcars", cars);
 		return "recommended_cars";
 	}
@@ -345,11 +397,6 @@ public class postController {
 		model.addAttribute("carpost", mostviewed);
 		return "list_car";
 	}
-	// @GetMapping("/listLikedPost/{id}")
-	// public String listLikedCarPost(Model model,@PathVariable("id") Integer id) {
-	// model.addAttribute("carpost", cprepo.findCarPostByUserId(id));
-	// return "list_likedcar.html";
-	// }
 
 	@GetMapping("/viewOwnPost")
 	public String viewOwnPost(Model model) {
@@ -389,6 +436,7 @@ public class postController {
 	}
 
 	@PostMapping("/saveImage")
+
 	public ResponseEntity<Integer> saveImage(@RequestParam("photoParam") MultipartFile file, HttpSession session) {
 
 		CarImage currentCarImage = new CarImage();
@@ -439,5 +487,4 @@ public class postController {
 		User user = uservice.finduserById(id);
 		return user.getPostings();
 	}
-
 }
