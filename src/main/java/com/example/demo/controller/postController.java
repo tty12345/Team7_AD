@@ -99,6 +99,7 @@ public class postController {
 	// 	cpservice.delete(carpost);
 	// 	return "forward:/post/listPost";
 	// }
+	// testing
 
 	@DeleteMapping("/deletePost/{id}")
 	@Transactional
