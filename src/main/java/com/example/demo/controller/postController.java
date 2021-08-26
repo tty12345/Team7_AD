@@ -5,21 +5,11 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.example.demo.domain.CarImage;
-import com.example.demo.domain.CarPosting;
-import com.example.demo.domain.Notifications;
-import com.example.demo.domain.Offer;
-import com.example.demo.domain.Preference;
-import com.example.demo.domain.SearchObject;
-import com.example.demo.domain.User;
+import com.example.demo.domain.*;
 import com.example.demo.repo.CarImageRepository;
 import com.example.demo.repo.CarPostRepository;
 import com.example.demo.repo.OfferRepository;
-import com.example.demo.service.CarPostService;
-import com.example.demo.service.NotificationService;
-import com.example.demo.service.OfferService;
-import com.example.demo.service.PreferenceService;
-import com.example.demo.service.UserService;
+import com.example.demo.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -385,11 +375,76 @@ public class postController {
 			return cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description);
 	}
 
-	@GetMapping("/listPost2")
+	// @GetMapping("/listPost2")
+	// public String listCarPost(Model model){
+	// 	model.addAttribute("carpost", cpservice.findAll());
+	// 	return "forward:/list_car";
+	// }
 
-	public List<CarPosting> listCarPost() {
-		return cpservice.findAll();
+	@GetMapping("/hotcars")
+	public List<CarPosting> hotcars() {
+		List<CarPosting> popularCars = filtertop3Cars(cpservice.findMostViewedCars());
+		List<CarPosting> mostliked = filtertop3Cars(cpservice.findMostLikedCars());
+		return concatenate(popularCars, mostliked);
 	}
+	
+	private List<CarPosting> filtertop3Cars(List<CarPosting> list){
+		List<CarPosting> result =  new ArrayList<>();
+		int top = 0;
+		for (CarPosting cp: list){
+			if ( top < 3){
+				result.add(cp);
+				top++;
+			}
+			else {
+				top = 0;
+				break;
+			}
+		}
+		return result;
+	}
+
+	private List<CarPosting> concatenate(List<CarPosting> list1,List<CarPosting> list2){
+		for (int i = 0; i < list1.size(); i++) {
+			for (int j = 0; j < list1.size(); j++){
+				if (list1.get(i).equals(list2.get(j))){
+					list2.remove(j);
+				}
+			}
+		}
+		for (CarPosting car: list2){
+			list1.add(car);
+		}
+		return list1;
+	}
+
+	@GetMapping("/viewOwnPost")
+	public String viewOwnPost(Model model) {
+		User user = uservice.finduserById(1);
+		List<CarPosting> ownPostings = cpservice.findCarPostByUserId(user.getUserId());
+		model.addAttribute("carpost", ownPostings);
+		return "list_seller";
+	}
+
+	@GetMapping("/viewOffer/{id}")
+	public String viewOffer(Model model, @PathVariable("id") Integer id) {
+		List<Offer> offers = oservice.findOffersByCarPostId(id);
+		model.addAttribute("carpost", cpservice.findCarPostById(id));
+		model.addAttribute("offers", offers);
+		return "offerDetails";
+	}
+
+	@GetMapping("/offer/{id}")
+	public String offer(Model model, @PathVariable("id") Integer id) {
+		CarPosting carpost = cpservice.findCarPostById(id);
+		model.addAttribute("carpost", carpost);
+
+		// increment number of views for a car
+		carpost.setViews(carpost.getViews() + 1);
+		cpservice.save(carpost);
+		return "detailsPage";
+	}
+	
 
 	@PostMapping("/saveOffer/{id}")
     public ResponseEntity<Offer> createOffer(@PathVariable("id") int postId,@RequestBody Offer offer){

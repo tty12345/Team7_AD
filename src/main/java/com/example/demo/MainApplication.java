@@ -7,20 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.example.demo.domain.CarImage;
-import javax.management.Notification;
-
-import com.example.demo.domain.CarPosting;
-import com.example.demo.domain.Notifications;
-import com.example.demo.domain.Preference;
-import com.example.demo.domain.User;
-import com.example.demo.domain.UserType;
-import com.example.demo.repo.CarImageRepository;
-import com.example.demo.repo.CarPostRepository;
-import com.example.demo.repo.NotificationRepository;
-import com.example.demo.repo.OfferRepository;
-import com.example.demo.repo.PreferenceRepository;
-import com.example.demo.repo.UserRepository;
+import com.example.demo.domain.*;
+import com.example.demo.repo.*;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,10 +54,23 @@ public class MainApplication {
 			SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
 			String Pass = sCryptPasswordEncoder.encode("tin");
 			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
-			User u1 = new User("tin", Pass, UserType.USER);
-			User u2 = new User("cherwah", Pass1, UserType.USER);
+			String Pass2 = sCryptPasswordEncoder.encode("mike");
+			String Pass3 = sCryptPasswordEncoder.encode("steve");
+			User u1 = new User("tin",Pass, UserType.USER);
+			User u2 = new User("cherwah",Pass1, UserType.USER);
+			User u3 = new User("mike",Pass2, UserType.USER);
+			User u4 = new User("steve",Pass3, UserType.USER);
 			urepo.save(u1);
 			urepo.save(u2);
+			urepo.save(u3);
+			urepo.save(u4);
+
+			List<User> gp1 = new ArrayList<>();
+			gp1.add(u1);
+			List<User> gp2 = new ArrayList<>();
+			gp2.add(u1); gp2.add(u2); gp2.add(u3);
+			List<User> gp3 = new ArrayList<>();
+			gp3.add(u3); gp3.add(u4);
 
 			Preference pref1 = new Preference("911 Carrera Cabriolet 3.6A PDK", "Porsche", u1);
 			prepo.save(pref1);
@@ -91,29 +92,29 @@ public class MainApplication {
 			Date date7 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate7);
 			Date date8 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate8);
 
-			// byte[] imgByte = FileUtils.readFileToByteArray(new File("C:/Users/TeckYi/Desktop/orochimon-739x1024.png"));
+			// byte[] imgByte = FileUtils.readFileToByteArray(new File("C:/Users/Teck Yi/Desktop/orochimon-739x1024.jpg"));
 			// CarImage img1 = new CarImage();
 			// img1.setCarpostImage(imgByte);
-			// CarImage img2 = cirepo.save(img1);
+			// CarImage img2 =  cirepo.save(img1);
 
 			CarPosting post1 = new CarPosting(65000, "Swift 1.0A Turbo GLX", "Suzuki", 998, date1, 25000, "Hatchback",
-					"https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg", u1);
-			// post1.setCarPostImage(img2);
-
+					"https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg", u1, 1, gp3, 2);
+			// post1.setCarPostImage(img1);
+			
 			CarPosting post2 = new CarPosting(14998, "Edix 2.0A", "Honda", 1998, date2, 155387, "Hatchback",
-					"https://i.i-sgcm.com/cars_used/202107/1018213_small.jpg", u1);
+					"https://i.i-sgcm.com/cars_used/202107/1018213_small.jpg", u1, 2, gp2, 2);
 			CarPosting post3 = new CarPosting(52515, "3 HB 1.5A Deluxe", "Mazda	", 1496, date3, 93000, "Hatchback",
-					"https://i.i-sgcm.com/cars_used/202106/1001996_small.jpg", u1);
+					"https://i.i-sgcm.com/cars_used/202106/1001996_small.jpg", u1, 2, gp3, 2);
 			CarPosting post4 = new CarPosting(240800, "911 Carrera Cabriolet 3.6A PDK", "Porsche", 3614, date4, 102000,
-					"Sports", "https://i.i-sgcm.com/cars_used/202107/1013874_small.jpg", u1);
+					"Sports", "https://i.i-sgcm.com/cars_used/202107/1013874_small.jpg", u1, 4, gp1, 1);
 			CarPosting post5 = new CarPosting(258800, "911 Carrera Cabriolet 3.6A PDK", "Porsche", 3614, date5, 81000,
-					"Sports", "https://i.i-sgcm.com/cars_used/202106/1009173_small.jpg", u1);
+					"Sports", "https://i.i-sgcm.com/cars_used/202106/1009173_small.jpg", u1, 1, gp1, 1);
 			CarPosting post6 = new CarPosting(93800, "Civic Type R 2.0M", "Honda", 1998, date6, 50000, "Sports",
-					"https://i.i-sgcm.com/cars_used/202108/1021450_small.jpg", u1);
+					"https://i.i-sgcm.com/cars_used/202108/1021450_small.jpg", u1, 5, gp1, 1);
 			CarPosting post7 = new CarPosting(99800, "C-Class C180 Avantgarde", "Mercedes-Benz", 1595, date7, 60323,
-					"Luxury", "https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg", u1);
+					"Luxury", "https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg", u1, 0, null, 0);
 			CarPosting post8 = new CarPosting(42000, "Camry 2.4A", "Toyota", 2362, date8, 100000, "Luxury",
-					"https://i.i-sgcm.com/cars_used/202108/1021441_small.jpg", u1);
+					"https://i.i-sgcm.com/cars_used/202108/1021441_small.jpg", u1, 3, gp3, 1);
 			cpRepo.save(post1);
 			cpRepo.save(post2);
 			cpRepo.save(post3);
@@ -124,6 +125,7 @@ public class MainApplication {
 			cpRepo.save(post8);
 			// img2.setCarpost(post1);
 			// cirepo.save(img2);
+
 
 			Notifications ntf1 = new Notifications("welcome", "Welcome to the web!", u1);
 			Notifications ntf2 = new Notifications("delete",
