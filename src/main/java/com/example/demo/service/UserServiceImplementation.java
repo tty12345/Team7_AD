@@ -42,5 +42,11 @@ public class UserServiceImplementation implements UserService{
     public List<Notifications> findNotificationsByUserId(int id){
         return urepo.findNotificationsByUserId(id);
     }
+
+    @Override
+    public List<User> findAll() {
+        return urepo.findAll();
+    }
+    
     
 }
