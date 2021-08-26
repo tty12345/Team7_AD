@@ -55,20 +55,137 @@ public class SetPreferenceController {
 	public ResponseEntity<HttpStatus> savePreference(@RequestBody Preference preference ){
 		
 		User currentUser = uservice.finduserById(preference.getUserId());
+
+		String hotBrand = preference.getBrand();
+		String realBrand = "";
+		switch (hotBrand) {
+			case "0":
+				realBrand = "Audi";
+				break;
+			case "1":
+				realBrand = "Austin";
+				break;
+			case "2":
+				realBrand = "BMW";
+				break;
+			case "3":
+				realBrand = "Citron";
+				break;
+			case "4":
+				realBrand = "Ferrari";
+				break;
+			case "5":
+				realBrand = "Fiat";
+				break;
+			case "6":
+				realBrand = "Honda";
+				break;
+			case "7":
+				realBrand = "Hyundai";
+				break;
+			case "8":
+				realBrand = "Kia";
+				break;
+			case "9":
+				realBrand = "Lexus";
+				break;
+			case "10":
+				realBrand = "Mini";
+				break;
+			case "11":
+				realBrand = "Mercedes-Benz";
+				break;
+			case "12":
+				realBrand = "Mitsubishi";
+				break;
+			case "13":
+				realBrand = "Morris";
+				break;
+			case "14":
+				realBrand = "Nissan";
+				break;
+			case "15":
+				realBrand = "Opel";
+				break;
+			case "16":
+				realBrand = "Peugeot";
+				break;
+			case "17":
+				realBrand = "Porsche";
+				break;
+			case "18":
+				realBrand = "Renault";
+				break;
+			case "19":
+				realBrand = "Subaru";
+				break;
+			case "20":
+				realBrand = "Suzuki";
+				break;
+			case "21":
+				realBrand = "Toyota";
+				break;
+			case "22":
+				realBrand = "Volkswagen";
+				break;
+			case "23":
+				realBrand = "Volvo";
+				break;
+			default:
+				realBrand = "";
+		}
+
+		String hotCategory = preference.getCategory();
+		String realCategory = "";
+		switch (hotCategory) {
+			case "1":
+				realCategory = "Hatchback";
+				break;
+			case "2":
+				realCategory = "Luxury";
+				break;
+			case "3":
+				realCategory = "MPV";
+				break;
+			case "4":
+				realCategory = "Others";
+				break;
+			case "5":
+				realCategory = "SUV";
+				break;
+			case "6":
+				realCategory = "Sedan";
+				break;
+			case "7":
+				realCategory = "Sports";
+				break;
+			case "8":
+				realCategory = "Stationwagon";
+				break;
+			case "9":
+				realCategory = "Truck";
+				break;
+			case "10":
+				realCategory = "Van";
+				break;
+			default:
+				realCategory = "";
+		}
+
 		
 		if(currentUser.getPreference()==null){
-			Preference newPreference = new Preference (preference.getModel(),preference.getBrand(),preference.getLowestPrice(),
-			preference.getHighestPrice(),preference.getCategory(), preference.getEngineCapacityMin(), 
+			Preference newPreference = new Preference (preference.getModel(),realBrand,preference.getLowestPrice(),
+			preference.getHighestPrice(),realCategory, preference.getEngineCapacityMin(), 
 			preference.getEngineCapacityMax(),currentUser);
 			prfservice.save(newPreference);
 		}
 		else{
 			Preference oldPreference = currentUser.getPreference();
 			oldPreference.setModel(preference.getModel());
-			oldPreference.setBrand(preference.getBrand());
+			oldPreference.setBrand(realBrand);
 			oldPreference.setLowestPrice(preference.getLowestPrice());
 			oldPreference.setHighestPrice(preference.getHighestPrice());
-			oldPreference.setCategory(preference.getCategory());
+			oldPreference.setCategory(realCategory);
 			oldPreference.setEngineCapacityMin(preference.getEngineCapacityMin());
 			oldPreference.setEngineCapacityMax(preference.getEngineCapacityMax());
 			prfservice.save(oldPreference);

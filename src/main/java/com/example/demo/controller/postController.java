@@ -248,69 +248,74 @@ public class postController {
 			//checkif carpost is new or old
 			if(carpost.getPostId() == 0){
 				try {
-				// Instatiate a new carpost from the object received from client side
-				CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), realBrand,
+					// Instatiate a new carpost from the object received from client side
+					CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), realBrand,
 						carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(), realCategory,
 						carpost.getPhotoUrl(), user);
 
-				List<CarPosting> existingList = cpservice.findCarPostByUserId(carpost.getUserId());
-				// set this post to the user if this dun have post
+					List<CarPosting> existingList = cpservice.findCarPostByUserId(carpost.getUserId());
+					// set this post to the user if this dun have post
 					if(existingList.size() ==0 ){
 					List<CarPosting> newpostList = new ArrayList<CarPosting>();
 					newpostList.add(newCarPosting);
 					user.setPostings(newpostList);
 					uservice.save(user);
 
-				// List<User> existingUserList = newCarPosting.getUsers();
-				// existingUserList.add(user);
-				// carpost.setOwner(user);
-				}
-				else{
-					existingList.add(newCarPosting);
-					user.setHistory(existingList);
-					uservice.save(user);
-				}
+					// List<User> existingUserList = newCarPosting.getUsers();
+					// existingUserList.add(user);
+					// carpost.setOwner(user);
+					}
+					else{
+						existingList.add(newCarPosting);
+						user.setHistory(existingList);
+						uservice.save(user);
+					}
 
-				// set car image to the post
-				CarImage img1 = cirepo.findByImageId(imgId);
-				carpost.setCarPostImage(img1);
+					// set car image to the post
+					CarImage img1 = cirepo.findByImageId(imgId);
+					carpost.setCarPostImage(img1);
 
-				//error here why?
-				CarPosting newcarPosting2 = cprepo.save(carpost);
-				//error here why?
+					//error here why?
+					CarPosting newcarPosting2 = cprepo.save(newCarPosting);
+					//error here why?
 
-				img1.setCarpost(carpost);
-				cirepo.save(img1);
+					img1.setCarpost(newCarPosting);
+					cirepo.save(img1);
 
-				// Notifitiona relevant ppl that new post created
-				List<User> users = (ArrayList<User>) uservice.findAll();
+					// Notifitiona relevant ppl that new post created
+					List<User> users = (ArrayList<User>) uservice.findAll();
 
-				for (User userCheckNotification : users) {
-					// if have notification and it is not the person doing the posting
-					if (userCheckNotification.getPreference() != null
-							&& userCheckNotification.getUserId() != user.getUserId()) {
-						Preference preference = userCheckNotification.getPreference();
+					for (User userCheckNotification : users) {
+						// if have notification and it is not the person doing the posting
+						if (userCheckNotification.getPreference() != null
+								&& userCheckNotification.getUserId() != user.getUserId()) {
+							Preference preference = userCheckNotification.getPreference();
+
+
 
 						// if the new post matches som1's preference
-						if (preference.getBrand() == carpost.getBrand() && preference.getCategory() == carpost.getCategory()
-								&& preference.getEngineCapacityMax() <= carpost.getEngineCapacity()
-								&& preference.getEngineCapacityMin() >= carpost.getEngineCapacity()
-								&& preference.getHighestPrice() <= carpost.getPrice()) {
-							Notifications ntf = new Notifications("New Arrival", userCheckNotification,
-									"A new arrival that matches your preference is  " + carpost.getPostId());
-							nservice.save(ntf);
+						if (preference.getBrand().equals(newCarPosting.getBrand()))
+						 	if(preference.getCategory().equals(newCarPosting.getCategory()))
+								if (preference.getEngineCapacityMax() >= newCarPosting.getEngineCapacity())
+									if(preference.getEngineCapacityMin() <= newCarPosting.getEngineCapacity())
+								 		if (preference.getHighestPrice() >= newCarPosting.getPrice()) {
+									Notifications ntf = new Notifications("New Arrival", userCheckNotification,
+									"A new arrival that matches your preference is  " + newCarPosting.getPostId());
+									nservice.save(ntf);
 
-							userCheckNotification.getNotifications().add(ntf);
-							uservice.save(userCheckNotification);
+									userCheckNotification.getNotifications().add(ntf);
+									uservice.save(userCheckNotification);
+								}
+							}
 						}
+ 
 
-					}
+						return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
+					} catch (Exception e) {
+						return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 				}
-
-				return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
-			} catch (Exception e) {
-				return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
-			}}
+			}
+		//if post is old and wants to edit	
 		else{
 			CarPosting oldCarpost = cpservice.findCarPostById(carpost.getPostId());
 			oldCarpost.setPrice(carpost.getPrice()); 
