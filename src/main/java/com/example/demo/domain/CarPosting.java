@@ -44,6 +44,7 @@ public class CarPosting {
     private String photoUrl;
     private int views;
     private int userId;
+    private int likeCount;
 
     @OneToOne(mappedBy = "carpost")
     private CarImage carpostimage;
@@ -144,6 +145,22 @@ public class CarPosting {
         this.age = age;
         this.mileage = mileage;
         this.category = category;
+    }
+
+    public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage, 
+    String category, String photoUrl, User owner, int views, List<User> users, int likes) { 
+        this.price = price; 
+        this.description = description; 
+        this.brand = brand; 
+        this.engineCapacity = engineCapacity; 
+        this.registeredDate = registeredDate; 
+        this.mileage = mileage; 
+        this.category = category; 
+        this.photoUrl = photoUrl; 
+        this.owner = owner; 
+        this.views = views; 
+        this.users = users; 
+        this.likeCount = likes; 
     }
 
     public int getPostId() {
@@ -297,6 +314,14 @@ public class CarPosting {
 
     public int getUserId() {
         return userId;
+    }
+
+    public int getLikeCount() { 
+        return this.likeCount; 
+    } 
+ 
+    public void setLikeCount(int likeCount) { 
+        this.likeCount = likeCount; 
     }
 
 }

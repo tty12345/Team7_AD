@@ -14,5 +14,6 @@ public interface CarPostService {
     public List<CarPosting> findCarPostByPref(String model, String brand);
     public List<CarPosting> findCarPostByUserId(int userId);
     public List<CarPosting> findMostViewedCars();
+    public List<CarPosting> findMostLikedCars();
     
 }

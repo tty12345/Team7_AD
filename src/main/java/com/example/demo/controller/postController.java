@@ -81,12 +81,12 @@ public class postController {
 	// }
 
 	// Edit car post's detail
-	@GetMapping("/editPost/{id}")
-	public String editCarPost(Model model, @PathVariable("id") Integer id) {
-		CarPosting carpost = cpservice.findCarPostById(id);
-		model.addAttribute("carpost", carpost);
-		return "car_post_form";
-	}
+	// @GetMapping("/editPost/{id}")
+	// public String editCarPost(Model model, @PathVariable("id") Integer id) {
+	// 	CarPosting carpost = cpservice.findCarPostById(id);
+	// 	model.addAttribute("carpost", carpost);
+	// 	return "car_post_form";
+	// }
 
 	// @GetMapping("/deletePost/{id}")
 	// public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
@@ -255,6 +255,7 @@ public class postController {
 					default:
 						realCategory = "";
 				}
+			//checkif carpost is new or old
 			if(carpost.getPostId() == 0){
 				try {
 				// Instatiate a new carpost from the object received from client side
@@ -262,14 +263,23 @@ public class postController {
 						carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(), realCategory,
 						carpost.getPhotoUrl(), user);
 
-				// set this post to the user
-				List<CarPosting> newpostList = new ArrayList<CarPosting>();
-				newpostList.add(newCarPosting);
-				user.setPostings(newpostList);
-				uservice.save(user);
-				List<User> existingList = newCarPosting.getUsers();
-				existingList.add(user);
-				carpost.setOwner(user);
+				List<CarPosting> existingList = cpservice.findCarPostByUserId(carpost.getUserId());
+				// set this post to the user if this dun have post
+					if(existingList.size() ==0 ){
+					List<CarPosting> newpostList = new ArrayList<CarPosting>();
+					newpostList.add(newCarPosting);
+					user.setPostings(newpostList);
+					uservice.save(user);
+
+				// List<User> existingUserList = newCarPosting.getUsers();
+				// existingUserList.add(user);
+				// carpost.setOwner(user);
+				}
+				else{
+					existingList.add(newCarPosting);
+					user.setHistory(existingList);
+					uservice.save(user);
+				}
 
 				// set car image to the post
 				CarImage img1 = cirepo.findByImageId(imgId);
@@ -385,10 +395,41 @@ public class postController {
 			return cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description);
 	}
 
-	@GetMapping("/listPost2")
-
-	public List<CarPosting> listCarPost() {
-		return cpservice.findAll();
+	@GetMapping("/hotcars") 
+	public List<CarPosting> hotcars() { 
+		List<CarPosting> popularCars = filtertop3Cars(cpservice.findMostViewedCars()); 
+		List<CarPosting> mostliked = filtertop3Cars(cpservice.findMostLikedCars()); 
+		return concatenate(popularCars, mostliked); 
+	} 
+	
+	private List<CarPosting> filtertop3Cars(List<CarPosting> list){ 
+		List<CarPosting> result =  new ArrayList<>(); 
+		int top = 0; 
+		for (CarPosting cp: list){ 
+			if ( top < 3){ 
+				result.add(cp); 
+				top++; 
+			} 
+			else { 
+				top = 0; 
+				break; 
+			} 
+		} 
+		return result; 
+	} 
+	
+	private List<CarPosting> concatenate(List<CarPosting> list1,List<CarPosting> list2){ 
+		for (int i = 0; i < list1.size(); i++) { 
+			for (int j = 0; j < list1.size(); j++){ 
+				if (list1.get(i).equals(list2.get(j))){ 
+					list2.remove(j); 
+					} 
+			} 
+		} 
+		for (CarPosting car: list2){ 
+			list1.add(car); 
+		} 
+		return list1; 
 	}
 
 	@PostMapping("/saveOffer/{id}")

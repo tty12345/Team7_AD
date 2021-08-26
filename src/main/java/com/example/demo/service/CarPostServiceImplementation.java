@@ -49,16 +49,15 @@ public class CarPostServiceImplementation implements CarPostService {
         return cprepo.findCarPostByUserId(userId);
     }
 
-	@Override
-	public List<CarPosting> findMostViewedCars() {
-		return cprepo.findMostViewedCars();
-	}
+    @Override 
+    public List<CarPosting> findMostViewedCars() { 
+    return cprepo.findmostViewedCars(2); 
+    } 
+ 
+    @Override 
+    public List<CarPosting> findMostLikedCars() { 
+        return cprepo.findmostLikedCars(2); 
+    }
 
-    // @Override
-    // public void saveList(List<CarPosting> favourites) {
-    //     // TODO Auto-generated method stub
-    //     cprepo.save(favourites);
-        
-    // }
     
 }
