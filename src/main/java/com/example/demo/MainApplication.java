@@ -91,7 +91,7 @@ public class MainApplication {
 			Date date7 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate7);
 			Date date8 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate8);
 
-			byte[] imgByte = FileUtils.readFileToByteArray(new File("C:/Users/TeckYi/Desktop/orochimon-739x1024.png"));
+			// byte[] imgByte = FileUtils.readFileToByteArray(new File("C:/Users/TeckYi/Desktop/orochimon-739x1024.png"));
 			// CarImage img1 = new CarImage();
 			// img1.setCarpostImage(imgByte);
 			// CarImage img2 = cirepo.save(img1);
