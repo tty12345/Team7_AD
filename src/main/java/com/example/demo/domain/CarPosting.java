@@ -150,6 +150,7 @@ public class CarPosting {
         this.category = category;
     }
 
+
     public int getPostId() {
         return postId;
     }
@@ -319,22 +320,5 @@ public class CarPosting {
     public int getUserId() {
         return userId;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof CarPosting)) {
-            return false;
-        }
-        CarPosting carPosting = (CarPosting) o;
-        return postId == carPosting.postId && price == carPosting.price && Objects.equals(description, carPosting.description) && Objects.equals(brand, carPosting.brand) && engineCapacity == carPosting.engineCapacity && Objects.equals(registeredDate, carPosting.registeredDate) && mileage == carPosting.mileage && Objects.equals(category, carPosting.category) && Objects.equals(photoUrl, carPosting.photoUrl) && views == carPosting.views && userId == carPosting.userId && Objects.equals(carpostimage, carPosting.carpostimage) && Objects.equals(users, carPosting.users) && Objects.equals(owner, carPosting.owner) && Objects.equals(offers, carPosting.offers) && Objects.equals(history, carPosting.history);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(postId, price, description, brand, engineCapacity, registeredDate, mileage, category, photoUrl, views, userId, carpostimage, users, owner, offers, history);
-    }
-
 
 }

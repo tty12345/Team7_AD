@@ -15,5 +15,5 @@ public interface CarPostService {
     public List<CarPosting> findCarPostByUserId(int userId);
     public List<CarPosting> findMostViewedCars();
     public List<CarPosting> findMostLikedCars();
-
+    
 }

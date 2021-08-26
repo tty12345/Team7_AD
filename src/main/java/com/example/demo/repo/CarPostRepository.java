@@ -22,9 +22,12 @@ public interface CarPostRepository extends JpaRepository<CarPosting, Integer> {
     @Query("SELECT cp FROM CarPosting cp WHERE cp.owner.userId = :id")
     public List<CarPosting> findCarPostByUserId(@Param("id")int id);
 
-	@Query("SELECT cp FROM CarPosting cp WHERE cp.views >= :count ORDER BY cp.views DESC")
-	public List<CarPosting> findmostViewedCars(@Param("count")int views);
+	@Query("SELECT cp FROM CarPosting cp WHERE cp.views > 2")
+	public List<CarPosting> findMostViewedCars();
 
-    @Query("SELECT cp FROM CarPosting cp WHERE cp.likeCount >= :likes ORDER BY cp.likeCount DESC")
-	public List<CarPosting> findmostLikedCars(@Param("likes")int likes);
+    @Query("SELECT cp FROM CarPosting cp WHERE cp.views >= :count ORDER BY cp.views DESC") 
+    public List<CarPosting> findmostViewedCars(@Param("count")int views); 
+ 
+    @Query("SELECT cp FROM CarPosting cp WHERE cp.likeCount >= :likes ORDER BY cp.likeCount DESC") 
+    public List<CarPosting> findmostLikedCars(@Param("likes")int likes);
 }
