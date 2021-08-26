@@ -25,6 +25,7 @@ public class Preference {
 	 private int depreciationMax;
 	 private int engineCapacityMin;
 	 private int engineCapacityMax;
+	 private int userId;
 
 	 @OneToOne
 	 private User user;
@@ -53,7 +54,6 @@ public class Preference {
 	}
 
 	public Preference(String model, String brand, int lowestPrice, int highestPrice, String category,
-			int registeredYearMin, int registeredYearMax, int depreciationMin, int depreciationMax,
 			int engineCapacityMin, int engineCapacityMax, User user) {
 		super();
 		this.model = model;
@@ -61,10 +61,6 @@ public class Preference {
 		this.lowestPrice = lowestPrice;
 		this.highestPrice = highestPrice;
 		this.category = category;
-		this.registeredYearMin = registeredYearMin;
-		this.registeredYearMax = registeredYearMax;
-		this.depreciationMin = depreciationMin;
-		this.depreciationMax = depreciationMax;
 		this.engineCapacityMin = engineCapacityMin;
 		this.engineCapacityMax = engineCapacityMax;
 		this.user = user;
@@ -199,6 +195,9 @@ public class Preference {
 		this.user = user;
 	}
 	
+	public int getUserId(){
+		return userId;
+	}
 
 	
 	

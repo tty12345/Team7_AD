@@ -15,4 +15,5 @@ public interface UserService {
     public List<Notifications> findNotificationsByUserId(int id);
     public List<CarPosting> findAllFavourites();
     public List<User> findAll();
+    
 }

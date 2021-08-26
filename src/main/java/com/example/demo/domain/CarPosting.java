@@ -24,14 +24,14 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-      property = "postId")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "postId")
 public class CarPosting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int postId;
     private int price;
+    private int depreciation;
     private String description;
     private String brand;
     private int engineCapacity;
@@ -39,6 +39,7 @@ public class CarPosting {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date registeredDate;
+    private int age;
     private int mileage;
     private String category;
     private String photoUrl;
@@ -67,17 +68,12 @@ public class CarPosting {
         super();
     }
 
-    public CarPosting(CarImage carpostimage){
-        super();
-        this.carpostimage=carpostimage;
-        
-    }
-
-    public CarPosting(int postId, int price, String description, String brand, int engineCapacity, Date registeredDate,
-            int mileage, String category, String photoUrl, int views, List<User> users, User owner,
+    public CarPosting(int postId, int price, int depreciation, String description, String brand, int engineCapacity,
+            Date registeredDate, int mileage, String category, String photoUrl, int views, List<User> users, User owner,
             List<User> history) {
         this.postId = postId;
         this.price = price;
+        this.depreciation = depreciation;
         this.description = description;
         this.brand = brand;
         this.engineCapacity = engineCapacity;
@@ -89,6 +85,16 @@ public class CarPosting {
         this.users = users;
         this.owner = owner;
         this.history = history;
+    }
+
+    
+
+    public CarPosting(int price, String brand, int engineCapacity, String category, User owner) {
+        this.price = price;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.category = category;
+        this.owner = owner;
     }
 
     public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
@@ -108,7 +114,7 @@ public class CarPosting {
     }
 
     public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
-    String category, String photoUrl, User owner) {
+            String category, String photoUrl, User owner) {
         this.price = price;
         this.description = description;
         this.brand = brand;
@@ -121,7 +127,7 @@ public class CarPosting {
     }
 
     public CarPosting(int price, String description, String brand, int engineCapacity, Date registeredDate, int mileage,
-    String category, String photoUrl, CarImage carpostimage, User owner) {
+            String category, String photoUrl, CarImage carpostimage, User owner) {
         this.price = price;
         this.description = description;
         this.brand = brand;
@@ -133,6 +139,17 @@ public class CarPosting {
         this.carpostimage = carpostimage;
         this.owner = owner;
     }
+
+    // for the price estimate machine learning model
+    public CarPosting(int depreciation, String brand, int engineCapacity, int age, int mileage, String category) {
+        this.depreciation = depreciation;
+        this.brand = brand;
+        this.engineCapacity = engineCapacity;
+        this.age = age;
+        this.mileage = mileage;
+        this.category = category;
+    }
+
 
     public int getPostId() {
         return postId;
@@ -148,6 +165,14 @@ public class CarPosting {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getDepreciation() {
+        return depreciation;
+    }
+
+    public void setDepreciation(int depreciation) {
+        this.depreciation = depreciation;
     }
 
     public String getDescription() {
@@ -180,6 +205,14 @@ public class CarPosting {
 
     public void setRegisteredDate(Date registeredDate) {
         this.registeredDate = registeredDate;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public int getMileage() {
@@ -221,7 +254,8 @@ public class CarPosting {
     public void setUsers(List<User> users) {
         this.users = users;
     }
-   
+
+    // @JsonIgnore
     public User getOwner() {
         return owner;
     }
@@ -286,22 +320,5 @@ public class CarPosting {
     public int getUserId() {
         return userId;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof CarPosting)) {
-            return false;
-        }
-        CarPosting carPosting = (CarPosting) o;
-        return postId == carPosting.postId && price == carPosting.price && Objects.equals(description, carPosting.description) && Objects.equals(brand, carPosting.brand) && engineCapacity == carPosting.engineCapacity && Objects.equals(registeredDate, carPosting.registeredDate) && mileage == carPosting.mileage && Objects.equals(category, carPosting.category) && Objects.equals(photoUrl, carPosting.photoUrl) && views == carPosting.views && userId == carPosting.userId && Objects.equals(carpostimage, carPosting.carpostimage) && Objects.equals(users, carPosting.users) && Objects.equals(owner, carPosting.owner) && Objects.equals(offers, carPosting.offers) && Objects.equals(history, carPosting.history);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(postId, price, description, brand, engineCapacity, registeredDate, mileage, category, photoUrl, views, userId, carpostimage, users, owner, offers, history);
-    }
-
 
 }

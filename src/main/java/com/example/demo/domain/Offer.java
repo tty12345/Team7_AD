@@ -21,7 +21,8 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int offerId;
     private int offer;
-
+    private int userId;
+    
     @ManyToOne
     // @JsonBackReference
     private User user;
@@ -76,7 +77,7 @@ public class Offer {
 
     @JsonIgnore
     public CarPosting getPost() {
-        return this.post;
+        return post;
     }
 
     public void setPost(CarPosting post) {
@@ -108,6 +109,10 @@ public class Offer {
             ", user='" + getUser() + "'" +
             ", post='" + getPost() + "'" +
             "}";
+    }
+
+    public int getUserId(){
+        return userId;
     }
 
 

@@ -172,9 +172,9 @@ public class likeController {
     @PostMapping("/checkLike/{id}")
     public ResponseEntity<Integer> checkLike(@PathVariable("id") int id,@RequestBody User user){
 
-        //increment view count of current carposting
-        CarPosting currentCar = cpservice.findCarPostById(id);
-        currentCar.setViews(currentCar.getViews() + 1);
+        //increment view count of current carposting 
+        CarPosting currentCar = cpservice.findCarPostById(id); 
+        currentCar.setViews(currentCar.getViews() + 1); 
         cpservice.save(currentCar);
 
         int userId = user.getUserId();
