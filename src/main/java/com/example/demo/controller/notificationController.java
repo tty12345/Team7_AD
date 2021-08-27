@@ -1,12 +1,10 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import com.example.demo.domain.Notifications;
-import com.example.demo.domain.User;
 import com.example.demo.service.NotificationService;
 import com.example.demo.service.UserService;
 
@@ -26,62 +24,58 @@ public class notificationController {
 	NotificationService nservice;
 	@Autowired
 	UserService uservice;
+
 	@GetMapping("/listNotification/{id}")
-	public String listNotifications(Model model, @PathVariable("id") Integer id,HttpSession session) {
+	public String listNotifications(Model model, @PathVariable("id") Integer id, HttpSession session) {
 
 		List<Notifications> ntflist = uservice.findNotificationsByUserId(id);
 		model.addAttribute("notifications", ntflist);
 		return "list_notifications.html";
 	}
-		// int userId;
-        // if(session.getAttribute("user")!=null){
-        //     userId=(Integer)session.getAttribute("userId");
-        //     User u= uservice.finduserById(userId);
-		
-        //     if(u.getNotifications().size()==0){
-        //         List<Notifications> notifications = new ArrayList<>();
-                
-        //         u.setNotifications(notifications);
-        //         uservice.save(u);
-		// 		for(Notifications ntf : notifications){
-		// 			ntf.setUser(u);
-		// 			nservice.save(ntf);
-		// 		}
-                
-          
-           
-			// List<Notifications> notifications = uservice.findNotificationsByUserId(userId);
-			// model.addAttribute("notifications", notifications);
-           
-    //     }
-    //     else if(session.getAttribute("user")==null){
-    //         session.setAttribute("return", "/notification/listNotification/"+id);
-    //         return "forward:/login";
-    //     }
-       
-	// 	return "list_notifications.html";
-    // }
-		
+	// int userId;
+	// if(session.getAttribute("user")!=null){
+	// userId=(Integer)session.getAttribute("userId");
+	// User u= uservice.finduserById(userId);
 
-		
+	// if(u.getNotifications().size()==0){
+	// List<Notifications> notifications = new ArrayList<>();
 
+	// u.setNotifications(notifications);
+	// uservice.save(u);
+	// for(Notifications ntf : notifications){
+	// ntf.setUser(u);
+	// nservice.save(ntf);
+	// }
+
+	// List<Notifications> notifications =
+	// uservice.findNotificationsByUserId(userId);
+	// model.addAttribute("notifications", notifications);
+
+	// }
+	// else if(session.getAttribute("user")==null){
+	// session.setAttribute("return", "/notification/listNotification/"+id);
+	// return "forward:/login";
+	// }
+
+	// return "list_notifications.html";
+	// }
 
 	// @GetMapping("/listNotification")
 	// public String listNotifications(Model model) {
-	// 	model.addAttribute("notifications", nservice.findAll());
-	// 	return "list_notifications.html";
+	// model.addAttribute("notifications", nservice.findAll());
+	// return "list_notifications.html";
 	// }
 
 	@GetMapping("/listNotification")
 	public List<Notifications> listNotifications() {
 		return nservice.findAll();
 	}
+
 	@GetMapping("/deleteNotification/{id}")
-    public String deleteNotification(Model model, @PathVariable("id") Integer id) {
-      Notifications notification = nservice.findNotificationById(id);
-	  nservice.delete(notification);
-      return "forward:/notification/listNotification";
-    }
-    
+	public String deleteNotification(Model model, @PathVariable("id") Integer id) {
+		Notifications notification = nservice.findNotificationById(id);
+		nservice.delete(notification);
+		return "forward:/notification/listNotification";
+	}
 
 }

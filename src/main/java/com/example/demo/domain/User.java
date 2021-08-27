@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-      property = "userId")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User {
 
     @Id
@@ -26,7 +25,7 @@ public class User {
     private String username;
     private String password;
     private UserType role;
-   
+
     @OneToMany(mappedBy = "owner")
     private List<CarPosting> postings;
 
@@ -46,6 +45,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Offer> offers;
 
+    private String email;
+
     public User(String username, String password, List<CarPosting> postings) {
         this.username = username;
         this.password = password;
@@ -56,46 +57,53 @@ public class User {
         this.username = username;
         this.password = password;
     }
-    
+
     public User(String username, Preference preference) {
         this.username = username;
         this.preference = preference;
     }
 
     public User(String username, String password, UserType role, List<CarPosting> postings, List<CarPosting> history,
-			List<CarPosting> favourites, Preference preference, List<Notifications> notifications,
-			List<Offer> offers) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.role = role;
-		this.postings = postings;
-		this.history = history;
-		this.favourites = favourites;
-		this.preference = preference;
-		this.notifications = notifications;
-		this.offers = offers;
-	}
+            List<CarPosting> favourites, Preference preference, List<Notifications> notifications, List<Offer> offers) {
+        super();
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.postings = postings;
+        this.history = history;
+        this.favourites = favourites;
+        this.preference = preference;
+        this.notifications = notifications;
+        this.offers = offers;
+    }
 
-	public User(String username, String password, UserType role) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.role = role;
-	}
+    public User(String username, String password, UserType role, String email) {
+        super();
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.email = email;
+    }
 
-	public User() {
+    public User(String username, String password, UserType role) {
+        super();
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public User() {
     }
 
     public UserType getRole() {
-		return role;
-	}
+        return role;
+    }
 
-	public void setRole(UserType role) {
-		this.role = role;
-	}
+    public void setRole(UserType role) {
+        this.role = role;
+    }
 
-	public int getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -118,7 +126,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     @JsonIgnore
     public List<CarPosting> getPostings() {
         return postings;
@@ -127,6 +135,7 @@ public class User {
     public void setPostings(List<CarPosting> postings) {
         this.postings = postings;
     }
+
     @JsonIgnore
     public List<CarPosting> getHistory() {
         return history;
@@ -144,6 +153,7 @@ public class User {
     public void setFavourites(List<CarPosting> favourites) {
         this.favourites = favourites;
     }
+
     @JsonIgnore
     public List<Notifications> getNotifications() {
         return notifications;
@@ -152,6 +162,7 @@ public class User {
     public void setNotifications(List<Notifications> notifications) {
         this.notifications = notifications;
     }
+
     @JsonIgnore
     public List<Offer> getOffers() {
         return offers;
@@ -161,12 +172,20 @@ public class User {
         this.offers = offers;
     }
 
-     public Preference getPreference() {
+    public Preference getPreference() {
         return preference;
     }
 
     public void setPreference(Preference preference) {
         this.preference = preference;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -177,14 +196,17 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return userId == user.userId && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(role, user.role) && Objects.equals(postings, user.postings) && Objects.equals(history, user.history) && Objects.equals(favourites, user.favourites) && Objects.equals(preference, user.preference) && Objects.equals(notifications, user.notifications) && Objects.equals(offers, user.offers);
+        return userId == user.userId && Objects.equals(username, user.username)
+                && Objects.equals(password, user.password) && Objects.equals(role, user.role)
+                && Objects.equals(postings, user.postings) && Objects.equals(history, user.history)
+                && Objects.equals(favourites, user.favourites) && Objects.equals(preference, user.preference)
+                && Objects.equals(notifications, user.notifications) && Objects.equals(offers, user.offers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, password, role, postings, history, favourites, preference, notifications, offers);
+        return Objects.hash(userId, username, password, role, postings, history, favourites, preference, notifications,
+                offers);
     }
-
-
 
 }
