@@ -392,9 +392,43 @@ public class postController {
 
 	@GetMapping("/hotcars") 
 	public List<CarPosting> hotcars() { 
-		List<CarPosting> popularCars = filtertop3Cars(cpservice.findMostViewedCars()); 
+		List<CarPosting> mostViewed = filtertop3Cars(cpservice.findMostViewedCars()); 
 		List<CarPosting> mostliked = filtertop3Cars(cpservice.findMostLikedCars()); 
-		return concatenate(popularCars, mostliked); 
+		// for (int i = 0; i < mostViewed.size(); i++) { 
+		// 	for (int j = 0; j < mostViewed.size(); j++){ 
+		// 		if (mostViewed.get(i).equals(mostliked.get(j))){ 
+		// 			mostliked.remove(j); 
+		// 			} 
+		// 	} 
+		// } 
+		// for (CarPosting car: mostliked){ 
+		// 	mostViewed.add(car); 
+		// } 
+
+		List<CarPosting> NewList = new ArrayList<>();
+		for (CarPosting likecar: mostliked){
+			for(CarPosting viewcar: mostViewed){
+				if(viewcar.equals(likecar)){
+					NewList.add(likecar);
+				}
+			}
+		}
+		for (CarPosting likecar: mostViewed){
+			if (!NewList.contains(likecar))
+				NewList.add(likecar);
+		}
+		for (CarPosting viewcar: mostliked){
+			if (!NewList.contains(viewcar))
+				NewList.add(viewcar);
+		}
+
+		// for (CarPosting likecar: mostliked){
+		// 		if (!mostViewed.contains(likecar))
+		// 			mostViewed.add(likecar);
+		// 	}
+
+		
+		return NewList; 
 	} 
 	
 	private List<CarPosting> filtertop3Cars(List<CarPosting> list){ 
@@ -413,19 +447,19 @@ public class postController {
 		return result; 
 	} 
 	
-	private List<CarPosting> concatenate(List<CarPosting> list1,List<CarPosting> list2){ 
-		for (int i = 0; i < list1.size(); i++) { 
-			for (int j = 0; j < list1.size(); j++){ 
-				if (list1.get(i).equals(list2.get(j))){ 
-					list2.remove(j); 
-					} 
-			} 
-		} 
-		for (CarPosting car: list2){ 
-			list1.add(car); 
-		} 
-		return list1; 
-	}
+	// private List<CarPosting> concatenate(List<CarPosting> list1,List<CarPosting> list2){ 
+	// 	for (int i = 0; i < list1.size(); i++) { 
+	// 		for (int j = 0; j < list1.size(); j++){ 
+	// 			if (list1.get(i).equals(list2.get(j))){ 
+	// 				list2.remove(j); 
+	// 				} 
+	// 		} 
+	// 	} 
+	// 	for (CarPosting car: list2){ 
+	// 		list1.add(car); 
+	// 	} 
+	// 	return list1; 
+	// }
 	
 
 	@PostMapping("/saveOffer/{id}")
@@ -480,8 +514,6 @@ public class postController {
 
 			return new ResponseEntity<>(allCurrentOfferForCurrentPost, HttpStatus.ACCEPTED);
 		}
-
-		
 
 	}
 

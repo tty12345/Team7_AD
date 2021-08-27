@@ -89,6 +89,9 @@ public class likeController {
         //find the current car post from the database
         CarPosting carposting =cpservice.findCarPostById(id);
 
+        int likeCount = carposting.getLikeCount() + 1;
+        carposting.setLikeCount(likeCount);
+
         int userId= user.getUserId();
         User u= uservice.finduserById(userId);
 
@@ -106,6 +109,8 @@ public class likeController {
     public ResponseEntity<HttpStatus> deleteLike(@PathVariable("id") int id,@RequestBody User user){
 
         CarPosting carposting=cpservice.findCarPostById(id);
+
+        carposting.setLikeCount(carposting.getLikeCount() - 1);
 
         int userId = user.getUserId();
         User u= uservice.finduserById(userId);
@@ -134,6 +139,7 @@ public class likeController {
         int userId = user.getUserId();
         User u= uservice.finduserById(userId);
         List<CarPosting> currentLikes = u.getFavourites();
+
         if(currentLikes.size()>0)
             for(CarPosting carpost:currentLikes)
                 {
