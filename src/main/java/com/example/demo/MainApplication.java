@@ -88,6 +88,18 @@ public class MainApplication {
 			String sDate6 = "05/08/2008";
 			String sDate7 = "18/10/2016";
 			String sDate8 = "27/05/2008";
+			String sDate9 = "22/05/2014";
+			String sDate10 = "10/02/2013";
+			String sDate11 = "30/08/2012";
+			String sDate12 = "02/04/2015";
+			String sDate13 = "22/03/2011";
+			String sDate14 = "22/09/2018";
+			String sDate15 = "20/04/2015";
+			String sDate16 = "20/02/2008";
+
+
+
+
 			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
 			Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate2);
 			Date date3 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate3);
@@ -96,6 +108,16 @@ public class MainApplication {
 			Date date6 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate6);
 			Date date7 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate7);
 			Date date8 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate8);
+			Date date9 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate9);
+			Date date10 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate10);
+			Date date11 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate11);
+			Date date12 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate12);
+			Date date13 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate13);
+			Date date14 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate14);
+			Date date15 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate15);
+			Date date16 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate16);
+
+
 
 			// Car 1
 			try {
@@ -202,6 +224,128 @@ public class MainApplication {
 			} catch (Exception e) {
 				System.out.println(e);
 			}
+
+			// Car 8
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/honda accord.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "honda accord", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(98000, "Honda Accord", "Honda", 1498, date9, 30076,
+						"Sedan", img, u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			// Car 9
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Mitsubishi Attrage.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Mitsubishi Attrage", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(51000, "Mitsubishi Attrage", "Mitsubishi", 1198, date10, 54221,
+						"Sedan", img, u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			// Car 10
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Mitsubishi Lancer.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Mitsubishi Lancer", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(42000, "Mitsubishi Lancer", "Mitsubishi", 1498, date11, 100221,
+						"Sedan", img, u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			
+			// Car 11
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Honda City.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Honda City", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(39800, "Honda City", "Honda", 1498, date12, 70000,
+						"Sedan", img, u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			// Car 12
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Nissan Latio.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Nissan Latio", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(41800, "Nissan Latio", "Nissan", 1498, date13, 30000,
+						"Sedan", img, u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			// Car 13
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Nissan GTR.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Nissan GTR", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(268000, "Nissan GTR", "Nissan", 3798, date14, 59000,
+						"Sedan", img, u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			// Car 14
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Nissan Slyphy.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Nissan Slyphy", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(39800, "Nissan Slyphy", "Nissan", 1598, date15, 70000,
+						"Sedan", img, u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			// Car 15
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Toyota Wish.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Toyota Wish", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(16800, "Toyota Wish", "Toyota", 1798, date16, 100000,
+						"Sedan", img, u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+
 
 			// cpRepo.save(post1);
 			// cpRepo.save(post2);
