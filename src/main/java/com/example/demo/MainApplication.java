@@ -164,7 +164,7 @@ public class MainApplication {
 				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
 				CarImage img = new CarImage(imgByte, "honda civic type r", "jpg");
 				cirepo.save(img);
-				CarPosting post = new CarPosting(93800, "Civic Type R 2.0M", "Honda", 1998, date6, 50000, "Sports", img,
+				CarPosting post = new CarPosting(93800, "Civic Type R 2.0M", "Honda", 1998, date5, 50000, "Sports", img,
 						u1, 5, gp1, 1);
 				cpRepo.save(post);
 				img.setCarpost(post);
@@ -179,7 +179,7 @@ public class MainApplication {
 				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
 				CarImage img = new CarImage(imgByte, "merc c180", "jpg");
 				cirepo.save(img);
-				CarPosting post = new CarPosting(99800, "C-Class C180 Avantgarde", "Mercedes-Benz", 1595, date7, 60323,
+				CarPosting post = new CarPosting(99800, "C-Class C180 Avantgarde", "Mercedes-Benz", 1595, date6, 60323,
 						"Luxury", img, u1, 0, null, 0);
 				cpRepo.save(post);
 				img.setCarpost(post);
@@ -194,7 +194,7 @@ public class MainApplication {
 				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
 				CarImage img = new CarImage(imgByte, "toyota camry", "jpg");
 				cirepo.save(img);
-				CarPosting post = new CarPosting(42000, "Camry 2.4A", "Toyota", 2362, date8, 100000, "Luxury", img, u1,
+				CarPosting post = new CarPosting(42000, "Camry 2.4A", "Toyota", 2362, date7, 100000, "Luxury", img, u1,
 						3, gp3, 1);
 				cpRepo.save(post);
 				img.setCarpost(post);
@@ -203,16 +203,20 @@ public class MainApplication {
 				System.out.println(e);
 			}
 
-			// cpRepo.save(post1);
-			// cpRepo.save(post2);
-			// cpRepo.save(post3);
-			// cpRepo.save(post4);
-			// cpRepo.save(post5);
-			// cpRepo.save(post6);
-			// cpRepo.save(post7);
-			// cpRepo.save(post8);
-			// img2.setCarpost(post1);
-			// cirepo.save(img2);
+			// Car 8
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/nissan x-trail.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "nissan x-trail", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(42000, "Camry 2.4A", "Toyota", 2362, date8, 100000, "Luxury", img, u1,
+						3, gp3, 1);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 
 			Notifications ntf1 = new Notifications("welcome", "Welcome to the web!", u1);
 			Notifications ntf2 = new Notifications("delete",
