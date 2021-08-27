@@ -286,7 +286,7 @@ public class postController {
 					List<User> users = (ArrayList<User>) uservice.findAll();
 
 					for (User userCheckNotification : users) {
-						// if have notification and it is not the person doing the posting
+						// if user has preference and it is not the person doing the posting
 						if (userCheckNotification.getPreference() != null
 								&& userCheckNotification.getUserId() != user.getUserId()) {
 							Preference preference = userCheckNotification.getPreference();
@@ -298,9 +298,10 @@ public class postController {
 						 	if(preference.getCategory().equals(newCarPosting.getCategory()))
 								if (preference.getEngineCapacityMax() >= newCarPosting.getEngineCapacity())
 									if(preference.getEngineCapacityMin() <= newCarPosting.getEngineCapacity())
-								 		if (preference.getHighestPrice() >= newCarPosting.getPrice()) {
+								 		if (preference.getHighestPrice() >= newCarPosting.getPrice())
+										 if(preference.getDepreciationMax()>=newCarPosting.getDepreciation()) {
 									Notifications ntf = new Notifications("New Arrival", userCheckNotification,
-									"A new arrival that matches your preference is  " + newCarPosting.getPostId());
+									"A new arrival that matches your preference is  " + newCarPosting.getBrand());
 									nservice.save(ntf);
 
 									userCheckNotification.getNotifications().add(ntf);
@@ -318,6 +319,27 @@ public class postController {
 		//if post is old and wants to edit	
 		else{
 			CarPosting oldCarpost = cpservice.findCarPostById(carpost.getPostId());
+			//if the old carpost price is reduced to 20% or more, then send notification for the 
+			//user having this carpost as a favourite carpost
+			if((oldCarpost.getPrice()-carpost.getPrice())/oldCarpost.getPrice()>=0.2){
+				List<User> users=(ArrayList<User>) uservice.findAll();
+				for (User user2 : users) {
+					//check whether any user has this carpost as his favourite and check whether the user 
+					//is not the one editing the price currently
+					if(user2.getUserId()!=user.getUserId() && user2.getFavourites().contains(oldCarpost)){
+						Notifications ntf = new Notifications("Price Change", user2,
+									"A new price change for your favourite carpost " + oldCarpost.getBrand() + "is $" + carpost.getPrice());
+									nservice.save(ntf);
+									user2.getNotifications().add(ntf);
+									uservice.save(user2);
+					}
+					
+				}
+				
+				
+			
+			}
+
 			oldCarpost.setPrice(carpost.getPrice()); 
 			oldCarpost.setDescription(carpost.getDescription());
 			oldCarpost.setCategory(realCategory);
