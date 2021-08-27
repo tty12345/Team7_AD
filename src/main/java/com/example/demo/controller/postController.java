@@ -544,6 +544,18 @@ public class postController {
 
 	}
 
+	// @PostMapping("/getAllOffer/{id}")
+	// public List<Offer> checkOwnOffer(@PathVariable("id") int postId)
+	// {
+	// 	//check if got post before
+	// 	CarPosting currentPost = cpservice.findCarPostById(postId);
+	// 	List<Offer>allCurrentOfferForCurrentPost =  currentPost.getOffers();
+	// 	System.out.println(allCurrentOfferForCurrentPost);
+	// 	return allCurrentOfferForCurrentPost;
+		
+
+	// }
+
 	
 
 	@PostMapping("/saveImage")
