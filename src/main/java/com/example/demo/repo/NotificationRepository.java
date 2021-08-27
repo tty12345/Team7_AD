@@ -14,4 +14,5 @@ public interface NotificationRepository extends JpaRepository<Notifications, Int
 
     @Query("select ntf from Notifications ntf where ntf.user.userId= :id")
     public List<Notifications> findByUserId(@Param("id") int id);
+
 }

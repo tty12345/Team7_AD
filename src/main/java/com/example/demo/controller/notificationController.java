@@ -25,13 +25,13 @@ public class notificationController {
 	@Autowired
 	UserService uservice;
 
-	@GetMapping("/listNotification/{id}")
-	public String listNotifications(Model model, @PathVariable("id") Integer id, HttpSession session) {
+	// @GetMapping("/listNotification/{id}")
+	// public String listNotifications(Model model, @PathVariable("id") Integer id, HttpSession session) {
 
-		List<Notifications> ntflist = uservice.findNotificationsByUserId(id);
-		model.addAttribute("notifications", ntflist);
-		return "list_notifications.html";
-	}
+	// 	List<Notifications> ntflist = uservice.findNotificationsByUserId(id);
+	// 	model.addAttribute("notifications", ntflist);
+	// 	return "list_notifications.html";
+	// }
 	// int userId;
 	// if(session.getAttribute("user")!=null){
 	// userId=(Integer)session.getAttribute("userId");
@@ -66,16 +66,21 @@ public class notificationController {
 	// return "list_notifications.html";
 	// }
 
-	@GetMapping("/listNotification")
-	public List<Notifications> listNotifications() {
-		return nservice.findAll();
-	}
+	// @GetMapping("/listNotification")
+	// public List<Notifications> listNotifications() {
+	// 	return nservice.findAll();
+	// }
 
-	@GetMapping("/deleteNotification/{id}")
-	public String deleteNotification(Model model, @PathVariable("id") Integer id) {
-		Notifications notification = nservice.findNotificationById(id);
-		nservice.delete(notification);
-		return "forward:/notification/listNotification";
-	}
+	// @GetMapping("/deleteNotification/{id}")
+	// public String deleteNotification(Model model, @PathVariable("id") Integer id) {
+	// 	Notifications notification = nservice.findNotificationById(id);
+	// 	nservice.delete(notification);
+	// 	return "forward:/notification/listNotification";
+	// }
+
+	@GetMapping("/listNotification/{id}") 
+ 	public List<Notifications> listNotifications(@PathVariable("id") Integer id) { 
+  	return nservice.findByUserId(id); 
+ }
 
 }

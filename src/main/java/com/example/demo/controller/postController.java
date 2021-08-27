@@ -265,7 +265,7 @@ public class postController {
 					// carpost.setOwner(user);
 				} else {
 					existingList.add(newCarPosting);
-					user.setHistory(existingList);
+					// user.setHistory(existingList);
 					uservice.save(user);
 				}
 
@@ -534,17 +534,17 @@ public class postController {
 
 	}
 
-	// @PostMapping("/getAllOffer/{id}")
-	// public List<Offer> checkOwnOffer(@PathVariable("id") int postId)
-	// {
-	// 	//check if got post before
-	// 	CarPosting currentPost = cpservice.findCarPostById(postId);
-	// 	List<Offer>allCurrentOfferForCurrentPost =  currentPost.getOffers();
-	// 	System.out.println(allCurrentOfferForCurrentPost);
-	// 	return allCurrentOfferForCurrentPost;
+	@PostMapping("/getAllOffer/{id}")
+	public List<Offer> checkOwnOffer(@PathVariable("id") int postId)
+	{
+		//check if got post before
+		CarPosting currentPost = cpservice.findCarPostById(postId);
+		List<Offer>allCurrentOfferForCurrentPost =  currentPost.getOffers();
+		System.out.println(allCurrentOfferForCurrentPost);
+		return allCurrentOfferForCurrentPost;
 		
 
-	// }
+	}
 
 	
 

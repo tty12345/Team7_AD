@@ -11,8 +11,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -27,6 +29,7 @@ public class User {
     private UserType role;
     private int mobileNumber;
 
+
     @OneToMany(mappedBy = "owner")
     private List<CarPosting> postings;
 
@@ -34,6 +37,7 @@ public class User {
     private List<CarPosting> history;
 
     // post liked
+
     @ManyToMany(mappedBy = "users")
     private List<CarPosting> favourites;
 
@@ -42,6 +46,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     public List<Notifications> notifications;
+
 
     @OneToMany(mappedBy = "user")
     private List<Offer> offers;
@@ -170,10 +175,10 @@ public class User {
         return this;
     }
 
-    public User history(List<CarPosting> history) {
-        setHistory(history);
-        return this;
-    }
+    // public User history(List<CarPosting> history) {
+    //     setHistory(history);
+    //     return this;
+    // }
 
     public User favourites(List<CarPosting> favourites) {
         setFavourites(favourites);
@@ -213,14 +218,14 @@ public class User {
         this.postings = postings;
     }
 
-    @JsonIgnore
-    public List<CarPosting> getHistory() {
-        return history;
-    }
+    // @JsonIgnore
+    // public List<CarPosting> getHistory() {
+    //     return history;
+    // }
 
-    public void setHistory(List<CarPosting> history) {
-        this.history = history;
-    }
+    // public void setHistory(List<CarPosting> history) {
+    //     this.history = history;
+    // }
 
     @JsonIgnore
     public List<CarPosting> getFavourites() {
@@ -231,7 +236,7 @@ public class User {
         this.favourites = favourites;
     }
 
-    @JsonIgnore
+    // @JsonIgnore
     public List<Notifications> getNotifications() {
         return notifications;
     }
@@ -240,7 +245,7 @@ public class User {
         this.notifications = notifications;
     }
 
-    @JsonIgnore
+    // @JsonIgnore
     public List<Offer> getOffers() {
         return offers;
     }

@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-      property = "notificationId")
+// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+//       property = "notificationId")
 public class Notifications {
 
     @Id
@@ -85,7 +85,7 @@ public class Notifications {
     }
 
 
-    @JsonIgnore
+    // @JsonIgnore
     public User getUser() {
         return user;
     }

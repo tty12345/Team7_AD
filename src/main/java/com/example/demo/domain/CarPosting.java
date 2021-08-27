@@ -1,10 +1,8 @@
 package com.example.demo.domain;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,13 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -232,6 +230,7 @@ public class CarPosting {
         this.views = views;
     }
 
+    @JsonIgnore
     public List<User> getUsers() {
         return users;
     }
@@ -240,7 +239,6 @@ public class CarPosting {
         this.users = users;
     }
 
-    // @JsonIgnore
     public User getOwner() {
         return owner;
     }
