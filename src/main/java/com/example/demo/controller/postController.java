@@ -245,7 +245,7 @@ public class postController {
 					default:
 						realCategory = "";
 				}
-			//checkif carpost is new or old
+			//checkif carpost is new
 			if(carpost.getPostId() == 0){
 				try {
 					// Instatiate a new carpost from the object received from client side
@@ -512,6 +512,7 @@ public class postController {
 
 	}
 
+	
 
 	@PostMapping("/saveImage")
 	public ResponseEntity<Integer> saveImage(@RequestParam("photoParam") MultipartFile file) {
