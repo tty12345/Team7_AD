@@ -318,6 +318,10 @@ public class postController {
 		//if post is old and wants to edit	
 		else{
 			CarPosting oldCarpost = cpservice.findCarPostById(carpost.getPostId());
+			CarPosting oldCarpostTemp = cpservice.findCarPostById(carpost.getPostId());
+			double oldPrice=oldCarpost.getPrice();
+			
+			
 			oldCarpost.setPrice(carpost.getPrice()); 
 			oldCarpost.setDescription(carpost.getDescription());
 			oldCarpost.setCategory(realCategory);
@@ -342,8 +346,31 @@ public class postController {
 
 			newImg.setCarpost(oldCarpost);
 			cirepo.save(newImg);
-		
+			
+		double newPrice=oldCarpost.getPrice();
+		if(((oldPrice-newPrice)/oldPrice)*100>=20){
+				List<User> users=(ArrayList<User>) uservice.findAll();
+				for (User user2 : users) {
+					//check whether any user has this carpost as his favourite and check whether the user 
+					//is not the one editing the price currently
+					if(user2.getUserId()!=user.getUserId() && user2.getFavourites().contains(oldCarpostTemp)){
+						Notifications ntf = new Notifications("Price Change", user2,
+									"A new price change for your favourite carpost " + oldCarpost.getBrand() + "is $" + newPrice);
+									nservice.save(ntf);
+									user2.getNotifications().add(ntf);
+									uservice.save(user2);
+					}
+					
+				}
+				
+				
+			
+			}
 		return new ResponseEntity<>(oldCarpost, HttpStatus.CREATED);
+		
+		
+
+		
 		}
 	}
 
