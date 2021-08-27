@@ -60,22 +60,22 @@ public class postController {
 
 	// @GetMapping("/addPost")
 	// public String showForm(Model model, HttpSession session) {
-	// 	if (session.getAttribute("seller") == null)
-	// 		return "forward:/login";
-	// 	else if (session.getAttribute("buyer") != null)
-	// 		return "index";
+	// if (session.getAttribute("seller") == null)
+	// return "forward:/login";
+	// else if (session.getAttribute("buyer") != null)
+	// return "index";
 
-	// 	CarPosting carpost = new CarPosting();
-	// 	model.addAttribute("carpost", carpost);
-	// 	return "car_post_form";
+	// CarPosting carpost = new CarPosting();
+	// model.addAttribute("carpost", carpost);
+	// return "car_post_form";
 	// }
 
 	// Edit car post's detail
 	// @GetMapping("/editPost/{id}")
 	// public String editCarPost(Model model, @PathVariable("id") Integer id) {
-	// 	CarPosting carpost = cpservice.findCarPostById(id);
-	// 	model.addAttribute("carpost", carpost);
-	// 	return "car_post_form";
+	// CarPosting carpost = cpservice.findCarPostById(id);
+	// model.addAttribute("carpost", carpost);
+	// return "car_post_form";
 	// }
 
 	// @GetMapping("/deletePost/{id}")
@@ -125,137 +125,136 @@ public class postController {
 	@PostMapping("/savePost/{id}")
 	public ResponseEntity<CarPosting> saveCarPost(@RequestBody CarPosting carpost, @PathVariable("id") Integer imgId) {
 
+		// find the current logged in
+		User user = uservice.finduserById(carpost.getUserId());
 
-				// find the current logged in
-				User user = uservice.finduserById(carpost.getUserId());
+		// One hot decoding for category and brand
+		String hotBrand = carpost.getBrand();
+		String realBrand = "";
+		switch (hotBrand) {
+			case "0":
+				realBrand = "Audi";
+				break;
+			case "1":
+				realBrand = "Austin";
+				break;
+			case "2":
+				realBrand = "BMW";
+				break;
+			case "3":
+				realBrand = "Citron";
+				break;
+			case "4":
+				realBrand = "Ferrari";
+				break;
+			case "5":
+				realBrand = "Fiat";
+				break;
+			case "6":
+				realBrand = "Honda";
+				break;
+			case "7":
+				realBrand = "Hyundai";
+				break;
+			case "8":
+				realBrand = "Kia";
+				break;
+			case "9":
+				realBrand = "Lexus";
+				break;
+			case "10":
+				realBrand = "Mini";
+				break;
+			case "11":
+				realBrand = "Mercedes-Benz";
+				break;
+			case "12":
+				realBrand = "Mitsubishi";
+				break;
+			case "13":
+				realBrand = "Morris";
+				break;
+			case "14":
+				realBrand = "Nissan";
+				break;
+			case "15":
+				realBrand = "Opel";
+				break;
+			case "16":
+				realBrand = "Peugeot";
+				break;
+			case "17":
+				realBrand = "Porsche";
+				break;
+			case "18":
+				realBrand = "Renault";
+				break;
+			case "19":
+				realBrand = "Subaru";
+				break;
+			case "20":
+				realBrand = "Suzuki";
+				break;
+			case "21":
+				realBrand = "Toyota";
+				break;
+			case "22":
+				realBrand = "Volkswagen";
+				break;
+			case "23":
+				realBrand = "Volvo";
+				break;
+			default:
+				realBrand = "";
+		}
 
-				// One hot decoding for category and brand
-				String hotBrand = carpost.getBrand();
-				String realBrand = "";
-				switch (hotBrand) {
-					case "0":
-						realBrand = "Audi";
-						break;
-					case "1":
-						realBrand = "Austin";
-						break;
-					case "2":
-						realBrand = "BMW";
-						break;
-					case "3":
-						realBrand = "Citron";
-						break;
-					case "4":
-						realBrand = "Ferrari";
-						break;
-					case "5":
-						realBrand = "Fiat";
-						break;
-					case "6":
-						realBrand = "Honda";
-						break;
-					case "7":
-						realBrand = "Hyundai";
-						break;
-					case "8":
-						realBrand = "Kia";
-						break;
-					case "9":
-						realBrand = "Lexus";
-						break;
-					case "10":
-						realBrand = "Mini";
-						break;
-					case "11":
-						realBrand = "Mercedes-Benz";
-						break;
-					case "12":
-						realBrand = "Mitsubishi";
-						break;
-					case "13":
-						realBrand = "Morris";
-						break;
-					case "14":
-						realBrand = "Nissan";
-						break;
-					case "15":
-						realBrand = "Opel";
-						break;
-					case "16":
-						realBrand = "Peugeot";
-						break;
-					case "17":
-						realBrand = "Porsche";
-						break;
-					case "18":
-						realBrand = "Renault";
-						break;
-					case "19":
-						realBrand = "Subaru";
-						break;
-					case "20":
-						realBrand = "Suzuki";
-						break;
-					case "21":
-						realBrand = "Toyota";
-						break;
-					case "22":
-						realBrand = "Volkswagen";
-						break;
-					case "23":
-						realBrand = "Volvo";
-						break;
-					default:
-						realBrand = "";
-				}
-
-				String hotCategory = carpost.getCategory();
-				String realCategory = "";
-				switch (hotCategory) {
-					case "1":
-						realCategory = "Hatchback";
-						break;
-					case "2":
-						realCategory = "Luxury";
-						break;
-					case "3":
-						realCategory = "MPV";
-						break;
-					case "4":
-						realCategory = "Others";
-						break;
-					case "5":
-						realCategory = "SUV";
-						break;
-					case "6":
-						realCategory = "Sedan";
-						break;
-					case "7":
-						realCategory = "Sports";
-						break;
-					case "8":
-						realCategory = "Stationwagon";
-						break;
-					case "9":
-						realCategory = "Truck";
-						break;
-					case "10":
-						realCategory = "Van";
-						break;
-					default:
-						realCategory = "";
-				}
-			//checkif carpost is new
-			if(carpost.getPostId() == 0){
-				try {
-					// Instatiate a new carpost from the object received from client side
-					CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), realBrand,
+		String hotCategory = carpost.getCategory();
+		String realCategory = "";
+		switch (hotCategory) {
+			case "1":
+				realCategory = "Hatchback";
+				break;
+			case "2":
+				realCategory = "Luxury";
+				break;
+			case "3":
+				realCategory = "MPV";
+				break;
+			case "4":
+				realCategory = "Others";
+				break;
+			case "5":
+				realCategory = "SUV";
+				break;
+			case "6":
+				realCategory = "Sedan";
+				break;
+			case "7":
+				realCategory = "Sports";
+				break;
+			case "8":
+				realCategory = "Stationwagon";
+				break;
+			case "9":
+				realCategory = "Truck";
+				break;
+			case "10":
+				realCategory = "Van";
+				break;
+			default:
+				realCategory = "";
+		}
+		// checkif carpost is new or old
+		if (carpost.getPostId() == 0) {
+			try {
+				// Instatiate a new carpost from the object received from client side
+				CarPosting newCarPosting = new CarPosting(carpost.getPrice(), carpost.getDescription(), realBrand,
 						carpost.getEngineCapacity(), carpost.getRegisteredDate(), carpost.getMileage(), realCategory,
-						carpost.getPhotoUrl(), user);
+						carpost.getCarPostImage(), user);
 
-					List<CarPosting> existingList = cpservice.findCarPostByUserId(carpost.getUserId());
-					// set this post to the user if this dun have post
-					if(existingList.size() ==0 ){
+				List<CarPosting> existingList = cpservice.findCarPostByUserId(carpost.getUserId());
+				// set this post to the user if this dun have post
+				if (existingList.size() == 0) {
 					List<CarPosting> newpostList = new ArrayList<CarPosting>();
 					newpostList.add(newCarPosting);
 					user.setPostings(newpostList);
@@ -264,59 +263,56 @@ public class postController {
 					// List<User> existingUserList = newCarPosting.getUsers();
 					// existingUserList.add(user);
 					// carpost.setOwner(user);
-					}
-					else{
-						existingList.add(newCarPosting);
-						user.setHistory(existingList);
-						uservice.save(user);
-					}
+				} else {
+					existingList.add(newCarPosting);
+					user.setHistory(existingList);
+					uservice.save(user);
+				}
 
-					// set car image to the post
-					CarImage img1 = cirepo.findByImageId(imgId);
-					carpost.setCarPostImage(img1);
+				// set car image to the post
+				CarImage img1 = cirepo.findByImageId(imgId);
+				carpost.setCarPostImage(img1);
 
-					//error here why?
-					CarPosting newcarPosting2 = cprepo.save(newCarPosting);
-					//error here why?
+				// error here why?
+				CarPosting newcarPosting2 = cprepo.save(newCarPosting);
+				// error here why?
 
-					img1.setCarpost(newCarPosting);
-					cirepo.save(img1);
+				img1.setCarpost(newCarPosting);
+				cirepo.save(img1);
 
-					// Notifitiona relevant ppl that new post created
-					List<User> users = (ArrayList<User>) uservice.findAll();
+				// Notifitiona relevant ppl that new post created
+				List<User> users = (ArrayList<User>) uservice.findAll();
 
-					for (User userCheckNotification : users) {
-						// if have notification and it is not the person doing the posting
-						if (userCheckNotification.getPreference() != null
-								&& userCheckNotification.getUserId() != user.getUserId()) {
-							Preference preference = userCheckNotification.getPreference();
-
-
+				for (User userCheckNotification : users) {
+					// if have notification and it is not the person doing the posting
+					if (userCheckNotification.getPreference() != null
+							&& userCheckNotification.getUserId() != user.getUserId()) {
+						Preference preference = userCheckNotification.getPreference();
 
 						// if the new post matches som1's preference
 						if (preference.getBrand().equals(newCarPosting.getBrand()))
-						 	if(preference.getCategory().equals(newCarPosting.getCategory()))
+							if (preference.getCategory().equals(newCarPosting.getCategory()))
 								if (preference.getEngineCapacityMax() >= newCarPosting.getEngineCapacity())
-									if(preference.getEngineCapacityMin() <= newCarPosting.getEngineCapacity())
-								 		if (preference.getHighestPrice() >= newCarPosting.getPrice()) {
-									Notifications ntf = new Notifications("New Arrival", userCheckNotification,
-									"A new arrival that matches your preference is  " + newCarPosting.getPostId());
-									nservice.save(ntf);
+									if (preference.getEngineCapacityMin() <= newCarPosting.getEngineCapacity())
+										if (preference.getHighestPrice() >= newCarPosting.getPrice()) {
+											Notifications ntf = new Notifications("New Arrival", userCheckNotification,
+													"A new arrival that matches your preference is  "
+															+ newCarPosting.getPostId());
+											nservice.save(ntf);
 
-									userCheckNotification.getNotifications().add(ntf);
-									uservice.save(userCheckNotification);
-								}
-							}
-						}
- 
-
-						return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
-					} catch (Exception e) {
-						return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+											userCheckNotification.getNotifications().add(ntf);
+											uservice.save(userCheckNotification);
+										}
+					}
 				}
+
+				return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
+			} catch (Exception e) {
+				return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 			}
-		//if post is old and wants to edit	
-		else{
+		}
+		// if post is old and wants to edit
+		else {
 			CarPosting oldCarpost = cpservice.findCarPostById(carpost.getPostId());
 			CarPosting oldCarpostTemp = cpservice.findCarPostById(carpost.getPostId());
 			double oldPrice=oldCarpost.getPrice();
@@ -325,21 +321,20 @@ public class postController {
 			oldCarpost.setPrice(carpost.getPrice()); 
 			oldCarpost.setDescription(carpost.getDescription());
 			oldCarpost.setCategory(realCategory);
-			oldCarpost.setEngineCapacity(carpost.getEngineCapacity()); 
+			oldCarpost.setEngineCapacity(carpost.getEngineCapacity());
 			oldCarpost.setRegisteredDate(carpost.getRegisteredDate());
-			oldCarpost.setMileage(carpost.getMileage()); 
+			oldCarpost.setMileage(carpost.getMileage());
 			oldCarpost.setBrand(realBrand);
-			
 
-			//delete old image if there is one
-			
+			// delete old image if there is one
+
 			CarImage oldImage = oldCarpost.getCarPostImage();
-			if(oldImage!=null){
-			oldImage.setCarpost(null);
-			cirepo.delete(oldImage);
+			if (oldImage != null) {
+				oldImage.setCarpost(null);
+				cirepo.delete(oldImage);
 			}
-			
-			//set new image
+
+			// set new image
 			CarImage newImg = cirepo.findByImageId(imgId);
 			oldCarpost.setCarPostImage(newImg);
 			cprepo.save(oldCarpost);
@@ -490,45 +485,41 @@ public class postController {
 	
 
 	@PostMapping("/saveOffer/{id}")
-    public ResponseEntity<Offer> createOffer(@PathVariable("id") int postId,@RequestBody Offer offer){
-        try {
-				//check if offer before
-				CarPosting currentPost = cpservice.findCarPostById(postId);
-				List<Offer>allCurrentOfferForCurrentPost =  currentPost.getOffers();
-				for (Offer oldOffer : allCurrentOfferForCurrentPost)
-				{
-					//if offer before
-					if(oldOffer.getUser().getUserId() == offer.getUserId()){
-						oldOffer.setOffer(offer.getOffer());
-						orepo.save(oldOffer);
-						return new ResponseEntity<>(oldOffer, HttpStatus.CREATED);
-					}
+	public ResponseEntity<Offer> createOffer(@PathVariable("id") int postId, @RequestBody Offer offer) {
+		try {
+			// check if offer before
+			CarPosting currentPost = cpservice.findCarPostById(postId);
+			List<Offer> allCurrentOfferForCurrentPost = currentPost.getOffers();
+			for (Offer oldOffer : allCurrentOfferForCurrentPost) {
+				// if offer before
+				if (oldOffer.getUser().getUserId() == offer.getUserId()) {
+					oldOffer.setOffer(offer.getOffer());
+					orepo.save(oldOffer);
+					return new ResponseEntity<>(oldOffer, HttpStatus.CREATED);
 				}
+			}
 
-				//if never offer before
-				User user = uservice.finduserById(offer.getUserId());
-				Offer newOffer = new Offer (offer.getOffer(),user,currentPost);
-				orepo.save(newOffer);
-				return new ResponseEntity<>(newOffer, HttpStatus.OK);
-        }
-        catch(Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
-        }
+			// if never offer before
+			User user = uservice.finduserById(offer.getUserId());
+			Offer newOffer = new Offer(offer.getOffer(), user, currentPost);
+			orepo.save(newOffer);
+			return new ResponseEntity<>(newOffer, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+		}
 	}
 
 	@PostMapping("/checkOwnOffer/{id}")
-	public ResponseEntity<List<Offer>> checkOwnOffer(@PathVariable("id") int postId,@RequestBody Offer offer)
-	{
-		//check if got post before
+	public ResponseEntity<List<Offer>> checkOwnOffer(@PathVariable("id") int postId, @RequestBody Offer offer) {
+		// check if got post before
 		CarPosting currentPost = cpservice.findCarPostById(postId);
-		List<Offer>allCurrentOfferForCurrentPost =  currentPost.getOffers();
+		List<Offer> allCurrentOfferForCurrentPost = currentPost.getOffers();
 
-		if (offer.getUserId() != currentPost.getOwner().getUserId()){
+		if (offer.getUserId() != currentPost.getOwner().getUserId()) {
 
-			for (Offer oldOffer : allCurrentOfferForCurrentPost)
-			{
-				//if offer before
-				if(oldOffer.getUser().getUserId() == offer.getUserId()){
+			for (Offer oldOffer : allCurrentOfferForCurrentPost) {
+				// if offer before
+				if (oldOffer.getUser().getUserId() == offer.getUserId()) {
 					List<Offer> oldOfferListWithOne = new ArrayList<>();
 					oldOfferListWithOne.add(oldOffer);
 					return new ResponseEntity<>(oldOfferListWithOne, HttpStatus.CREATED);
@@ -536,8 +527,7 @@ public class postController {
 			}
 
 			return new ResponseEntity<>(null, HttpStatus.OK);
-		}
-		else{
+		} else {
 
 			return new ResponseEntity<>(allCurrentOfferForCurrentPost, HttpStatus.ACCEPTED);
 		}
