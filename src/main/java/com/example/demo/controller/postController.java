@@ -448,7 +448,7 @@ public class postController {
 				User user = uservice.finduserById(offer.getUserId());
 				Offer newOffer = new Offer (offer.getOffer(),user,currentPost);
 				orepo.save(newOffer);
-				return new ResponseEntity<>(newOffer, HttpStatus.CREATED);
+				return new ResponseEntity<>(newOffer, HttpStatus.OK);
         }
         catch(Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -456,19 +456,32 @@ public class postController {
 	}
 
 	@PostMapping("/checkOwnOffer/{id}")
-	public ResponseEntity<Offer> checkOwnOffer(@PathVariable("id") int postId,@RequestBody Offer offer)
+	public ResponseEntity<List<Offer>> checkOwnOffer(@PathVariable("id") int postId,@RequestBody Offer offer)
 	{
 		//check if got post before
 		CarPosting currentPost = cpservice.findCarPostById(postId);
 		List<Offer>allCurrentOfferForCurrentPost =  currentPost.getOffers();
-		for (Offer oldOffer : allCurrentOfferForCurrentPost)
-		{
-			//if offer before
-			if(oldOffer.getUser().getUserId() == offer.getUserId()){
-				return new ResponseEntity<>(oldOffer, HttpStatus.CREATED);
+
+		if (offer.getUserId() != currentPost.getOwner().getUserId()){
+
+			for (Offer oldOffer : allCurrentOfferForCurrentPost)
+			{
+				//if offer before
+				if(oldOffer.getUser().getUserId() == offer.getUserId()){
+					List<Offer> oldOfferListWithOne = new ArrayList<>();
+					oldOfferListWithOne.add(oldOffer);
+					return new ResponseEntity<>(oldOfferListWithOne, HttpStatus.CREATED);
+				}
 			}
+
+			return new ResponseEntity<>(null, HttpStatus.OK);
 		}
-		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+		else{
+
+			return new ResponseEntity<>(allCurrentOfferForCurrentPost, HttpStatus.ACCEPTED);
+		}
+
+		
 
 	}
 
