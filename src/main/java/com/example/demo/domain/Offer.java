@@ -22,7 +22,7 @@ public class Offer {
     private int offerId;
     private int offer;
     private int userId;
-    
+   
     @ManyToOne
     // @JsonBackReference
     private User user;
@@ -66,7 +66,7 @@ public class Offer {
     public void setOffer(int offer) {
         this.offer = offer;
     }
-    @JsonIgnore
+
     public User getUser() {
         return user;
     }
@@ -75,7 +75,7 @@ public class Offer {
         this.user = user;
     }
 
-    @JsonIgnore
+
     public CarPosting getPost() {
         return post;
     }

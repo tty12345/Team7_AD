@@ -25,6 +25,7 @@ public class User {
     private String username;
     private String password;
     private UserType role;
+    private int mobileNumber;
 
     @OneToMany(mappedBy = "owner")
     private List<CarPosting> postings;
@@ -92,6 +93,14 @@ public class User {
         this.role = role;
     }
 
+    public User(String username, String password, UserType role, int mobile) {
+        super();
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        mobileNumber = mobile;
+    }
+
     public User() {
     }
 
@@ -121,6 +130,74 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public User userId(int userId) {
+        setUserId(userId);
+        return this;
+    }
+
+    public User username(String username) {
+        setUsername(username);
+        return this;
+    }
+
+    public User password(String password) {
+        setPassword(password);
+        return this;
+    }
+
+    public User role(UserType role) {
+        setRole(role);
+        return this;
+    }
+
+    public int getMobileNumber() {
+        return this.mobileNumber;
+    }
+
+    public void setMobileNumber(int mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public User mobileNumber(int mobileNumber) {
+        setMobileNumber(mobileNumber);
+        return this;
+    }
+
+    public User postings(List<CarPosting> postings) {
+        setPostings(postings);
+        return this;
+    }
+
+    public User history(List<CarPosting> history) {
+        setHistory(history);
+        return this;
+    }
+
+    public User favourites(List<CarPosting> favourites) {
+        setFavourites(favourites);
+        return this;
+    }
+
+    public User preference(Preference preference) {
+        setPreference(preference);
+        return this;
+    }
+
+    public User notifications(List<Notifications> notifications) {
+        setNotifications(notifications);
+        return this;
+    }
+
+    public User offers(List<Offer> offers) {
+        setOffers(offers);
+        return this;
+    }
+
+    public User email(String email) {
+        setEmail(email);
+        return this;
     }
 
     public void setPassword(String password) {

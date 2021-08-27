@@ -245,7 +245,7 @@ public class postController {
 					default:
 						realCategory = "";
 				}
-			//checkif carpost is new or old
+			//checkif carpost is new
 			if(carpost.getPostId() == 0){
 				try {
 					// Instatiate a new carpost from the object received from client side
@@ -319,27 +319,10 @@ public class postController {
 		//if post is old and wants to edit	
 		else{
 			CarPosting oldCarpost = cpservice.findCarPostById(carpost.getPostId());
-			//if the old carpost price is reduced to 20% or more, then send notification for the 
-			//user having this carpost as a favourite carpost
-			if((oldCarpost.getPrice()-carpost.getPrice())/oldCarpost.getPrice()>=0.2){
-				List<User> users=(ArrayList<User>) uservice.findAll();
-				for (User user2 : users) {
-					//check whether any user has this carpost as his favourite and check whether the user 
-					//is not the one editing the price currently
-					if(user2.getUserId()!=user.getUserId() && user2.getFavourites().contains(oldCarpost)){
-						Notifications ntf = new Notifications("Price Change", user2,
-									"A new price change for your favourite carpost " + oldCarpost.getBrand() + "is $" + carpost.getPrice());
-									nservice.save(ntf);
-									user2.getNotifications().add(ntf);
-									uservice.save(user2);
-					}
-					
-				}
-				
-				
+			CarPosting oldCarpostTemp = cpservice.findCarPostById(carpost.getPostId());
+			double oldPrice=oldCarpost.getPrice();
 			
-			}
-
+			
 			oldCarpost.setPrice(carpost.getPrice()); 
 			oldCarpost.setDescription(carpost.getDescription());
 			oldCarpost.setCategory(realCategory);
@@ -364,8 +347,31 @@ public class postController {
 
 			newImg.setCarpost(oldCarpost);
 			cirepo.save(newImg);
-		
+			
+		double newPrice=oldCarpost.getPrice();
+		if(((oldPrice-newPrice)/oldPrice)*100>=20){
+				List<User> users=(ArrayList<User>) uservice.findAll();
+				for (User user2 : users) {
+					//check whether any user has this carpost as his favourite and check whether the user 
+					//is not the one editing the price currently
+					if(user2.getUserId()!=user.getUserId() && user2.getFavourites().contains(oldCarpostTemp)){
+						Notifications ntf = new Notifications("Price Change", user2,
+									"A new price change for your favourite carpost " + oldCarpost.getBrand() + "is $" + newPrice);
+									nservice.save(ntf);
+									user2.getNotifications().add(ntf);
+									uservice.save(user2);
+					}
+					
+				}
+				
+				
+			
+			}
 		return new ResponseEntity<>(oldCarpost, HttpStatus.CREATED);
+		
+		
+
+		
 		}
 	}
 
@@ -414,9 +420,43 @@ public class postController {
 
 	@GetMapping("/hotcars") 
 	public List<CarPosting> hotcars() { 
-		List<CarPosting> popularCars = filtertop3Cars(cpservice.findMostViewedCars()); 
+		List<CarPosting> mostViewed = filtertop3Cars(cpservice.findMostViewedCars()); 
 		List<CarPosting> mostliked = filtertop3Cars(cpservice.findMostLikedCars()); 
-		return concatenate(popularCars, mostliked); 
+		// for (int i = 0; i < mostViewed.size(); i++) { 
+		// 	for (int j = 0; j < mostViewed.size(); j++){ 
+		// 		if (mostViewed.get(i).equals(mostliked.get(j))){ 
+		// 			mostliked.remove(j); 
+		// 			} 
+		// 	} 
+		// } 
+		// for (CarPosting car: mostliked){ 
+		// 	mostViewed.add(car); 
+		// } 
+
+		List<CarPosting> NewList = new ArrayList<>();
+		for (CarPosting likecar: mostliked){
+			for(CarPosting viewcar: mostViewed){
+				if(viewcar.equals(likecar)){
+					NewList.add(likecar);
+				}
+			}
+		}
+		for (CarPosting likecar: mostViewed){
+			if (!NewList.contains(likecar))
+				NewList.add(likecar);
+		}
+		for (CarPosting viewcar: mostliked){
+			if (!NewList.contains(viewcar))
+				NewList.add(viewcar);
+		}
+
+		// for (CarPosting likecar: mostliked){
+		// 		if (!mostViewed.contains(likecar))
+		// 			mostViewed.add(likecar);
+		// 	}
+
+		
+		return NewList; 
 	} 
 	
 	private List<CarPosting> filtertop3Cars(List<CarPosting> list){ 
@@ -435,19 +475,19 @@ public class postController {
 		return result; 
 	} 
 	
-	private List<CarPosting> concatenate(List<CarPosting> list1,List<CarPosting> list2){ 
-		for (int i = 0; i < list1.size(); i++) { 
-			for (int j = 0; j < list1.size(); j++){ 
-				if (list1.get(i).equals(list2.get(j))){ 
-					list2.remove(j); 
-					} 
-			} 
-		} 
-		for (CarPosting car: list2){ 
-			list1.add(car); 
-		} 
-		return list1; 
-	}
+	// private List<CarPosting> concatenate(List<CarPosting> list1,List<CarPosting> list2){ 
+	// 	for (int i = 0; i < list1.size(); i++) { 
+	// 		for (int j = 0; j < list1.size(); j++){ 
+	// 			if (list1.get(i).equals(list2.get(j))){ 
+	// 				list2.remove(j); 
+	// 				} 
+	// 		} 
+	// 	} 
+	// 	for (CarPosting car: list2){ 
+	// 		list1.add(car); 
+	// 	} 
+	// 	return list1; 
+	// }
 	
 
 	@PostMapping("/saveOffer/{id}")
@@ -470,7 +510,7 @@ public class postController {
 				User user = uservice.finduserById(offer.getUserId());
 				Offer newOffer = new Offer (offer.getOffer(),user,currentPost);
 				orepo.save(newOffer);
-				return new ResponseEntity<>(newOffer, HttpStatus.CREATED);
+				return new ResponseEntity<>(newOffer, HttpStatus.OK);
         }
         catch(Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -478,22 +518,46 @@ public class postController {
 	}
 
 	@PostMapping("/checkOwnOffer/{id}")
-	public ResponseEntity<Offer> checkOwnOffer(@PathVariable("id") int postId,@RequestBody Offer offer)
+	public ResponseEntity<List<Offer>> checkOwnOffer(@PathVariable("id") int postId,@RequestBody Offer offer)
 	{
 		//check if got post before
 		CarPosting currentPost = cpservice.findCarPostById(postId);
 		List<Offer>allCurrentOfferForCurrentPost =  currentPost.getOffers();
-		for (Offer oldOffer : allCurrentOfferForCurrentPost)
-		{
-			//if offer before
-			if(oldOffer.getUser().getUserId() == offer.getUserId()){
-				return new ResponseEntity<>(oldOffer, HttpStatus.CREATED);
+
+		if (offer.getUserId() != currentPost.getOwner().getUserId()){
+
+			for (Offer oldOffer : allCurrentOfferForCurrentPost)
+			{
+				//if offer before
+				if(oldOffer.getUser().getUserId() == offer.getUserId()){
+					List<Offer> oldOfferListWithOne = new ArrayList<>();
+					oldOfferListWithOne.add(oldOffer);
+					return new ResponseEntity<>(oldOfferListWithOne, HttpStatus.CREATED);
+				}
 			}
+
+			return new ResponseEntity<>(null, HttpStatus.OK);
 		}
-		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+		else{
+
+			return new ResponseEntity<>(allCurrentOfferForCurrentPost, HttpStatus.ACCEPTED);
+		}
 
 	}
 
+	// @PostMapping("/getAllOffer/{id}")
+	// public List<Offer> checkOwnOffer(@PathVariable("id") int postId)
+	// {
+	// 	//check if got post before
+	// 	CarPosting currentPost = cpservice.findCarPostById(postId);
+	// 	List<Offer>allCurrentOfferForCurrentPost =  currentPost.getOffers();
+	// 	System.out.println(allCurrentOfferForCurrentPost);
+	// 	return allCurrentOfferForCurrentPost;
+		
+
+	// }
+
+	
 
 	@PostMapping("/saveImage")
 	public ResponseEntity<Integer> saveImage(@RequestParam("photoParam") MultipartFile file) {
