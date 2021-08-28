@@ -381,7 +381,20 @@ public class postController {
 
 	@PostMapping("/listPost")
 	public List<CarPosting> listCarPost(@RequestBody SearchObject searchobject) {
+		
 
+		if(searchobject.getUserId() != 0){
+		//sends list of recommended
+			if(searchobject.getCriteria() == 1)
+				return listCarPostByPref(searchobject.getUserId());
+				
+			//sends watch list
+			else if (searchobject.getCriteria() == 2)
+				return getWatchList(searchobject.getUserId());
+		}
+		
+
+		//if not log in jus search
 		String brand = searchobject.getBrand();
 		String priceLabel = searchobject.getPrice();
 		String description = searchobject.getDescription();
@@ -422,44 +435,12 @@ public class postController {
 			return cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description);
 	}
 
-	@PostMapping("/listPostByPref/{id}")
-	public List<CarPosting> listCarPostByPref(@RequestBody SearchObject searchobject,@PathVariable("id") int id) {
-		User userPref=uservice.finduserById(id);
-
-		String brand = searchobject.getBrand();
-		String priceLabel = searchobject.getPrice();
-		String description = searchobject.getDescription();
-
-		// set brand
-		if (searchobject.getBrand() == "")
-			brand = null;
-
-		// set description
-		if (description == "")
-			description = null;
-
-		// set price range
-		int minPrice = 0;
-		int maxPrice = 99999999;
-		if (priceLabel != null && priceLabel != "") {
-			if (priceLabel.contains("0")) {
-				minPrice = 0;
-				maxPrice = 50000;
-			} else if (priceLabel.contains("1")) {
-				minPrice = 50001;
-				maxPrice = 100000;
-			} else if (priceLabel.contains("2")) {
-				minPrice = 100001;
-				maxPrice = 150000;
-			} else if (priceLabel.contains("3")) {
-				minPrice = 150001;
-				maxPrice = 99999999;
-			}
-		}
-
-		// depending on which field is entered, do the corresponding query
-		// if all null, display the cars matching with user preference
-		if (brand == null && priceLabel == null && description == null){
+	// @PostMapping("/listPostByPref/{id}")
+	public List<CarPosting> listCarPostByPref(@PathVariable("id") int id) {
+		
+			//find user
+			User userPref=uservice.finduserById(id);
+			//display the cars matching with user preference
 			List<CarPosting> prefCars=new ArrayList<CarPosting>();
 			if(userPref.getPreference()!=null){
 				Preference pref=userPref.getPreference();
@@ -469,19 +450,18 @@ public class postController {
 					if(carPosting.getBrand().equals(pref.getBrand()) && carPosting.getCategory().equals(pref.getCategory())
 					&& carPosting.getPrice()<=pref.getHighestPrice()){
 						prefCars.add(carPosting);
-
 					}
 					
 				}
-				
+				return prefCars;
 			}
-			return prefCars;
+			else return null;
 
-		}
-			//return cpservice.findAll();
+	}
 
-		else
-			return cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description);
+	public List<CarPosting> getWatchList(@PathVariable("id") Integer id){
+		User user = uservice.finduserById(id);
+		return user.getFavourites();
 	}
 
 
@@ -644,4 +624,6 @@ public class postController {
 		User user = uservice.finduserById(id);
 		return user.getPostings();
 	}
+
+	// @GetMapping("/watchList/{id}")
 }
