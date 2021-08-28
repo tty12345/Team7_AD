@@ -105,10 +105,20 @@ public class postController {
 		List<User> users = carpost.getUsers();
 
 		// unmap and delete
+		//unmap owners
 		carpost.setOwner(null);
 		if (carpost.getCarPostImage() != null)
 			cirepo.delete(carpost.getCarPostImage());
+		//unmap and deleteImage
+		// CarImage img = carpost.getCarPostImage();
+		// img.setCarpost(null);
+		// cirepo.delete(img);
+
+		//unmap offers
+		
+		
 		cpservice.delete(carpost);
+
 
 		// send out notification
 		for (User user : users) {
@@ -591,21 +601,20 @@ public class postController {
 
 			return new ResponseEntity<>(null, HttpStatus.OK);
 		} else {
+			
+			//need to create custome list because we are using @Jsonignore to solve infinite recursssion problem
+			// the offers in this list should not have any user or carposting object as part of its attribute
+			// should solve the problem of the data not being deserialized properly.
+			//we need to display username, offeramount and email. 
+			List<Offer> customOfferList = new ArrayList<>();
+			for (Offer individualOffer: allCurrentOfferForCurrentPost){
+				Offer offerX = new Offer(individualOffer.getOffer(), individualOffer.getUser().getUsername(), individualOffer.getUser().getEmail());
+				customOfferList.add(offerX);
+			}
 
-			return new ResponseEntity<>(allCurrentOfferForCurrentPost, HttpStatus.ACCEPTED);
+
+			return new ResponseEntity<>(customOfferList, HttpStatus.ACCEPTED);
 		}
-
-	}
-
-	@PostMapping("/getAllOffer/{id}")
-	public List<Offer> checkOwnOffer(@PathVariable("id") int postId)
-	{
-		//check if got post before
-		CarPosting currentPost = cpservice.findCarPostById(postId);
-		List<Offer>allCurrentOfferForCurrentPost =  currentPost.getOffers();
-		System.out.println(allCurrentOfferForCurrentPost);
-		return allCurrentOfferForCurrentPost;
-		
 
 	}
 

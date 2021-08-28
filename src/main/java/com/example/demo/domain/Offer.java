@@ -20,8 +20,12 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int offerId;
     private int offer;
+    //ownerId
     private int userId;
+    private String offererEmail;
+    private String offererName;
    
+    //owner object
     @ManyToOne
     // @JsonBackReference
     private User user;
@@ -47,7 +51,12 @@ public class Offer {
         this.offer = offer;
     }
     
-    
+    public Offer(int offer, String offererName, String offererEmail){
+        super();
+        this.offer = offer;
+        this.offererName = offererName;
+        this.offererEmail =offererEmail;
+    }
 
 
     public int getOfferId() {
@@ -114,5 +123,12 @@ public class Offer {
         return userId;
     }
 
+    public String getOffererEmail(){
+        return offererEmail;
+    }
+
+    public String getOffererName(){
+        return offererName;
+    }
 
 }

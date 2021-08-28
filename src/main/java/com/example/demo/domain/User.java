@@ -33,8 +33,8 @@ public class User {
     @OneToMany(mappedBy = "owner")
     private List<CarPosting> postings;
 
-    @ManyToMany(mappedBy = "history")
-    private List<CarPosting> history;
+    // @ManyToMany(mappedBy = "history")
+    // private List<CarPosting> history;
 
     // post liked
 
@@ -76,7 +76,7 @@ public class User {
         this.password = password;
         this.role = role;
         this.postings = postings;
-        this.history = history;
+        // this.history = history;
         this.favourites = favourites;
         this.preference = preference;
         this.notifications = notifications;
@@ -280,14 +280,14 @@ public class User {
         User user = (User) o;
         return userId == user.userId && Objects.equals(username, user.username)
                 && Objects.equals(password, user.password) && Objects.equals(role, user.role)
-                && Objects.equals(postings, user.postings) && Objects.equals(history, user.history)
+                && Objects.equals(postings, user.postings)
                 && Objects.equals(favourites, user.favourites) && Objects.equals(preference, user.preference)
                 && Objects.equals(notifications, user.notifications) && Objects.equals(offers, user.offers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, password, role, postings, history, favourites, preference, notifications,
+        return Objects.hash(userId, username, password, role, postings, favourites, preference, notifications,
                 offers);
     }
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -55,11 +56,11 @@ public class CarPosting {
     // @JsonBackReference
     private User owner;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade =CascadeType.ALL)
     private List<Offer> offers = new ArrayList<>();
 
-    @ManyToMany
-    private List<User> history = new ArrayList<>();
+    // @ManyToMany
+    // private List<User> history = new ArrayList<>();
 
     public CarPosting() {
         super();
@@ -80,7 +81,7 @@ public class CarPosting {
         this.views = views;
         this.users = users;
         this.owner = owner;
-        this.history = history;
+        // this.history = history;
     }
 
     public CarPosting(int price, String brand, int engineCapacity, String category, User owner) {
@@ -247,13 +248,13 @@ public class CarPosting {
         this.owner = owner;
     }
 
-    public List<User> getHistory() {
-        return history;
-    }
+    // public List<User> getHistory() {
+    //     return history;
+    // }
 
-    public void setHistory(List<User> history) {
-        this.history = history;
-    }
+    // public void setHistory(List<User> history) {
+    //     this.history = history;
+    // }
 
     public List<Offer> getOffers() {
         return offers;
@@ -289,7 +290,7 @@ public class CarPosting {
                 + getDescription() + "'" + ", brand='" + getBrand() + "'" + ", engineCapacity='" + getEngineCapacity()
                 + "'" + ", reisgteredDate='" + getRegisteredDate() + "'" + ", mileage='" + getMileage() + "'"
                 + ", category='" + getCategory() + "'" + "'" + ", views='" + getViews() + "'" + ", user='" + getUsers()
-                + "'" + ", history='" + getHistory() + "'" + "}";
+                + "}";
     }
 
     public int getUserId() {
