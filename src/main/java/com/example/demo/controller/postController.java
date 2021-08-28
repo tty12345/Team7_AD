@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.lang.model.element.VariableElement;
 import javax.transaction.Transactional;
 
 import com.example.demo.domain.*;
@@ -417,6 +418,69 @@ public class postController {
 		else
 			return cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description);
 	}
+
+	@PostMapping("/listPostByPref/{id}")
+	public List<CarPosting> listCarPostByPref(@RequestBody SearchObject searchobject,@PathVariable("id") int id) {
+		User userPref=uservice.finduserById(id);
+
+		String brand = searchobject.getBrand();
+		String priceLabel = searchobject.getPrice();
+		String description = searchobject.getDescription();
+
+		// set brand
+		if (searchobject.getBrand() == "")
+			brand = null;
+
+		// set description
+		if (description == "")
+			description = null;
+
+		// set price range
+		int minPrice = 0;
+		int maxPrice = 99999999;
+		if (priceLabel != null && priceLabel != "") {
+			if (priceLabel.contains("0")) {
+				minPrice = 0;
+				maxPrice = 50000;
+			} else if (priceLabel.contains("1")) {
+				minPrice = 50001;
+				maxPrice = 100000;
+			} else if (priceLabel.contains("2")) {
+				minPrice = 100001;
+				maxPrice = 150000;
+			} else if (priceLabel.contains("3")) {
+				minPrice = 150001;
+				maxPrice = 99999999;
+			}
+		}
+
+		// depending on which field is entered, do the corresponding query
+		// if all null, display the cars matching with user preference
+		if (brand == null && priceLabel == null && description == null){
+			List<CarPosting> prefCars=new ArrayList<CarPosting>();
+			if(userPref.getPreference()!=null){
+				Preference pref=userPref.getPreference();
+				List<CarPosting> Cars=(ArrayList<CarPosting>) cpservice.findAll();
+				
+				for (CarPosting carPosting : Cars) {
+					if(carPosting.getBrand().equals(pref.getBrand()) && carPosting.getCategory().equals(pref.getCategory())
+					&& carPosting.getPrice()<=pref.getHighestPrice()){
+						prefCars.add(carPosting);
+
+					}
+					
+				}
+				
+			}
+			return prefCars;
+
+		}
+			//return cpservice.findAll();
+
+		else
+			return cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description);
+	}
+
 
 	@GetMapping("/hotcars") 
 	public List<CarPosting> hotcars() { 

@@ -65,12 +65,12 @@ public class MainApplication {
 			urepo.save(u3); 
 			urepo.save(u4); 
 		  
-			// List<User> gp1 = new ArrayList<>(); 
-			// gp1.add(u1); 
-			// List<User> gp2 = new ArrayList<>(); 
-			// gp2.add(u1); gp2.add(u2); gp2.add(u3); 
-			// List<User> gp3 = new ArrayList<>(); 
-			// gp3.add(u3); gp3.add(u4); 
+			List<User> gp1 = new ArrayList<>(); 
+			gp1.add(u1); 
+			List<User> gp2 = new ArrayList<>(); 
+			gp2.add(u1); gp2.add(u2); gp2.add(u3); 
+			List<User> gp3 = new ArrayList<>(); 
+			gp3.add(u3); gp3.add(u4); 
 		  
 			Preference pref1 = new Preference("911 Carrera Cabriolet 3.6A PDK", "Porsche", u1); 
 			prepo.save(pref1); 
@@ -109,12 +109,12 @@ public class MainApplication {
 			//   "Sports", "https://i.i-sgcm.com/cars_used/202107/1013874_small.jpg", u1, 4, gp1, 1); 
 			// CarPosting post5 = new CarPosting(258800, "911 Carrera Cabriolet 3.6A PDK", "Porsche", 3614, date5, 81000, 
 			//   "Sports", "https://i.i-sgcm.com/cars_used/202106/1009173_small.jpg", u1, 1, gp1, 1); 
-			// CarPosting post6 = new CarPosting(93800, "Civic Type R 2.0M", "Honda", 1998, date6, 50000, "Sports", 
-			//   "https://i.i-sgcm.com/cars_used/202108/1021450_small.jpg", u1, 5, gp1, 1); 
-			// CarPosting post7 = new CarPosting(99800, "C-Class C180 Avantgarde", "Mercedes-Benz", 1595, date7, 60323, 
-			//   "Luxury", "https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg", u1, 0, null, 0); 
-			// CarPosting post8 = new CarPosting(42000, "Camry 2.4A", "Toyota", 2362, date8, 100000, "Luxury", 
-			//   "https://i.i-sgcm.com/cars_used/202108/1021441_small.jpg", u1, 3, gp3, 1);
+			CarPosting post6 = new CarPosting(93800, "Civic Type R 2.0M", "Honda", 1998, date6, 50000, "Sports", 
+			  "https://i.i-sgcm.com/cars_used/202108/1021450_small.jpg", u1, 5, gp1, 1); 
+			CarPosting post7 = new CarPosting(99800, "C-Class C180 Avantgarde", "Mercedes-Benz", 1595, date7, 60323, 
+			  "Luxury", "https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg", u1, 0, null, 0); 
+			CarPosting post8 = new CarPosting(42000, "Camry 2.4A", "Toyota", 2362, date8, 100000, "Luxury", 
+			  "https://i.i-sgcm.com/cars_used/202108/1021441_small.jpg", u1, 3, gp3, 1);
 
 			CarPosting post1 = new CarPosting(65000, "Swift 1.0A Turbo GLX", "Suzuki", 998, date1, 25000, "Hatchback", 
 			  "https://i.i-sgcm.com/cars_used/202106/1004393_small.jpg", u1); 
@@ -133,9 +133,9 @@ public class MainApplication {
 			cpRepo.save(post3);
 			cpRepo.save(post4);
 			cpRepo.save(post5);
-			// cpRepo.save(post6);
-			// cpRepo.save(post7);
-			// cpRepo.save(post8);
+			cpRepo.save(post6);
+			cpRepo.save(post7);
+			cpRepo.save(post8);
 			// img2.setCarpost(post1);
 			// cirepo.save(img2);
 
