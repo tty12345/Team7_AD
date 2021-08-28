@@ -89,27 +89,31 @@ public class likeController {
         //find the current car post from the database
         CarPosting carposting =cpservice.findCarPostById(id);
 
+        //find current user
         int userId= user.getUserId();
         User u= uservice.finduserById(userId);
+        //get a list of user that currently likes the post
+        List<User> currentLikers = carposting.getUsers();
 
         //if currently there is no items in favourites
-        if(u.getFavourites().size()==0){
-            List<CarPosting> favourites = new ArrayList<>();
+        // if(u.getFavourites().size()==0){
+            List<CarPosting> favourites = u.getFavourites();
             favourites.add(carposting);
-                
             u.setFavourites(favourites);
-            uservice.save(u);
-            List<User> list1 = carposting.getUsers();
-            list1.add(u);
-            carposting.setUsers(list1);
+            uservice.save(u);  
+            currentLikers.add(u);
+            carposting.setUsers(currentLikers);
             cpservice.save(carposting);
-        }
-        //if currently there is items in favourites
-        else{
-            //get current favourite, add new favourite, save
-            u.getFavourites().add(carposting);
-            uservice.save(u);
-           }
+        // }
+        // //if currently there is items in favourites
+        // else{
+        //     //get current favourite, add new favourite, save
+        //     List<CarPosting> favList = u.getFavourites();
+        //     favList.add(carposting);
+        //     u.setFavourites(favList);
+        //     uservice.save(u);
+        //     cpservice.save(favourites);
+        //    }
         
         // dun need to chekc log in here any more. Check login done on react side
         // else

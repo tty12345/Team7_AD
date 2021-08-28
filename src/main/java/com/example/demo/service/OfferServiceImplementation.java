@@ -24,5 +24,10 @@ public class OfferServiceImplementation implements OfferService{
         orepo.save(newOffer);
         
     }
+
+    @Override
+    public List<Offer> findOfferByBuyerId(Integer id) {
+        return orepo.findOfferByBuyerId(id);
+    }
     
 }

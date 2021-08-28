@@ -25,6 +25,7 @@ public class User {
     private int userId;
     private String username;
     private String password;
+    private int mobileNumber;
     private UserType role;
    
     @OneToMany(mappedBy = "owner")
@@ -57,6 +58,13 @@ public class User {
         this.password = password;
     }
     
+    public User(String username, String password, UserType role, int mobile) {
+        this.username = username;
+        this.password = password;
+        this.mobileNumber = mobile;
+        this.role = role;
+    }
+
     public User(String username, Preference preference) {
         this.username = username;
         this.preference = preference;
@@ -85,6 +93,15 @@ public class User {
 	}
 
 	public User() {
+    }
+
+
+    public int getMobileNumber() {
+        return this.mobileNumber;
+    }
+
+    public void setMobileNumber(int mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 
     public UserType getRole() {

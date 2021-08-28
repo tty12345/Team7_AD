@@ -56,8 +56,8 @@ public class MainApplication {
 			String Pass1 = sCryptPasswordEncoder.encode("cherwah"); 
 			String Pass2 = sCryptPasswordEncoder.encode("mike"); 
 			String Pass3 = sCryptPasswordEncoder.encode("steve"); 
-			User u1 = new User("tin",Pass, UserType.USER); 
-			User u2 = new User("cherwah",Pass1, UserType.USER); 
+			User u1 = new User("tin",Pass, UserType.USER, 83456789); 
+			User u2 = new User("cherwah",Pass1, UserType.USER, 98761234); 
 			User u3 = new User("mike",Pass2, UserType.USER); 
 			User u4 = new User("steve",Pass3, UserType.USER); 
 			urepo.save(u1); 
@@ -128,10 +128,10 @@ public class MainApplication {
 
 
 			Notifications ntf1 = new Notifications("welcome", "Welcome to the web!", u1);
-			Notifications ntf2 = new Notifications("delete",
-					"Your favorite product information has been deleted, please click here for details", u1);
+			// Notifications ntf2 = new Notifications("delete",
+			// 		"Your favorite product information has been deleted, please click here for details", u1);
 			nrepo.save(ntf1);
-			nrepo.save(ntf2);
+			// nrepo.save(ntf2);
 
 			List<CarPosting> cpl1 = new ArrayList<CarPosting>();
 			cpl1.add(post1);
@@ -148,14 +148,14 @@ public class MainApplication {
 
 			List<Notifications> currentNTF = new ArrayList<>();
 			currentNTF.add(ntf1);
-			currentNTF.add(ntf2);
+			// currentNTF.add(ntf2);
 			u1.setNotifications(currentNTF);
 			urepo.save(u1);
 
-			nrepo.save(new Notifications("Hellow"));
-			nrepo.save(new Notifications("We"));
-			nrepo.save(new Notifications("Are"));
-			nrepo.save(new Notifications("Noobs!"));
+			// nrepo.save(new Notifications("Hellow"));
+			// nrepo.save(new Notifications("We"));
+			// nrepo.save(new Notifications("Are"));
+			// nrepo.save(new Notifications("Noobs!"));
 		};
 	}
 

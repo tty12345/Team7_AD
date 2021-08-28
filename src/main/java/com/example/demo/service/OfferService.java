@@ -7,7 +7,7 @@ import com.example.demo.domain.Offer;
 public interface OfferService {
 
     List<Offer> findOffersByCarPostId(Integer id);
-
+    List<Offer> findOfferByBuyerId(Integer id);
     void save(Offer newOffer);
     
 }

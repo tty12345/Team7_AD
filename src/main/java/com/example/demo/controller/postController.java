@@ -58,43 +58,6 @@ public class postController {
 		return cpservice.findCarPostById(id);
 	}
 
-	// @GetMapping("/addPost")
-	// public String showForm(Model model, HttpSession session) {
-	// 	if (session.getAttribute("seller") == null)
-	// 		return "forward:/login";
-	// 	else if (session.getAttribute("buyer") != null)
-	// 		return "index";
-
-	// 	CarPosting carpost = new CarPosting();
-	// 	model.addAttribute("carpost", carpost);
-	// 	return "car_post_form";
-	// }
-
-	// Edit car post's detail
-	// @GetMapping("/editPost/{id}")
-	// public String editCarPost(Model model, @PathVariable("id") Integer id) {
-	// 	CarPosting carpost = cpservice.findCarPostById(id);
-	// 	model.addAttribute("carpost", carpost);
-	// 	return "car_post_form";
-	// }
-
-	// @GetMapping("/deletePost/{id}")
-	// public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
-	// CarPosting carpost = cpservice.findCarPostById(id);
-	// List<User> users = carpost.getUsers();
-
-	// for (User user : users) {
-	// Notifications notification = new Notifications();
-	// notification.setType("delete");
-	// notification.setUser(user);
-	// user.notifications.add(notification);
-	// }
-
-	// carpost.setOwner(null);
-	// cpservice.delete(carpost);
-	// return "forward:/post/listPost";
-	// }
-
 	@DeleteMapping("/deletePost/{id}")
 	@Transactional
 	public ResponseEntity<HttpStatus> deleteCarPost(@PathVariable("id") Integer id) {
@@ -102,7 +65,7 @@ public class postController {
 
 		// get likers
 		List<User> users = carpost.getUsers();
-
+		System.out.println(users);
 		// unmap and delete
 		carpost.setOwner(null);
 		if (carpost.getCarPostImage() != null)
@@ -389,7 +352,8 @@ public class postController {
 	public List<CarPosting> hotcars() { 
 		List<CarPosting> popularCars = filtertop3Cars(cpservice.findMostViewedCars()); 
 		List<CarPosting> mostliked = filtertop3Cars(cpservice.findMostLikedCars()); 
-		return concatenate(popularCars, mostliked); 
+		List<CarPosting> hotcars = concatenate(popularCars, mostliked);
+		return hotcars; 
 	} 
 	
 	private List<CarPosting> filtertop3Cars(List<CarPosting> list){ 

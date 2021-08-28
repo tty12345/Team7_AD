@@ -21,6 +21,7 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int offerId;
     private int offer;
+    // change to owner Id later
     private int userId;
     
     @ManyToOne
@@ -66,7 +67,7 @@ public class Offer {
     public void setOffer(int offer) {
         this.offer = offer;
     }
-    @JsonIgnore
+    // @JsonIgnore
     public User getUser() {
         return user;
     }
