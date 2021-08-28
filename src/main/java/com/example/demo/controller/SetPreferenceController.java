@@ -174,9 +174,9 @@ public class SetPreferenceController {
 
 		
 		if(currentUser.getPreference()==null){
-			Preference newPreference = new Preference (preference.getModel(),realBrand,preference.getLowestPrice(),
+			Preference newPreference = new Preference(preference.getModel(),realBrand,preference.getLowestPrice(),
 			preference.getHighestPrice(),realCategory, preference.getEngineCapacityMin(), 
-			preference.getEngineCapacityMax(),currentUser);
+			preference.getEngineCapacityMax(),preference.getDepreciationMax(),currentUser);
 			prfservice.save(newPreference);
 		}
 		else{
@@ -188,6 +188,7 @@ public class SetPreferenceController {
 			oldPreference.setCategory(realCategory);
 			oldPreference.setEngineCapacityMin(preference.getEngineCapacityMin());
 			oldPreference.setEngineCapacityMax(preference.getEngineCapacityMax());
+			oldPreference.setDepreciationMax(preference.getDepreciationMax());
 			prfservice.save(oldPreference);
 
 		}

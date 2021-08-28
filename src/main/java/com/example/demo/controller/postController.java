@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.lang.model.element.VariableElement;
 import javax.transaction.Transactional;
 
 import com.example.demo.domain.*;
@@ -283,6 +284,7 @@ public class postController {
 				// Notifitiona relevant ppl that new post created
 				List<User> users = (ArrayList<User>) uservice.findAll();
 
+
 				for (User userCheckNotification : users) {
 					// if have notification and it is not the person doing the posting
 					if (userCheckNotification.getPreference() != null
@@ -293,24 +295,26 @@ public class postController {
 						if (preference.getBrand().equals(newCarPosting.getBrand()))
 							if (preference.getCategory().equals(newCarPosting.getCategory()))
 								if (preference.getEngineCapacityMax() >= newCarPosting.getEngineCapacity())
-									if (preference.getEngineCapacityMin() <= newCarPosting.getEngineCapacity())
-										if (preference.getHighestPrice() >= newCarPosting.getPrice()) {
-											Notifications ntf = new Notifications("New Arrival", userCheckNotification,
-													"A new arrival that matches your preference is  "
-															+ newCarPosting.getPostId());
-											nservice.save(ntf);
+									if(preference.getEngineCapacityMin() <= newCarPosting.getEngineCapacity())
+								 		if (preference.getHighestPrice() >= newCarPosting.getPrice())
+										 	if(preference.getDepreciationMax()>=newCarPosting.getDepreciation()) {
+													Notifications ntf = new Notifications("New Arrival", userCheckNotification,
+													"A new arrival that matches your preference is  " + newCarPosting.getBrand());
+													nservice.save(ntf);
 
-											userCheckNotification.getNotifications().add(ntf);
-											uservice.save(userCheckNotification);
-										}
-					}
-				}
+													userCheckNotification.getNotifications().add(ntf);
+													uservice.save(userCheckNotification);
+								}
+							}
+						}
+ 
 
-				return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
+						return new ResponseEntity<>(newcarPosting2, HttpStatus.CREATED);
 			} catch (Exception e) {
 				return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 			}
 		}
+		
 		// if post is old and wants to edit
 		else {
 			CarPosting oldCarpost = cpservice.findCarPostById(carpost.getPostId());
@@ -361,11 +365,7 @@ public class postController {
 				
 			
 			}
-		return new ResponseEntity<>(oldCarpost, HttpStatus.CREATED);
-		
-		
-
-		
+		return new ResponseEntity<>(oldCarpost, HttpStatus.CREATED);	
 		}
 	}
 
@@ -411,6 +411,69 @@ public class postController {
 		else
 			return cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description);
 	}
+
+	@PostMapping("/listPostByPref/{id}")
+	public List<CarPosting> listCarPostByPref(@RequestBody SearchObject searchobject,@PathVariable("id") int id) {
+		User userPref=uservice.finduserById(id);
+
+		String brand = searchobject.getBrand();
+		String priceLabel = searchobject.getPrice();
+		String description = searchobject.getDescription();
+
+		// set brand
+		if (searchobject.getBrand() == "")
+			brand = null;
+
+		// set description
+		if (description == "")
+			description = null;
+
+		// set price range
+		int minPrice = 0;
+		int maxPrice = 99999999;
+		if (priceLabel != null && priceLabel != "") {
+			if (priceLabel.contains("0")) {
+				minPrice = 0;
+				maxPrice = 50000;
+			} else if (priceLabel.contains("1")) {
+				minPrice = 50001;
+				maxPrice = 100000;
+			} else if (priceLabel.contains("2")) {
+				minPrice = 100001;
+				maxPrice = 150000;
+			} else if (priceLabel.contains("3")) {
+				minPrice = 150001;
+				maxPrice = 99999999;
+			}
+		}
+
+		// depending on which field is entered, do the corresponding query
+		// if all null, display the cars matching with user preference
+		if (brand == null && priceLabel == null && description == null){
+			List<CarPosting> prefCars=new ArrayList<CarPosting>();
+			if(userPref.getPreference()!=null){
+				Preference pref=userPref.getPreference();
+				List<CarPosting> Cars=(ArrayList<CarPosting>) cpservice.findAll();
+				
+				for (CarPosting carPosting : Cars) {
+					if(carPosting.getBrand().equals(pref.getBrand()) && carPosting.getCategory().equals(pref.getCategory())
+					&& carPosting.getPrice()<=pref.getHighestPrice()){
+						prefCars.add(carPosting);
+
+					}
+					
+				}
+				
+			}
+			return prefCars;
+
+		}
+			//return cpservice.findAll();
+
+		else
+			return cpservice.filterAllIgnoreCase(brand, minPrice, maxPrice, description);
+	}
+
 
 	@GetMapping("/hotcars") 
 	public List<CarPosting> hotcars() { 

@@ -59,7 +59,7 @@ public class Preference {
 	}
 
 	public Preference(String model, String brand, int lowestPrice, int highestPrice, String category,
-			int engineCapacityMin, int engineCapacityMax, User user) {
+			int engineCapacityMin, int engineCapacityMax, int depreciationMax, User user) {
 		super();
 		this.model = model;
 		this.brand = brand;
@@ -68,6 +68,7 @@ public class Preference {
 		this.category = category;
 		this.engineCapacityMin = engineCapacityMin;
 		this.engineCapacityMax = engineCapacityMax;
+		this.depreciationMax=depreciationMax;
 		this.user = user;
 	}
 
