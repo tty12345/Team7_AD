@@ -47,5 +47,17 @@ public class UserServiceImplementation implements UserService{
     public List<User> findAll() {
         return urepo.findAll();
     }
+
+    // @Override
+    // public List<CarPosting> findAllFavourites() {
+    //     // TODO Auto-generated method stub
+    //     return null;
+    // }
+
+    @Override
+    public User findUserByUsernameAndEmail(String username, String email) {
+        return urepo.findUserByUsernameAndEmail(username, email);
+    }
+
     
 }

@@ -19,8 +19,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select u.favourites from User u where u.userId= :id")
     public List<CarPosting> findFavouritesByUserId(@Param("id")int id);
+
     @Query("select u.notifications from User u where u.userId= :id")
     public List<Notifications> findNotificationsByUserId(@Param("id")int id);
+
     @Query("select u.favourites from User u")
     public List<CarPosting> findAllFavourites();
+
+    @Query("select u from User u where u.username = :un and u.email = :email")
+    public User findUserByUsernameAndEmail(@Param("un") String un, @Param("email")String email);
 }

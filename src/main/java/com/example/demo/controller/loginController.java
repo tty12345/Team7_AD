@@ -92,21 +92,42 @@ public class loginController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<HttpStatus> createUser(@RequestBody User user) {
-		try {
-			String Pass = sCryptPasswordEncoder.encode(user.getPassword());
-			User user1 = new User(user.getUsername(), Pass, UserType.USER, user.getEmail());
-			uservice.save(user1);
+		// try {
+		// 	String Pass = sCryptPasswordEncoder.encode(user.getPassword());
+		// 	User user1 = new User(user.getUsername(), Pass, UserType.USER, user.getEmail());
+		// 	uservice.save(user1);
 
-			// sending email for user creation confirmation
-			User newUser = user1;
+		// 	// sending email for user creation confirmation
+		// 	User newUser = user1;
 
-			eservice.sendEmail(newUser.getUserId());
-			System.out.println("hello!");
+		// 	eservice.sendEmail(newUser.getUserId());
+		// 	System.out.println("hello!");
 
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		// 	return new ResponseEntity<>(HttpStatus.CREATED);
+		// } catch (Exception e) {
+		// 	return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		// }
+		signup(user);
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	 }
+
+
+	@PostMapping("/googlelogin")
+	public ResponseEntity<HttpStatus> createGoogleuser(@RequestBody User user){
+		User googleUser = uservice.findUserByUsernameAndEmail(user.getUsername(), user.getEmail());
+		if ( googleUser == null) {
+			signup(user);
 		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	private void signup(User signupUser){
+		String Pass = sCryptPasswordEncoder.encode(signupUser.getPassword());
+		User user1 = new User(signupUser.getUsername(), Pass, UserType.USER, signupUser.getEmail());
+		uservice.save(user1);
+
+		// sending email for user creation confirmation
+		eservice.sendEmail(user1.getUserId());
 	}
 
 }
