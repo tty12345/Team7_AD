@@ -98,17 +98,14 @@ public class MainApplication {
 			String sDate16 = "15/11/2017";
 			String sDate17 = "16/08/2017";
 			String sDate18 = "30/12/2016";
-			String sDate19 = "22/05/2014";
-			String sDate20 = "10/02/2013";
-			String sDate21 = "30/08/2012";
+			String sDate19 = "27/10/2016";
+			String sDate20 = "13/05/2019";
+			String sDate21 = "17/01/2008";
 			String sDate22 = "02/04/2015";
-			String sDate23 = "22/03/2011";
-			String sDate24 = "22/09/2018";
-			String sDate25 = "20/04/2015";
-			String sDate26 = "20/02/2008";
-
-
-
+			String sDate23 = "30/09/2008";
+			String sDate24 = "15/04/2008";
+			String sDate25 = "30/06/2015";
+			String sDate26 = "10/09/2008";
 
 			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
 			Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate2);
@@ -136,7 +133,6 @@ public class MainApplication {
 			Date date24 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate24);
 			Date date25 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate25);
 			Date date26 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate26);
-
 
 			// Car 1
 			try {
@@ -267,14 +263,6 @@ public class MainApplication {
 				cirepo.save(img);
 				CarPosting post = new CarPosting(75515, "X Trail 2.0A Premium 7-Seater Sunroof", "Nissan", 1997, date9,
 						77000, "SUV", img, u2, 5, gp3, 1);
-			// Car 8
-			try {
-				Path localPath = Paths.get("src/main/resources/static/images/honda accord.jpg");
-				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
-				CarImage img = new CarImage(imgByte, "honda accord", "jpg");
-				cirepo.save(img);
-				CarPosting post = new CarPosting(98000, "Honda Accord", "Honda", 1498, date19, 30076,
-						"Sedan", img, u2, 0, null, 0);
 				cpRepo.save(post);
 				img.setCarpost(post);
 				cirepo.save(img);
@@ -290,14 +278,6 @@ public class MainApplication {
 				cirepo.save(img);
 				CarPosting post = new CarPosting(49988, "Note 1.2A DIG-S", "Nissan", 1198, date10, 40500, "Hatchback",
 						img, u2, 2, gp3, 1);
-			// Car 9
-			try {
-				Path localPath = Paths.get("src/main/resources/static/images/Mitsubishi Attrage.jpg");
-				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
-				CarImage img = new CarImage(imgByte, "Mitsubishi Attrage", "jpg");
-				cirepo.save(img);
-				CarPosting post = new CarPosting(51000, "Mitsubishi Attrage", "Mitsubishi", 1198, date10, 54221,
-						"Sedan", img, u2, 0, null, 0);
 				cpRepo.save(post);
 				img.setCarpost(post);
 				cirepo.save(img);
@@ -313,14 +293,6 @@ public class MainApplication {
 				cirepo.save(img);
 				CarPosting post = new CarPosting(48888, "Qashqai 1.2A DIG-T Premium", "Nissan", 1197, date11, 113984,
 						"SUV", img, u2, 2, gp1, 1);
-			// Car 10
-			try {
-				Path localPath = Paths.get("src/main/resources/static/images/Mitsubishi Lancer.jpg");
-				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
-				CarImage img = new CarImage(imgByte, "Mitsubishi Lancer", "jpg");
-				cirepo.save(img);
-				CarPosting post = new CarPosting(42000, "Mitsubishi Lancer", "Mitsubishi", 1498, date11, 100221,
-						"Sedan", img, u2, 0, null, 0);
 				cpRepo.save(post);
 				img.setCarpost(post);
 				cirepo.save(img);
@@ -336,15 +308,6 @@ public class MainApplication {
 				cirepo.save(img);
 				CarPosting post = new CarPosting(82999, "A3 Sportback 1.0A TFSI S-tronic", "Audi", 999, date12, 46000,
 						"Hatchback", img, u2, 4, gp1, 1);
-			
-			// Car 11
-			try {
-				Path localPath = Paths.get("src/main/resources/static/images/Honda City.jpg");
-				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
-				CarImage img = new CarImage(imgByte, "Honda City", "jpg");
-				cirepo.save(img);
-				CarPosting post = new CarPosting(39800, "Honda City", "Honda", 1498, date12, 70000,
-						"Sedan", img, u2, 0, null, 0);
 				cpRepo.save(post);
 				img.setCarpost(post);
 				cirepo.save(img);
@@ -360,14 +323,6 @@ public class MainApplication {
 				cirepo.save(img);
 				CarPosting post = new CarPosting(70500, "HR-V 1.5A LX", "Honda", 1496, date13, 42500, "SUV", img, u3, 7,
 						gp1, 1);
-			// Car 12
-			try {
-				Path localPath = Paths.get("src/main/resources/static/images/Nissan Latio.jpg");
-				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
-				CarImage img = new CarImage(imgByte, "Nissan Latio", "jpg");
-				cirepo.save(img);
-				CarPosting post = new CarPosting(41800, "Nissan Latio", "Nissan", 1498, date13, 30000,
-						"Sedan", img, u2, 0, null, 0);
 				cpRepo.save(post);
 				img.setCarpost(post);
 				cirepo.save(img);
@@ -383,14 +338,6 @@ public class MainApplication {
 				cirepo.save(img);
 				CarPosting post = new CarPosting(85388, "Outlander 2.0A", "Mitsubishi", 1998, date14, 83884, "SUV", img,
 						u3, 2, gp1, 1);
-			// Car 13
-			try {
-				Path localPath = Paths.get("src/main/resources/static/images/Nissan GTR.jpg");
-				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
-				CarImage img = new CarImage(imgByte, "Nissan GTR", "jpg");
-				cirepo.save(img);
-				CarPosting post = new CarPosting(268000, "Nissan GTR", "Nissan", 3798, date14, 59000,
-						"Sedan", img, u2, 0, null, 0);
 				cpRepo.save(post);
 				img.setCarpost(post);
 				cirepo.save(img);
@@ -406,14 +353,6 @@ public class MainApplication {
 				cirepo.save(img);
 				CarPosting post = new CarPosting(85388, "Outlander 2.4A Sunroof", "Mitsubishi", 2360, date15, 103705,
 						"SUV", img, u3, 6, gp2, 1);
-			// Car 14
-			try {
-				Path localPath = Paths.get("src/main/resources/static/images/Nissan Slyphy.jpg");
-				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
-				CarImage img = new CarImage(imgByte, "Nissan Slyphy", "jpg");
-				cirepo.save(img);
-				CarPosting post = new CarPosting(39800, "Nissan Slyphy", "Nissan", 1598, date15, 70000,
-						"Sedan", img, u2, 0, null, 0);
 				cpRepo.save(post);
 				img.setCarpost(post);
 				cirepo.save(img);
@@ -429,14 +368,6 @@ public class MainApplication {
 				cirepo.save(img);
 				CarPosting post = new CarPosting(85388, "Q7 2.0A TFSI Quattro Tip", "Audi", 1984, date16, 47000, "SUV",
 						img, u4, 3, gp3, 1);
-			// Car 15
-			try {
-				Path localPath = Paths.get("src/main/resources/static/images/Toyota Wish.jpg");
-				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
-				CarImage img = new CarImage(imgByte, "Toyota Wish", "jpg");
-				cirepo.save(img);
-				CarPosting post = new CarPosting(16800, "Toyota Wish", "Toyota", 1798, date16, 100000,
-						"Sedan", img, u2, 0, null, 0);
 				cpRepo.save(post);
 				img.setCarpost(post);
 				cirepo.save(img);
@@ -474,9 +405,125 @@ public class MainApplication {
 				System.out.println(e);
 			}
 
+			// Car 19
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/honda accord.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "honda accord", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(76800, "Accord 2.0A VTi-S", "Honda", 1997, date19, 69000, "Luxury",
+						img, u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 
-			
+			// Car 20
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Mitsubishi Attrage.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Mitsubishi Attrage", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(57800, "Attrage 1.2A", "Mitsubishi", 1198, date20, 54221, "Sedan", img,
+						u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 
+			// Car 21
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Mitsubishi Lancer.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Mitsubishi Lancer", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(42000, "Lancer EX 1.5A GLS", "Mitsubishi", 1498, date21, 100221,
+						"Sedan", img, u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			// Car 22
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Honda City.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Honda City", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(39800, "City 1.5A SV (OPC)", "Honda", 1498, date22, 70000, "Sedan",
+						img, u2, 0, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			// Car 23
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Nissan Latio.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Nissan Latio", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(41800, "Nissan Latio 1.5A", "Nissan", 1498, date23, 30000, "Sedan",
+						img, u2, 3, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			// Car 24
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Nissan GTR.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Nissan GTR", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(268000, "GTR 3.8A Premium", "Nissan", 3799, date24, 59000, "Sports",
+						img, u2, 10, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			// Car 25
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Nissan Slyphy.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Nissan Slyphy", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(39800, "Slyphy 1.6A Premium", "Nissan", 1598, date25, 70000, "Sedan",
+						img, u2, 2, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			// Car 26
+			try {
+				Path localPath = Paths.get("src/main/resources/static/images/Toyota Wish.jpg");
+				byte[] imgByte = FileUtils.readFileToByteArray(new File(localPath.toAbsolutePath().toString()));
+				CarImage img = new CarImage(imgByte, "Toyota Wish", "jpg");
+				cirepo.save(img);
+				CarPosting post = new CarPosting(16800, "Wish 1.8A X", "Toyota", 1794, date26, 150000, "MPV", img, u2,
+						1, null, 0);
+				cpRepo.save(post);
+				img.setCarpost(post);
+				cirepo.save(img);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 
 			// cpRepo.save(post1);
 			// cpRepo.save(post2);
@@ -488,7 +535,7 @@ public class MainApplication {
 			// cpRepo.save(post8);
 			// img2.setCarpost(post1);
 			// cirepo.save(img2);
-			
+
 			Notifications ntf1 = new Notifications("welcome", "Welcome to the web!", u1);
 			Notifications ntf2 = new Notifications("delete",
 					"Your favorite product information has been deleted, please click here for details", u1);
