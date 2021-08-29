@@ -54,14 +54,14 @@ public class MainApplication {
 		return args -> {
 
 			SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
-			String Pass = sCryptPasswordEncoder.encode("tin");
-			String Pass1 = sCryptPasswordEncoder.encode("cherwah");
-			String Pass2 = sCryptPasswordEncoder.encode("mike");
-			String Pass3 = sCryptPasswordEncoder.encode("steve");
-			User u1 = new User("tin", Pass, UserType.USER);
-			User u2 = new User("cherwah", Pass1, UserType.USER);
-			User u3 = new User("mike", Pass2, UserType.USER);
-			User u4 = new User("steve", Pass3, UserType.USER);
+			String Pass = sCryptPasswordEncoder.encode("user");
+			String Pass1 = sCryptPasswordEncoder.encode("user");
+			String Pass2 = sCryptPasswordEncoder.encode("user");
+			String Pass3 = sCryptPasswordEncoder.encode("user");
+			User u1 = new User("user1", Pass, UserType.USER, 99999999);
+			User u2 = new User("user2", Pass1, UserType.USER, 88888888);
+			User u3 = new User("user3", Pass2, UserType.USER, 77777777);
+			User u4 = new User("user4", Pass3, UserType.USER, 66666666);
 			urepo.save(u1);
 			urepo.save(u2);
 			urepo.save(u3);
