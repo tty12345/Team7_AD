@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImplementation implements UserService{
+public class UserServiceImplementation implements UserService {
 
     @Autowired
     UserRepository urepo;
@@ -30,16 +30,19 @@ public class UserServiceImplementation implements UserService{
     public User finduserById(int id) {
         return urepo.finduserById(id);
     }
+
     @Override
-    public List<CarPosting> findFavouritesByUserId(int id){
+    public List<CarPosting> findFavouritesByUserId(int id) {
         return urepo.findFavouritesByUserId(id);
     }
+
     @Override
-    public List<CarPosting> findAllFavourites(){
+    public List<CarPosting> findAllFavourites() {
         return urepo.findAllFavourites();
     }
+
     @Override
-    public List<Notifications> findNotificationsByUserId(int id){
+    public List<Notifications> findNotificationsByUserId(int id) {
         return urepo.findNotificationsByUserId(id);
     }
 
@@ -50,8 +53,7 @@ public class UserServiceImplementation implements UserService{
 
     // @Override
     // public List<CarPosting> findAllFavourites() {
-    //     // TODO Auto-generated method stub
-    //     return null;
+    // return null;
     // }
 
     @Override
@@ -59,5 +61,4 @@ public class UserServiceImplementation implements UserService{
         return urepo.findUserByUsernameAndEmail(username, email);
     }
 
-    
 }
