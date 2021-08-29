@@ -49,9 +49,6 @@ public class CarImage {
         this.type = type;
     }
 
-
-
-
     public int getImageId() {
         return imageId;
     }

@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.lang.model.element.VariableElement;
 import javax.transaction.Transactional;
 
 import com.example.demo.domain.*;
@@ -15,7 +14,6 @@ import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,60 +39,16 @@ public class postController {
 	@Autowired
 	NotificationService nservice;
 	@Autowired
-	private PreferenceService prfservice;
-	@Autowired
 	private OfferRepository orepo;
 	@Autowired
 	CarImageRepository cirepo;
 	@Autowired
 	CarPostRepository cprepo;
 
-	@Autowired
-	public void setPrefService(PreferenceService prfservice) {
-		this.prfservice = prfservice;
-	}
-
 	@GetMapping("/getOne/{id}")
 	public CarPosting getCar(@PathVariable("id") Integer id) {
 		return cpservice.findCarPostById(id);
 	}
-
-	// @GetMapping("/addPost")
-	// public String showForm(Model model, HttpSession session) {
-	// if (session.getAttribute("seller") == null)
-	// return "forward:/login";
-	// else if (session.getAttribute("buyer") != null)
-	// return "index";
-
-	// CarPosting carpost = new CarPosting();
-	// model.addAttribute("carpost", carpost);
-	// return "car_post_form";
-	// }
-
-	// Edit car post's detail
-	// @GetMapping("/editPost/{id}")
-	// public String editCarPost(Model model, @PathVariable("id") Integer id) {
-	// CarPosting carpost = cpservice.findCarPostById(id);
-	// model.addAttribute("carpost", carpost);
-	// return "car_post_form";
-	// }
-
-	// @GetMapping("/deletePost/{id}")
-	// public String deleteCarPost(Model model, @PathVariable("id") Integer id) {
-	// CarPosting carpost = cpservice.findCarPostById(id);
-	// List<User> users = carpost.getUsers();
-
-	// for (User user : users) {
-	// Notifications notification = new Notifications();
-	// notification.setType("delete");
-	// notification.setUser(user);
-	// user.notifications.add(notification);
-	// }
-
-	// carpost.setOwner(null);
-	// cpservice.delete(carpost);
-	// return "forward:/post/listPost";
-	// }
 
 	@DeleteMapping("/deletePost/{id}")
 	@Transactional
@@ -468,17 +422,7 @@ public class postController {
 	@GetMapping("/hotcars") 
 	public List<CarPosting> hotcars() { 
 		List<CarPosting> mostViewed = filtertop3Cars(cpservice.findMostViewedCars()); 
-		List<CarPosting> mostliked = filtertop3Cars(cpservice.findMostLikedCars()); 
-		// for (int i = 0; i < mostViewed.size(); i++) { 
-		// 	for (int j = 0; j < mostViewed.size(); j++){ 
-		// 		if (mostViewed.get(i).equals(mostliked.get(j))){ 
-		// 			mostliked.remove(j); 
-		// 			} 
-		// 	} 
-		// } 
-		// for (CarPosting car: mostliked){ 
-		// 	mostViewed.add(car); 
-		// } 
+		List<CarPosting> mostliked = filtertop3Cars(cpservice.findMostLikedCars());  
 
 		List<CarPosting> NewList = new ArrayList<>();
 		for (CarPosting likecar: mostliked){
@@ -497,12 +441,6 @@ public class postController {
 				NewList.add(viewcar);
 		}
 
-		// for (CarPosting likecar: mostliked){
-		// 		if (!mostViewed.contains(likecar))
-		// 			mostViewed.add(likecar);
-		// 	}
-
-		
 		return NewList; 
 	} 
 	
@@ -521,20 +459,6 @@ public class postController {
 		} 
 		return result; 
 	} 
-	
-	// private List<CarPosting> concatenate(List<CarPosting> list1,List<CarPosting> list2){ 
-	// 	for (int i = 0; i < list1.size(); i++) { 
-	// 		for (int j = 0; j < list1.size(); j++){ 
-	// 			if (list1.get(i).equals(list2.get(j))){ 
-	// 				list2.remove(j); 
-	// 				} 
-	// 		} 
-	// 	} 
-	// 	for (CarPosting car: list2){ 
-	// 		list1.add(car); 
-	// 	} 
-	// 	return list1; 
-	// }
 	
 
 	@PostMapping("/saveOffer/{id}")
@@ -582,7 +506,7 @@ public class postController {
 			return new ResponseEntity<>(null, HttpStatus.OK);
 		} else {
 			
-			//need to create custome list because we are using @Jsonignore to solve infinite recursssion problem
+			//need to create custom list because we are using @Jsonignore to solve infinite recursssion problem
 			// the offers in this list should not have any user or carposting object as part of its attribute
 			// should solve the problem of the data not being deserialized properly.
 			//we need to display username, offeramount and email. 
@@ -597,8 +521,6 @@ public class postController {
 		}
 
 	}
-
-	
 
 	@PostMapping("/saveImage")
 	public ResponseEntity<Integer> saveImage(@RequestParam("photoParam") MultipartFile file) {
@@ -625,5 +547,4 @@ public class postController {
 		return user.getPostings();
 	}
 
-	// @GetMapping("/watchList/{id}")
 }

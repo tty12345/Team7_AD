@@ -46,7 +46,7 @@ public class MainApplication {
 
 	public static void main(String[] args) throws ParseException {
 		SpringApplication.run(MainApplication.class, args);
-		// comment1
+	
 	}
 
 	@Bean
@@ -98,17 +98,6 @@ public class MainApplication {
 			String sDate16 = "15/11/2017";
 			String sDate17 = "16/08/2017";
 			String sDate18 = "30/12/2016";
-			String sDate19 = "22/05/2014";
-			String sDate20 = "10/02/2013";
-			String sDate21 = "30/08/2012";
-			String sDate22 = "02/04/2015";
-			String sDate23 = "22/03/2011";
-			String sDate24 = "22/09/2018";
-			String sDate25 = "20/04/2015";
-			String sDate26 = "20/02/2008";
-
-
-
 
 			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
 			Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate2);
@@ -515,36 +504,11 @@ public class MainApplication {
 				System.out.println(e);
 			}
 
-
-			// cpRepo.save(post1);
-			// cpRepo.save(post2);
-			// cpRepo.save(post3);
-			// cpRepo.save(post4);
-			// cpRepo.save(post5);
-			// cpRepo.save(post6);
-			// cpRepo.save(post7);
-			// cpRepo.save(post8);
-			// img2.setCarpost(post1);
-			// cirepo.save(img2);
-
 			Notifications ntf1 = new Notifications("welcome", "Welcome to the web!", u1);
 			Notifications ntf2 = new Notifications("delete",
 					"Your favorite product information has been deleted, please click here for details", u1);
 			nrepo.save(ntf1);
 			nrepo.save(ntf2);
-
-			List<CarPosting> cpl1 = new ArrayList<CarPosting>();
-			// cpl1.add(post1);
-			// cpl1.add(post2);
-			// cpl1.add(post3);
-			// cpl1.add(post4);
-			// cpl1.add(post5);
-			// cpl1.add(post6);
-			// cpl1.add(post7);
-			// cpl1.add(post8);
-
-			u1.setPostings(cpl1);
-			urepo.save(u1);
 
 			List<Notifications> currentNTF = new ArrayList<>();
 			currentNTF.add(ntf1);
@@ -552,10 +516,6 @@ public class MainApplication {
 			u1.setNotifications(currentNTF);
 			urepo.save(u1);
 
-			nrepo.save(new Notifications("Hellow"));
-			nrepo.save(new Notifications("We"));
-			nrepo.save(new Notifications("Are"));
-			nrepo.save(new Notifications("Noobs!"));
 		};
 	}
 

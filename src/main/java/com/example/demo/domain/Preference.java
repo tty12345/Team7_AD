@@ -1,8 +1,5 @@
 package com.example.demo.domain;
 
-
-
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -204,16 +201,5 @@ public class Preference {
 	public int getUserId(){
 		return userId;
 	}
-
-	
-	
-
-
-	
-	
-
-	
-	 
-
 }
 

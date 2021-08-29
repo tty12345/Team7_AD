@@ -33,11 +33,6 @@ public class User {
     @OneToMany(mappedBy = "owner")
     private List<CarPosting> postings;
 
-    // @ManyToMany(mappedBy = "history")
-    // private List<CarPosting> history;
-
-    // post liked
-
     @ManyToMany(mappedBy = "users")
     private List<CarPosting> favourites;
 
@@ -175,11 +170,6 @@ public class User {
         return this;
     }
 
-    // public User history(List<CarPosting> history) {
-    //     setHistory(history);
-    //     return this;
-    // }
-
     public User favourites(List<CarPosting> favourites) {
         setFavourites(favourites);
         return this;
@@ -218,15 +208,6 @@ public class User {
         this.postings = postings;
     }
 
-    // @JsonIgnore
-    // public List<CarPosting> getHistory() {
-    //     return history;
-    // }
-
-    // public void setHistory(List<CarPosting> history) {
-    //     this.history = history;
-    // }
-
     @JsonIgnore
     public List<CarPosting> getFavourites() {
         return favourites;
@@ -236,7 +217,6 @@ public class User {
         this.favourites = favourites;
     }
 
-    // @JsonIgnore
     public List<Notifications> getNotifications() {
         return notifications;
     }
@@ -245,7 +225,6 @@ public class User {
         this.notifications = notifications;
     }
 
-    // @JsonIgnore
     public List<Offer> getOffers() {
         return offers;
     }

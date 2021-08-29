@@ -1,10 +1,8 @@
 package com.example.demo.service;
 
 import java.util.List;
-
 import com.example.demo.domain.Notifications;
 import com.example.demo.repo.NotificationRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +36,6 @@ public class NotificationServiceImplementation implements NotificationService{
 
     @Override
     public Notifications findNotificationById(Integer id) {
-        // TODO Auto-generated method stub
         return nrepo.findNotificationById(id);
     }
     

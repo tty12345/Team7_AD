@@ -1,12 +1,10 @@
 package com.example.demo.service;
 
 import java.util.List;
-
 import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.Notifications;
 import com.example.demo.domain.User;
 import com.example.demo.repo.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,13 +45,6 @@ public class UserServiceImplementation implements UserService{
     public List<User> findAll() {
         return urepo.findAll();
     }
-
-    // @Override
-    // public List<CarPosting> findAllFavourites() {
-    //     // TODO Auto-generated method stub
-    //     return null;
-    // }
-
     @Override
     public User findUserByUsernameAndEmail(String username, String email) {
         return urepo.findUserByUsernameAndEmail(username, email);

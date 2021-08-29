@@ -1,10 +1,8 @@
 package com.example.demo.service;
 
 import java.util.List;
-
 import com.example.demo.domain.CarPosting;
 import com.example.demo.repo.CarPostRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

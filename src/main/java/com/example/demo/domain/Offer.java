@@ -8,12 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 @Entity
-// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "offerId")
 public class Offer {
 
     @Id
@@ -27,17 +22,14 @@ public class Offer {
    
     //owner object
     @ManyToOne
-    // @JsonBackReference
     private User user;
 
     @ManyToOne
-    // @JsonBackReference
     private CarPosting post;
 
     public Offer() {
         super();
     }
-
 
     public Offer(int offer, User user, CarPosting post) {
         super();

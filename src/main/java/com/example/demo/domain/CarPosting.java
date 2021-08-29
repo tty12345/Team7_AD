@@ -53,14 +53,10 @@ public class CarPosting {
     private List<User> users = new ArrayList<>();
 
     @ManyToOne
-    // @JsonBackReference
     private User owner;
 
     @OneToMany(mappedBy = "post", cascade =CascadeType.ALL)
     private List<Offer> offers = new ArrayList<>();
-
-    // @ManyToMany
-    // private List<User> history = new ArrayList<>();
 
     public CarPosting() {
         super();
@@ -81,7 +77,6 @@ public class CarPosting {
         this.views = views;
         this.users = users;
         this.owner = owner;
-        // this.history = history;
     }
 
     public CarPosting(int price, String brand, int engineCapacity, String category, User owner) {
@@ -247,14 +242,6 @@ public class CarPosting {
     public void setOwner(User owner) {
         this.owner = owner;
     }
-
-    // public List<User> getHistory() {
-    //     return history;
-    // }
-
-    // public void setHistory(List<User> history) {
-    //     this.history = history;
-    // }
 
     public List<Offer> getOffers() {
         return offers;
