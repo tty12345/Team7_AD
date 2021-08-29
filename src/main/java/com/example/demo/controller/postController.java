@@ -284,9 +284,9 @@ public class postController {
 				CarImage img1 = cirepo.findByImageId(imgId);
 				carpost.setCarPostImage(img1);
 
-				// error here why?
+
 				CarPosting newcarPosting2 = cprepo.save(newCarPosting);
-				// error here why?
+
 
 				img1.setCarpost(newCarPosting);
 				cirepo.save(img1);
@@ -556,7 +556,18 @@ public class postController {
 			User user = uservice.finduserById(offer.getUserId());
 			Offer newOffer = new Offer(offer.getOffer(), user, currentPost);
 			orepo.save(newOffer);
+
+			//let owner know got new offer for his car.
+			User owner = currentPost.getOwner();
+			List<Notifications> ownerNotification = owner.getNotifications();
+			Notifications ntf = new Notifications("New Offer", owner,"you have a new offer for your" + currentPost.getDescription());
+			nservice.save(ntf);
+			ownerNotification.add(ntf);
+			owner.setNotifications(ownerNotification);
+			uservice.save(owner);
+
 			return new ResponseEntity<>(newOffer, HttpStatus.OK);
+
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 		}
