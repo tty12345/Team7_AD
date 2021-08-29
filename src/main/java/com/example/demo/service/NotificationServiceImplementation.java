@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NotificationServiceImplementation implements NotificationService{
+public class NotificationServiceImplementation implements NotificationService {
 
     @Autowired
     NotificationRepository nrepo;
@@ -27,19 +27,18 @@ public class NotificationServiceImplementation implements NotificationService{
     @Override
     public void save(Notifications notification1) {
         nrepo.save(notification1);
-        
+
     }
 
     @Override
     public void delete(Notifications notification) {
         nrepo.delete(notification);
-        
+
     }
 
     @Override
     public Notifications findNotificationById(Integer id) {
-        // TODO Auto-generated method stub
         return nrepo.findNotificationById(id);
     }
-    
+
 }

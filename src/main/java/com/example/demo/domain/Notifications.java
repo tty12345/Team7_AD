@@ -6,13 +6,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 @Entity
 // @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-//       property = "notificationId")
+// property = "notificationId")
 public class Notifications {
 
     @Id
@@ -49,12 +45,9 @@ public class Notifications {
         this.Msg = msg;
     }
 
-    
-
     public Notifications(String msg) {
         this.Msg = msg;
     }
-
 
     public Notifications(String type, User user) {
         this.type = type;
@@ -66,7 +59,6 @@ public class Notifications {
         this.Msg = msg;
         this.user = user;
     }
-
 
     public int getNotificationId() {
         return notificationId;
@@ -84,7 +76,6 @@ public class Notifications {
         this.type = type;
     }
 
-
     // @JsonIgnore
     public User getUser() {
         return user;
@@ -93,6 +84,5 @@ public class Notifications {
     public void setUser(User user) {
         this.user = user;
     }
-
 
 }

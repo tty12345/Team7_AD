@@ -8,24 +8,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 @Entity
-// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "offerId")
+// @JsonIdentityInfo(generator =
+// ObjectIdGenerators.PropertyGenerator.class,property = "offerId")
 public class Offer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int offerId;
     private int offer;
-    //ownerId
+    // ownerId
     private int userId;
     private String offererEmail;
     private String offererName;
-   
-    //owner object
+
+    // owner object
     @ManyToOne
     // @JsonBackReference
     private User user;
@@ -38,7 +35,6 @@ public class Offer {
         super();
     }
 
-
     public Offer(int offer, User user, CarPosting post) {
         super();
         this.offer = offer;
@@ -50,14 +46,13 @@ public class Offer {
         super();
         this.offer = offer;
     }
-    
-    public Offer(int offer, String offererName, String offererEmail){
+
+    public Offer(int offer, String offererName, String offererEmail) {
         super();
         this.offer = offer;
         this.offererName = offererName;
-        this.offererEmail =offererEmail;
+        this.offererEmail = offererEmail;
     }
-
 
     public int getOfferId() {
         return offerId;
@@ -83,7 +78,6 @@ public class Offer {
         this.user = user;
     }
 
-
     public CarPosting getPost() {
         return post;
     }
@@ -100,7 +94,8 @@ public class Offer {
             return false;
         }
         Offer offerX = (Offer) o;
-        return offerId == offerX.offerId && offer == offerX.offer && Objects.equals(user, offerX.user) && Objects.equals(post, offerX.post);
+        return offerId == offerX.offerId && offer == offerX.offer && Objects.equals(user, offerX.user)
+                && Objects.equals(post, offerX.post);
     }
 
     @Override
@@ -108,26 +103,21 @@ public class Offer {
         return Objects.hash(offerId, offer, user, post);
     }
 
-
     @Override
     public String toString() {
-        return "{" +
-            " offerId='" + getOfferId() + "'" +
-            ", offer='" + getOffer() + "'" +
-            ", user='" + getUser() + "'" +
-            ", post='" + getPost() + "'" +
-            "}";
+        return "{" + " offerId='" + getOfferId() + "'" + ", offer='" + getOffer() + "'" + ", user='" + getUser() + "'"
+                + ", post='" + getPost() + "'" + "}";
     }
 
-    public int getUserId(){
+    public int getUserId() {
         return userId;
     }
 
-    public String getOffererEmail(){
+    public String getOffererEmail() {
         return offererEmail;
     }
 
-    public String getOffererName(){
+    public String getOffererName() {
         return offererName;
     }
 

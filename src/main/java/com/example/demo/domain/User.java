@@ -11,10 +11,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -28,7 +26,6 @@ public class User {
     private String password;
     private UserType role;
     private int mobileNumber;
-
 
     @OneToMany(mappedBy = "owner")
     private List<CarPosting> postings;
@@ -46,7 +43,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     public List<Notifications> notifications;
-
 
     @OneToMany(mappedBy = "user")
     private List<Offer> offers;
@@ -176,8 +172,8 @@ public class User {
     }
 
     // public User history(List<CarPosting> history) {
-    //     setHistory(history);
-    //     return this;
+    // setHistory(history);
+    // return this;
     // }
 
     public User favourites(List<CarPosting> favourites) {
@@ -220,11 +216,11 @@ public class User {
 
     // @JsonIgnore
     // public List<CarPosting> getHistory() {
-    //     return history;
+    // return history;
     // }
 
     // public void setHistory(List<CarPosting> history) {
-    //     this.history = history;
+    // this.history = history;
     // }
 
     @JsonIgnore
@@ -280,15 +276,14 @@ public class User {
         User user = (User) o;
         return userId == user.userId && Objects.equals(username, user.username)
                 && Objects.equals(password, user.password) && Objects.equals(role, user.role)
-                && Objects.equals(postings, user.postings)
-                && Objects.equals(favourites, user.favourites) && Objects.equals(preference, user.preference)
-                && Objects.equals(notifications, user.notifications) && Objects.equals(offers, user.offers);
+                && Objects.equals(postings, user.postings) && Objects.equals(favourites, user.favourites)
+                && Objects.equals(preference, user.preference) && Objects.equals(notifications, user.notifications)
+                && Objects.equals(offers, user.offers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, password, role, postings, favourites, preference, notifications,
-                offers);
+        return Objects.hash(userId, username, password, role, postings, favourites, preference, notifications, offers);
     }
 
 }

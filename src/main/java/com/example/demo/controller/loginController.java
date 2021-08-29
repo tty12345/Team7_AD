@@ -1,15 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.Date;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import com.example.demo.domain.*;
 import com.example.demo.repo.*;
@@ -93,35 +83,35 @@ public class loginController {
 	@PostMapping("/signup")
 	public ResponseEntity<HttpStatus> createUser(@RequestBody User user) {
 		// try {
-		// 	String Pass = sCryptPasswordEncoder.encode(user.getPassword());
-		// 	User user1 = new User(user.getUsername(), Pass, UserType.USER, user.getEmail());
-		// 	uservice.save(user1);
+		// String Pass = sCryptPasswordEncoder.encode(user.getPassword());
+		// User user1 = new User(user.getUsername(), Pass, UserType.USER,
+		// user.getEmail());
+		// uservice.save(user1);
 
-		// 	// sending email for user creation confirmation
-		// 	User newUser = user1;
+		// // sending email for user creation confirmation
+		// User newUser = user1;
 
-		// 	eservice.sendEmail(newUser.getUserId());
-		// 	System.out.println("hello!");
+		// eservice.sendEmail(newUser.getUserId());
+		// System.out.println("hello!");
 
-		// 	return new ResponseEntity<>(HttpStatus.CREATED);
+		// return new ResponseEntity<>(HttpStatus.CREATED);
 		// } catch (Exception e) {
-		// 	return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		// return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		// }
 		signup(user);
 		return new ResponseEntity<>(HttpStatus.CREATED);
-	 }
-
+	}
 
 	@PostMapping("/googlelogin")
-	public ResponseEntity<HttpStatus> createGoogleuser(@RequestBody User user){
+	public ResponseEntity<HttpStatus> createGoogleuser(@RequestBody User user) {
 		User googleUser = uservice.findUserByUsernameAndEmail(user.getUsername(), user.getEmail());
-		if ( googleUser == null) {
+		if (googleUser == null) {
 			signup(user);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	private void signup(User signupUser){
+	private void signup(User signupUser) {
 		String Pass = sCryptPasswordEncoder.encode(signupUser.getPassword());
 		User user1 = new User(signupUser.getUsername(), Pass, UserType.USER, signupUser.getEmail());
 		uservice.save(user1);

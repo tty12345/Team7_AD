@@ -1,9 +1,6 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 import com.example.demo.domain.CarPosting;
 import com.example.demo.domain.User;
@@ -13,87 +10,85 @@ import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/like")
 public class likeController {
     @Autowired
-	UserService uservice;
+    UserService uservice;
     @Autowired
     CarPostService cpservice;
 
-	// @GetMapping("/listFavourites/{id}")
-	// public String listFavouritesByUser(Model model, @PathVariable("id") Integer id,HttpSession session) {
+    // @GetMapping("/listFavourites/{id}")
+    // public String listFavouritesByUser(Model model, @PathVariable("id") Integer
+    // id,HttpSession session) {
 
-	// 	List<CarPosting> favouriteList = uservice.findFavouritesByUserId(id);
-    //     session.setAttribute("returnFromLike", "/like/listFavourites/"+id);
+    // List<CarPosting> favouriteList = uservice.findFavouritesByUserId(id);
+    // session.setAttribute("returnFromLike", "/like/listFavourites/"+id);
 
-	// 	model.addAttribute("carpost", favouriteList);
-	// 	return "list_favourites.html";
-	// }
+    // model.addAttribute("carpost", favouriteList);
+    // return "list_favourites.html";
+    // }
     // @GetMapping("/listFavourites")
-	// public String listFavourites(Model model) {
+    // public String listFavourites(Model model) {
 
-	// 	List<CarPosting> favouriteList = uservice.findAllFavourites();
+    // List<CarPosting> favouriteList = uservice.findAllFavourites();
 
-	// 	model.addAttribute("carpost", favouriteList);
-	// 	return "list_favourites.html";
-	// }
+    // model.addAttribute("carpost", favouriteList);
+    // return "list_favourites.html";
+    // }
     // @GetMapping("/addLike/{id}")
-    // public String addLike (Model model,@PathVariable("id") int id,HttpSession session){
-    //     //find the current car post from the database
-    //     CarPosting carposting =cpservice.findCarPostById(id);
-    //     int userId;
-    //     if(session.getAttribute("user")!=null){
-    //         userId=(Integer)session.getAttribute("userId");
-    //         User u= uservice.finduserById(userId);
-    //         if(u.getFavourites().size()==0){
-    //             List<CarPosting> favourites = new ArrayList<>();
-    //             favourites.add(carposting);
-                
-    //             u.setFavourites(favourites);
-    //             uservice.save(u);
-    //             List<User> list1 = carposting.getUsers();
-    //             list1.add(u);
-    //             carposting.setUsers(list1);
-    //             cpservice.save(carposting);
-                
-                
-    //         }
-    //        else{
-    //            u.getFavourites().add(carposting);
-    //            uservice.save(u);
-    //        }
-    //     }
-    //     else if(session.getAttribute("user")==null){
-    //         session.setAttribute("return", "/post/offer/"+id);
-    //         return "forward:/login";
-    //     }
-       
-    //     model.addAttribute("carpost", carposting);
-    //     return "detailsPageWithLike.html";
+    // public String addLike (Model model,@PathVariable("id") int id,HttpSession
+    // session){
+    // //find the current car post from the database
+    // CarPosting carposting =cpservice.findCarPostById(id);
+    // int userId;
+    // if(session.getAttribute("user")!=null){
+    // userId=(Integer)session.getAttribute("userId");
+    // User u= uservice.finduserById(userId);
+    // if(u.getFavourites().size()==0){
+    // List<CarPosting> favourites = new ArrayList<>();
+    // favourites.add(carposting);
+
+    // u.setFavourites(favourites);
+    // uservice.save(u);
+    // List<User> list1 = carposting.getUsers();
+    // list1.add(u);
+    // carposting.setUsers(list1);
+    // cpservice.save(carposting);
+
+    // }
+    // else{
+    // u.getFavourites().add(carposting);
+    // uservice.save(u);
+    // }
+    // }
+    // else if(session.getAttribute("user")==null){
+    // session.setAttribute("return", "/post/offer/"+id);
+    // return "forward:/login";
+    // }
+
+    // model.addAttribute("carpost", carposting);
+    // return "detailsPageWithLike.html";
     // }
 
     @PostMapping("/addLike/{id}")
-    public ResponseEntity<HttpStatus> addLike (@PathVariable("id") int id,@RequestBody User user){
-        //find the current car post from the database
-        CarPosting carposting =cpservice.findCarPostById(id);
+    public ResponseEntity<HttpStatus> addLike(@PathVariable("id") int id, @RequestBody User user) {
+        // find the current car post from the database
+        CarPosting carposting = cpservice.findCarPostById(id);
 
         int likeCount = carposting.getLikeCount() + 1;
         carposting.setLikeCount(likeCount);
 
-        int userId= user.getUserId();
-        User u= uservice.finduserById(userId);
+        int userId = user.getUserId();
+        User u = uservice.finduserById(userId);
 
         u.getFavourites().add(carposting);
         uservice.save(u);
@@ -101,19 +96,19 @@ public class likeController {
         list1.add(u);
         carposting.setUsers(list1);
         cpservice.save(carposting);
-              
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/deleteLike/{id}")
-    public ResponseEntity<HttpStatus> deleteLike(@PathVariable("id") int id,@RequestBody User user){
+    public ResponseEntity<HttpStatus> deleteLike(@PathVariable("id") int id, @RequestBody User user) {
 
-        CarPosting carposting=cpservice.findCarPostById(id);
+        CarPosting carposting = cpservice.findCarPostById(id);
 
         carposting.setLikeCount(carposting.getLikeCount() - 1);
 
         int userId = user.getUserId();
-        User u= uservice.finduserById(userId);
+        User u = uservice.finduserById(userId);
         List<CarPosting> newLikesList = u.getFavourites();
         newLikesList.remove(carposting);
         u.setFavourites(newLikesList);
@@ -127,30 +122,29 @@ public class likeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    
     @PostMapping("/checkLike/{id}")
-    public ResponseEntity<Integer> checkLike(@PathVariable("id") int id,@RequestBody User user){
+    public ResponseEntity<Integer> checkLike(@PathVariable("id") int id, @RequestBody User user) {
 
-        //increment view count of current carposting 
-        CarPosting currentCar = cpservice.findCarPostById(id); 
-        currentCar.setViews(currentCar.getViews() + 1); 
+        // increment view count of current carposting
+        CarPosting currentCar = cpservice.findCarPostById(id);
+        currentCar.setViews(currentCar.getViews() + 1);
         cpservice.save(currentCar);
 
         int userId = user.getUserId();
-        User u= uservice.finduserById(userId);
+        User u = uservice.finduserById(userId);
         List<CarPosting> currentLikes = u.getFavourites();
 
-        if(currentLikes.size()>0)
-            for(CarPosting carpost:currentLikes)
-                {
-                    if(carpost.getPostId() == id){
-                        return new ResponseEntity<>(1,HttpStatus.OK);}
+        if (currentLikes.size() > 0)
+            for (CarPosting carpost : currentLikes) {
+                if (carpost.getPostId() == id) {
+                    return new ResponseEntity<>(1, HttpStatus.OK);
                 }
-        //if users liked nthing before
+            }
+        // if users liked nthing before
         else
-            return new ResponseEntity<>(-1,HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(-1, HttpStatus.NO_CONTENT);
 
-        return new ResponseEntity<>(-1,HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(-1, HttpStatus.NO_CONTENT);
     }
 
 }
