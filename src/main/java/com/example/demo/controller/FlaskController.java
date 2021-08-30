@@ -36,6 +36,7 @@ public class FlaskController {
     CarPostService cpservice;
 
     String url = "http://pythonflask-env.eba-zafucm2t.us-east-2.elasticbeanstalk.com/";
+                    
 
     @PostMapping(path = "/estimate", consumes = { "multipart/form-data" })
     public ResponseEntity<String> getPriceEstimate(@ModelAttribute CarPosting carpost) {
