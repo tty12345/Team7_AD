@@ -17,23 +17,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(origins = "http://team7adreactclientcarexchange-env.eba-mpprj4gb.us-east-1.elasticbeanstalk.com/")
+@CrossOrigin(origins = "http://team7nodejscarexchange-env.eba-5ce3pmnb.us-east-1.elasticbeanstalk.com/")
 @RequestMapping("/preference")
 public class SetPreferenceController {
-	
+
 	@Autowired
 	private PreferenceService prfservice;
 	@Autowired
 	public UserService uservice;
-	
+
 	@Autowired
 	public void setPreference(PreferenceService prfservice) {
-		this.prfservice=prfservice;
+		this.prfservice = prfservice;
 	}
 
 	@PostMapping("/save")
-	public ResponseEntity<HttpStatus> savePreference(@RequestBody Preference preference ){
-		
+	public ResponseEntity<HttpStatus> savePreference(@RequestBody Preference preference) {
+
 		User currentUser = uservice.finduserById(preference.getUserId());
 
 		String hotBrand = preference.getBrand();
@@ -152,14 +152,12 @@ public class SetPreferenceController {
 				realCategory = "";
 		}
 
-		
-		if(currentUser.getPreference()==null){
-			Preference newPreference = new Preference(preference.getModel(),realBrand,preference.getLowestPrice(),
-			preference.getHighestPrice(),realCategory, preference.getEngineCapacityMin(), 
-			preference.getEngineCapacityMax(),preference.getDepreciationMax(),currentUser);
+		if (currentUser.getPreference() == null) {
+			Preference newPreference = new Preference(preference.getModel(), realBrand, preference.getLowestPrice(),
+					preference.getHighestPrice(), realCategory, preference.getEngineCapacityMin(),
+					preference.getEngineCapacityMax(), preference.getDepreciationMax(), currentUser);
 			prfservice.save(newPreference);
-		}
-		else{
+		} else {
 			Preference oldPreference = currentUser.getPreference();
 			oldPreference.setModel(preference.getModel());
 			oldPreference.setBrand(realBrand);
@@ -177,15 +175,14 @@ public class SetPreferenceController {
 	}
 
 	@GetMapping("/checkPreference/{id}")
-	public ResponseEntity<Preference> checkPreference(@PathVariable("id") Integer userId){
-		
+	public ResponseEntity<Preference> checkPreference(@PathVariable("id") Integer userId) {
+
 		User currentUser = uservice.finduserById(userId);
-		
-		if(currentUser.getPreference()==null){
-			return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
-		}
-		else{
-			return new ResponseEntity<>(currentUser.getPreference(),HttpStatus.OK);
+
+		if (currentUser.getPreference() == null) {
+			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(currentUser.getPreference(), HttpStatus.OK);
 
 		}
 	}

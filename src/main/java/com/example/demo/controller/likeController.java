@@ -17,26 +17,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
-@CrossOrigin(origins = "http://team7adreactclientcarexchange-env.eba-mpprj4gb.us-east-1.elasticbeanstalk.com/")
+@CrossOrigin(origins = "http://team7nodejscarexchange-env.eba-5ce3pmnb.us-east-1.elasticbeanstalk.com/")
 @RequestMapping("/like")
 public class likeController {
     @Autowired
-	UserService uservice;
+    UserService uservice;
     @Autowired
     CarPostService cpservice;
 
     @PostMapping("/addLike/{id}")
-    public ResponseEntity<HttpStatus> addLike (@PathVariable("id") int id,@RequestBody User user){
-        //find the current car post from the database
-        CarPosting carposting =cpservice.findCarPostById(id);
+    public ResponseEntity<HttpStatus> addLike(@PathVariable("id") int id, @RequestBody User user) {
+        // find the current car post from the database
+        CarPosting carposting = cpservice.findCarPostById(id);
 
         int likeCount = carposting.getLikeCount() + 1;
         carposting.setLikeCount(likeCount);
 
-        int userId= user.getUserId();
-        User u= uservice.finduserById(userId);
+        int userId = user.getUserId();
+        User u = uservice.finduserById(userId);
 
         u.getFavourites().add(carposting);
         uservice.save(u);
@@ -44,19 +43,19 @@ public class likeController {
         list1.add(u);
         carposting.setUsers(list1);
         cpservice.save(carposting);
-              
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/deleteLike/{id}")
-    public ResponseEntity<HttpStatus> deleteLike(@PathVariable("id") int id,@RequestBody User user){
+    public ResponseEntity<HttpStatus> deleteLike(@PathVariable("id") int id, @RequestBody User user) {
 
-        CarPosting carposting=cpservice.findCarPostById(id);
+        CarPosting carposting = cpservice.findCarPostById(id);
 
         carposting.setLikeCount(carposting.getLikeCount() - 1);
 
         int userId = user.getUserId();
-        User u= uservice.finduserById(userId);
+        User u = uservice.finduserById(userId);
         List<CarPosting> newLikesList = u.getFavourites();
         newLikesList.remove(carposting);
         u.setFavourites(newLikesList);
@@ -70,30 +69,29 @@ public class likeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    
     @PostMapping("/checkLike/{id}")
-    public ResponseEntity<Integer> checkLike(@PathVariable("id") int id,@RequestBody User user){
+    public ResponseEntity<Integer> checkLike(@PathVariable("id") int id, @RequestBody User user) {
 
-        //increment view count of current carposting 
-        CarPosting currentCar = cpservice.findCarPostById(id); 
-        currentCar.setViews(currentCar.getViews() + 1); 
+        // increment view count of current carposting
+        CarPosting currentCar = cpservice.findCarPostById(id);
+        currentCar.setViews(currentCar.getViews() + 1);
         cpservice.save(currentCar);
 
         int userId = user.getUserId();
-        User u= uservice.finduserById(userId);
+        User u = uservice.finduserById(userId);
         List<CarPosting> currentLikes = u.getFavourites();
 
-        if(currentLikes.size()>0)
-            for(CarPosting carpost:currentLikes)
-                {
-                    if(carpost.getPostId() == id){
-                        return new ResponseEntity<>(1,HttpStatus.OK);}
+        if (currentLikes.size() > 0)
+            for (CarPosting carpost : currentLikes) {
+                if (carpost.getPostId() == id) {
+                    return new ResponseEntity<>(1, HttpStatus.OK);
                 }
-        //if users liked nthing before
+            }
+        // if users liked nthing before
         else
-            return new ResponseEntity<>(-1,HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(-1, HttpStatus.NO_CONTENT);
 
-        return new ResponseEntity<>(-1,HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(-1, HttpStatus.NO_CONTENT);
     }
 
 }

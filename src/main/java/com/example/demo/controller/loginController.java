@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://team7adreactclientcarexchange-env.eba-mpprj4gb.us-east-1.elasticbeanstalk.com/")
+@CrossOrigin(origins = "http://team7nodejscarexchange-env.eba-5ce3pmnb.us-east-1.elasticbeanstalk.com/")
 @RestController
 @RequestMapping("/api")
 public class loginController {
@@ -82,18 +82,18 @@ public class loginController {
 	public ResponseEntity<HttpStatus> createUser(@RequestBody User user) {
 		signup(user);
 		return new ResponseEntity<>(HttpStatus.CREATED);
-	 }
+	}
 
 	@PostMapping("/googlelogin")
-	public ResponseEntity<HttpStatus> createGoogleuser(@RequestBody User user){
+	public ResponseEntity<HttpStatus> createGoogleuser(@RequestBody User user) {
 		User googleUser = uservice.findUserByUsernameAndEmail(user.getUsername(), user.getEmail());
-		if ( googleUser == null) {
+		if (googleUser == null) {
 			signup(user);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	private void signup(User signupUser){
+	private void signup(User signupUser) {
 		String Pass = sCryptPasswordEncoder.encode(signupUser.getPassword());
 		User user1 = new User(signupUser.getUsername(), Pass, UserType.USER, signupUser.getEmail());
 		uservice.save(user1);

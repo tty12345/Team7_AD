@@ -29,14 +29,13 @@ import org.springframework.web.client.RestTemplate;
 
 @Controller
 @RequestMapping("/data")
-@CrossOrigin(origins = "hhttp://team7adreactclientcarexchange-env.eba-mpprj4gb.us-east-1.elasticbeanstalk.com/")
+@CrossOrigin(origins = "http://team7nodejscarexchange-env.eba-5ce3pmnb.us-east-1.elasticbeanstalk.com/")
 public class FlaskController {
 
     @Autowired
     CarPostService cpservice;
 
     String url = "http://pythonflask-env.eba-zafucm2t.us-east-2.elasticbeanstalk.com/";
-                    
 
     @PostMapping(path = "/estimate", consumes = { "multipart/form-data" })
     public ResponseEntity<String> getPriceEstimate(@ModelAttribute CarPosting carpost) {

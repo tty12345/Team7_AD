@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(origins = "http://team7adreactclientcarexchange-env.eba-mpprj4gb.us-east-1.elasticbeanstalk.com/")
+@CrossOrigin(origins = "http://team7nodejscarexchange-env.eba-5ce3pmnb.us-east-1.elasticbeanstalk.com/")
 @RequestMapping("/notification")
 public class notificationController {
 
@@ -24,9 +24,9 @@ public class notificationController {
 	@Autowired
 	UserService uservice;
 
-	@GetMapping("/listNotification/{id}") 
- 	public List<Notifications> listNotifications(@PathVariable("id") Integer id) { 
-  	return nservice.findByUserId(id); 
- }
+	@GetMapping("/listNotification/{id}")
+	public List<Notifications> listNotifications(@PathVariable("id") Integer id) {
+		return nservice.findByUserId(id);
+	}
 
 }
