@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/post")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://team7adreactclientcarexchange-env.eba-mpprj4gb.us-east-1.elasticbeanstalk.com/")
 public class postController {
 
 	@Autowired

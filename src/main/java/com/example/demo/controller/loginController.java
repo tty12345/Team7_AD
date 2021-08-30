@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import javax.servlet.http.HttpSession;
 import com.example.demo.domain.*;
-import com.example.demo.repo.*;
 import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://team7adreactclientcarexchange-env.eba-mpprj4gb.us-east-1.elasticbeanstalk.com/")
 @RestController
 @RequestMapping("/api")
 public class loginController {

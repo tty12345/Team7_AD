@@ -29,7 +29,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Controller
 @RequestMapping("/data")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "hhttp://team7adreactclientcarexchange-env.eba-mpprj4gb.us-east-1.elasticbeanstalk.com/")
 public class FlaskController {
 
     @Autowired
