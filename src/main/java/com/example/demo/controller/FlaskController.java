@@ -35,7 +35,7 @@ public class FlaskController {
     @Autowired
     CarPostService cpservice;
 
-    String url = "http://localhost:5000";
+    String url = "http://pythonflask-env.eba-zafucm2t.us-east-2.elasticbeanstalk.com/";
 
     @PostMapping(path = "/estimate", consumes = { "multipart/form-data" })
     public ResponseEntity<String> getPriceEstimate(@ModelAttribute CarPosting carpost) {
@@ -99,7 +99,7 @@ public class FlaskController {
 
     @ResponseBody
     public String getTitlePython() {
-        String url = "http://localhost:5000/coe_title";
+        String url = "http://pythonflask-env.eba-zafucm2t.us-east-2.elasticbeanstalk.com/coe_title";
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -115,7 +115,7 @@ public class FlaskController {
 
     public Category[] getPricesPython() {
 
-        String url = "http://localhost:5000/coe_prices";
+        String url = "http://pythonflask-env.eba-zafucm2t.us-east-2.elasticbeanstalk.com/coe_prices";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));

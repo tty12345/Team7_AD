@@ -13,7 +13,7 @@
 	<name>Team7_AD</name>
 	<description>AD Project</description>
 	<properties>
-		<java.version>16</java.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
